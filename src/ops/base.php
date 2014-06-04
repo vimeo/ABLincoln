@@ -1,6 +1,6 @@
 <?php
 /**
- * Most basic operaator class from which all others inherit
+ * Abstract operator class
  */
 abstract class Op
 {
@@ -83,7 +83,7 @@ abstract class Op
      */
     public function getOptionRequired($op_name)
     {
-        $ops = $this->optionMerge();\
+        $ops = $this->optionMerge();
         return isset($ops[$op_name]) ? $ops[$op_name]['required'] : 1;
     }
 }
