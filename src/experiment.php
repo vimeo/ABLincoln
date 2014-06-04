@@ -50,7 +50,7 @@ abstract class Experiment
     {
         $ret = array(
             'name' => $this->name,
-            'time' => 0,
+            'time' => time(),
             'salt' => $this->salt,
             'inputs' => $this->inputs
         );
@@ -59,6 +59,19 @@ abstract class Experiment
         }
         return $ret;
     }
-}
 
-//$exp = new Experiment(array("id" => 4453));
+    public exposureLogged()
+    {
+        return $this->exposure_logged;
+    }
+
+    public setExposureLogged($value)
+    {
+        $this->exposure_logged = value;
+    }
+
+    public function __toString()
+    {
+        return json_encode($this->asBlob());
+    }
+}
