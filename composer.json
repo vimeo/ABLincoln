@@ -1,0 +1,26 @@
+{
+    "name": "akalicki/php-ab",
+    "description": "PHP library for designing online experiments",
+    "license": "",
+    "authors": [
+        {
+            "name": "Alex Kalicki",
+            "email": "alexk@vimeo.com"
+        },
+        {
+            "name": "Jacob Oliver",
+            "email": "jake@vimeo.com"
+        }
+    ],
+    "require": {
+
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-0": {
+
+        }
+    }
+}
