@@ -133,7 +133,7 @@ abstract class Experiment
     /**
      * See whether the experiment has already been exposure logged
      *
-     * @return boolean True if exposure logged, False otherwise
+     * @return boolean true if exposure logged, false otherwise
      */
     public function exposureLogged()
     {
@@ -143,7 +143,7 @@ abstract class Experiment
     /**
      * Set whether the experiment has been exposure logged
      *
-     * @param boolean $value True if exposure logged, False otherwise
+     * @param boolean $value true if exposure logged, false otherwise
      */
     public function setExposureLogged($value)
     {
@@ -153,7 +153,7 @@ abstract class Experiment
     /**
      * Disables / enables auto exposure logging (enabled by default)
      *
-     * @param boolean $value True to enable, False to disable
+     * @param boolean $value true to enable, false to disable
      */
     public function setAutoExposureLogging($value)
     {
@@ -246,7 +246,7 @@ abstract class Experiment
     /**
      * Check if the input has already been logged
      *
-     * @return boolean True if previously logged, False otherwise
+     * @return boolean true if previously logged, false otherwise
      */
     abstract public function previouslyLogged();
 }
