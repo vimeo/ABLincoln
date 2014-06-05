@@ -123,3 +123,23 @@ abstract class AbOpBinary extends AbOpSimple
 
     abstract protected function binaryExecute($left, $right);
 }
+
+abstract class AbOpUnary extends AbOpSimple
+{
+    public function options()
+    {
+        return array(
+            'value' => array(
+                'required' => 1,
+                'description' => 'input value to unary operator'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        return $this->unaryExecute($this->parameters['value']);
+    }
+
+    abstract protected function unaryExecute($value);
+}
