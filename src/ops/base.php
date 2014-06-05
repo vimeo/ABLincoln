@@ -1,6 +1,6 @@
 <?php
 /**
- * Abstract operator class
+ * Abstract base class for operators.
  */
 abstract class AbOp
 {
@@ -79,11 +79,24 @@ abstract class AbOp
     }
 }
 
+/**
+ * Easiest way to implement simple operators. The class automatically evaluates
+ * the values of all parameters passed in via execute(), and stores the mapper 
+ * object and evaluated parameters as instance variables.  The user can then 
+ * extend AbOpSimple and implement simpleExecute().
+ */
 abstract class AbOpSimple extends AbOp
 {
     protected $mapper;
     protected $parameters;
 
+    /**
+     * Evaluate all parameters and store as instance variables, then executes
+     * the operator as defined in simpleExecute()
+     *
+     * @param Assignment $mapper mapper object used to evaluate parameters
+     * @return the evaluated expression
+     */
     public function execute($mapper)
     {
         $this->mapper = $mapper;
@@ -94,11 +107,24 @@ abstract class AbOpSimple extends AbOp
         return $this->simpleExecute();
     }
 
+    /**
+     * Implement with operator functionality
+     *
+     * @return the evaluated expression
+     */
     abstract protected function simpleExecute();
 }
 
+/**
+ * Interface for defining binary operators.
+ */
 abstract class AbOpBinary extends AbOpSimple
 {
+    /**
+     * Binary operators take a 'left' and 'right' operands
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -113,6 +139,11 @@ abstract class AbOpBinary extends AbOpSimple
         );
     }
 
+    /**
+     * Evaluates the binary operator using both operands
+     *
+     * @return the evaluated expression
+     */
     protected function simpleExecute()
     {
         return $this->binaryExecute(
@@ -121,11 +152,26 @@ abstract class AbOpBinary extends AbOpSimple
         );
     }
 
+    /**
+     * Implement with binary operator functionality
+     *
+     * @param $left the left operand
+     * @param $right the right operand
+     * @return the evaluated expression
+     */
     abstract protected function binaryExecute($left, $right);
 }
 
+/**
+ * Interface for defining unary operators.
+ */
 abstract class AbOpUnary extends AbOpSimple
 {
+    /**
+     * Unary operators take a single 'value' operand
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -136,16 +182,35 @@ abstract class AbOpUnary extends AbOpSimple
         );
     }
 
+    /**
+     * Evaluates the unary operator using its single operand
+     *
+     * @return the evaluated expression
+     */
     protected function simpleExecute()
     {
         return $this->unaryExecute($this->parameters['value']);
     }
 
+    /**
+     * Implement with unary operator functionality
+     *
+     * @param $value the single operand
+     * @return the evaluated expression
+     */
     abstract protected function unaryExecute($value);
 }
 
+/**
+ * Interface for defining commutative operators.
+ */
 abstract class AbOpCommutative extends AbOpSimple
 {
+    /**
+     * Commutative operators take a single 'values' array of operands
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -156,10 +221,21 @@ abstract class AbOpCommutative extends AbOpSimple
         );
     }
 
+    /**
+     * Evaluates the commutative operator using its array of operands
+     *
+     * @return the evaluated expression
+     */
     protected function simpleExecute()
     {
         return $this->commutativeExecute($this->parameters['values']);
     }
 
+    /**
+     * Implement with commutative operator functionality
+     *
+     * @param array $values the array of operands
+     * @return the evaluated expression
+     */
     abstract protected function commutativeExecute($values);
 }
