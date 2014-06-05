@@ -1,5 +1,5 @@
 {
-    "name": "akalicki/php-ab",
+    "name": "vimeo/ablincoln",
     "description": "PHP library for designing online experiments",
     "license": "",
     "authors": [
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-0": {
-            "akalicki\\": "src/"
+            "Vimeo\\ABLincoln": "src/"
         }
     }
 }
