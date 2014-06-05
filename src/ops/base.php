@@ -30,7 +30,7 @@ abstract class Op
      *     'n' => array('required' => 0, 'description' => 'number of samples')
      *   )
      *
-     * @return array of required and optional arguments
+     * @return array array of required and optional arguments
      */
     public function options()
     {
@@ -38,40 +38,29 @@ abstract class Op
     }
 
     /**
-     * Recursively append parents' options() with instance's options(). Only
-     * gets called by Op base class
-     *
-     * @return array containing all ancestors' options
-     */
-    private function optionMerge()
-    {
-        if (!strcmp(get_class(), 'Op')) {
-            return array();
-        }
-        $instance_ops = options();
-        $parent_ops = parent::optionMerge();
-        return array_merge($parent_ops, $instance_ops);
-    }
-
-    /**
      * Get array of all parameters belonging to the operation instance.
      *
-     * @return parameter array
+     * @return array parameter array
      */
     public function getOptions()
     {
-        return $this->optionMerge();
+        if (!strcmp(get_class($this), 'Op')) {
+            return array();
+        }
+        $instance_ops = options();
+        $parent_ops = parent::getOptions();
+        return array_merge($parent_ops, $instance_ops);
     }
 
     /**
      * Get the description of a given parameter belonging to the operator
      *
      * @param string $op_name name of the parameter to get the description of
-     * @return description of the given parameter
+     * @return string description of the given parameter
      */
     public function getOptionDescription($op_name)
     {
-        $ops = $this->optionMerge();
+        $ops = $this->getOptions();
         return isset($ops[$op_name]) ? $ops[$op_name]['description'] : $op_name;
     }
 
@@ -83,7 +72,7 @@ abstract class Op
      */
     public function getOptionRequired($op_name)
     {
-        $ops = $this->optionMerge();
+        $ops = $this->getOptions();
         return isset($ops[$op_name]) ? $ops[$op_name]['required'] : 1;
     }
 }
