@@ -5,16 +5,15 @@
 abstract class Experiment
 {
     protected $inputs;
-    protected $logger_configured = False;
-    protected $in_experiment = True;
+    protected $logger_configured = false;
+    protected $in_experiment = true;
 
     private $name;
-    private $salt = NULL;
-    private $exposure_logged = False;
-    private $auto_exposure_log = True;
-    private $assigned = False;
+    private $salt = null;
+    private $exposure_logged = false;
+    private $auto_exposure_log = true;
+    private $assigned = false;
     private $assignment;
-    private $checksum;
 
     /**
      * Set up attributes needed for experiment
@@ -28,7 +27,6 @@ abstract class Experiment
         $this->setup();                  // manually set name, salt, etc.
 
         $this->assignment = $this->getAssignment();
-        $this->checksum = $this->checksum();
     }
 
     /*
@@ -132,11 +130,6 @@ abstract class Experiment
         return $ret;
     }
 
-    public function checksum()
-    {
-
-    }
-
     /**
      * See whether the experiment has already been exposure logged
      *
@@ -184,7 +177,7 @@ abstract class Experiment
      * @param string $default optional value to return if parameter undefined
      * @return the value of the given parameter
      */
-    public function get($name, $default = NULL)
+    public function get($name, $default = null)
     {
 
     }
@@ -215,7 +208,7 @@ abstract class Experiment
      *
      * @param array $extras optional extra data to include in exposure log
      */
-    public function logExposure($extras = NULL)
+    public function logExposure($extras = null)
     {
         $this->exposureLogged = True;
         $this->logEvent('exposure', $extras);
@@ -227,7 +220,7 @@ abstract class Experiment
      * @param string $eventType name of event to kig]
      * @param array $extras optional extra data to include in log
      */
-    public function logEvent($eventType, $extras = NULL)
+    public function logEvent($eventType, $extras = null)
     {
         if (isset($extras)) {
             $extraPayload = array('event' => $eventType, 'extra_data' => $extras);
