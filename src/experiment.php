@@ -135,7 +135,7 @@ abstract class Experiment
      *
      * @return boolean True if exposure logged, False otherwise
      */
-    public exposureLogged()
+    public function exposureLogged()
     {
         return $this->exposure_logged;
     }
@@ -145,7 +145,7 @@ abstract class Experiment
      *
      * @param boolean $value True if exposure logged, False otherwise
      */
-    public setExposureLogged($value)
+    public function setExposureLogged($value)
     {
         $this->exposure_logged = value;
     }
@@ -155,7 +155,7 @@ abstract class Experiment
      *
      * @param boolean $value True to enable, False to disable
      */
-    public setAutoExposureLogging($value)
+    public function setAutoExposureLogging($value)
     {
         $this->auto_exposure_log = $value;
     }
@@ -210,7 +210,7 @@ abstract class Experiment
      */
     public function logExposure($extras = null)
     {
-        $this->exposureLogged = True;
+        $this->exposureLogged = true;
         $this->logEvent('exposure', $extras);
     }
 
