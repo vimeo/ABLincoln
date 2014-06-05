@@ -143,3 +143,23 @@ abstract class AbOpUnary extends AbOpSimple
 
     abstract protected function unaryExecute($value);
 }
+
+abstract class AbOpCommutative extends AbOpSimple
+{
+    public function options()
+    {
+        return array(
+            'values' => array(
+                'required' => 1,
+                'description' => 'input values to commutative operator'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        return $this->commutativeExecute($this->parameters['values']);
+    }
+
+    abstract protected function commutativeExecute($values);
+}
