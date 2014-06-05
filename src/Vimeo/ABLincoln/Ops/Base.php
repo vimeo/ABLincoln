@@ -1,6 +1,6 @@
 <?php
 
-namespace Vimeo\ABLincoln\ops;
+namespace Vimeo\ABLincoln\Ops;
 
 /**
  * Abstract base class for operators.

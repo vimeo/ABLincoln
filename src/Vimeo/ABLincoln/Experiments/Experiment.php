@@ -1,6 +1,6 @@
 <?php
 
-namespace Vimeo\ABLincoln;
+namespace Vimeo\ABLincoln\Experiments;
 
 /*
  * Abstract base class for experiments
