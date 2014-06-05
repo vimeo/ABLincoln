@@ -2,6 +2,11 @@
 
 namespace Vimeo\ABLincoln\Ops;
 
+/**
+ * The Assignment class is essentially an array (and can be used like one),
+ * but allows the execution of random operators using the names of variables
+ * as salts.
+ */
 class Assignment implements ArrayAccess
 {
     private $experiment_salt;
