@@ -96,3 +96,30 @@ abstract class AbOpSimple extends AbOp
 
     abstract protected function simpleExecute();
 }
+
+abstract class AbOpBinary extends AbOpSimple
+{
+    public function options()
+    {
+        return array(
+            'left' => array(
+                'required' => 1,
+                'description' => 'left side of binary operator'
+            ),
+            'right' => array(
+                'required' => 1,
+                'description' => 'right side of binary operator'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        return $this->binaryExecute(
+            $this->parameters['left'],
+            $this->parameters['right']
+        );
+    }
+
+    abstract protected function binaryExecute($left, $right);
+}
