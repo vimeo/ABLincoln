@@ -18,8 +18,10 @@ abstract class AbOp
 
     /**
      * Execute the operator using its predefined arguments
+     *
+     * @param Assignment $mapper mapper object used to evaluate parameters
      */
-    abstract public function execute();
+    abstract public function execute($mapper);
 
     /**
      * All operators must specify required and optional arguments to be used in
@@ -75,4 +77,22 @@ abstract class AbOp
         $ops = $this->getOptions();
         return isset($ops[$op_name]) ? $ops[$op_name]['required'] : 1;
     }
+}
+
+abstract class AbOpSimple extends AbOp
+{
+    protected $mapper;
+    protected $parameters;
+
+    public function execute($mapper)
+    {
+        $this->mapper = $mapper;
+        $this->parameters = array();  // evaluated parameters
+        foreach ($this->args as $key => $val) {
+            $this->parameters[$key] = $mapper->evaluate($val);
+        }
+        return $this->simpleExecute();
+    }
+
+    abstract protected function simpleExecute();
 }
