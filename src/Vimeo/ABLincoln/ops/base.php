@@ -1,4 +1,7 @@
 <?php
+
+namespace Vimeo\ABLincoln\ops;
+
 /**
  * Abstract base class for operators.
  */

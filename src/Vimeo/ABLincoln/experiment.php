@@ -1,4 +1,7 @@
 <?php
+
+namespace Vimeo\ABLincoln;
+
 /*
  * Abstract base class for experiments
  */
