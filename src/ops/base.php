@@ -2,7 +2,7 @@
 /**
  * Abstract operator class
  */
-abstract class Op
+abstract class AbOp
 {
     protected $args;
 
