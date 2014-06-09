@@ -98,7 +98,7 @@ abstract class AbOpSimple extends AbOp
      * the operator as defined in simpleExecute()
      *
      * @param Assignment $mapper mapper object used to evaluate parameters
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     public function execute($mapper)
     {
@@ -113,7 +113,7 @@ abstract class AbOpSimple extends AbOp
     /**
      * Implement with operator functionality
      *
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     abstract protected function simpleExecute();
 }
@@ -145,7 +145,7 @@ abstract class AbOpBinary extends AbOpSimple
     /**
      * Evaluates the binary operator using both operands
      *
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     protected function simpleExecute()
     {
@@ -158,9 +158,9 @@ abstract class AbOpBinary extends AbOpSimple
     /**
      * Implement with binary operator functionality
      *
-     * @param $left the left operand
-     * @param $right the right operand
-     * @return the evaluated expression
+     * @param mixed $left the left operand
+     * @param mixed $right the right operand
+     * @return mixed the evaluated expression
      */
     abstract protected function binaryExecute($left, $right);
 }
@@ -188,7 +188,7 @@ abstract class AbOpUnary extends AbOpSimple
     /**
      * Evaluates the unary operator using its single operand
      *
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     protected function simpleExecute()
     {
@@ -198,8 +198,8 @@ abstract class AbOpUnary extends AbOpSimple
     /**
      * Implement with unary operator functionality
      *
-     * @param $value the single operand
-     * @return the evaluated expression
+     * @param mixed $value the single operand
+     * @return mixed the evaluated expression
      */
     abstract protected function unaryExecute($value);
 }
@@ -227,7 +227,7 @@ abstract class AbOpCommutative extends AbOpSimple
     /**
      * Evaluates the commutative operator using its array of operands
      *
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     protected function simpleExecute()
     {
@@ -238,7 +238,7 @@ abstract class AbOpCommutative extends AbOpSimple
      * Implement with commutative operator functionality
      *
      * @param array $values the array of operands
-     * @return the evaluated expression
+     * @return mixed the evaluated expression
      */
     abstract protected function commutativeExecute($values);
 }
