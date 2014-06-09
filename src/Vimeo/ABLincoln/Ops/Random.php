@@ -96,3 +96,51 @@ class RandomInteger extends AbOpRandom
         return $min_val + $this->getHash() % ($max_val - $min_val + 1);
     }
 }
+
+class BernoulliTrial extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'p' => array(
+                'required' => 1,
+                'description' => 'probability of drawing 1'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $p = $this->parameters['p'];
+        $rand_val = $this->getUniform(0.0, 1.0);
+        return ($rand_val <= $p) ? 1 : 0;
+    }    
+}
+
+class BernoulliFilter extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'p' => array(
+                'required' => 1,
+                'description' => 'probability of retaining element'
+            ),
+            'choices' => array(
+                'required' => 1,
+                'description' => 'elements being filtered'
+            )
+        );
+    }
+
+    public simpleExecute()
+    {
+        $p = $this->parameters['p'];
+        $choices = $this->parameters['choices'];
+        $num_choices = count($choices);
+        if (!$num_choices) {
+            return array()
+        }
+        return $choices[$this->getHash() % $num_choices];
+    }
+}
