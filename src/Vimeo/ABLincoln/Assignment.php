@@ -62,14 +62,27 @@ class Assignment implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($value instanceof AbOpRandom) {
-            if (!array_key_exists('salt', $value->args)) {
-                $value->args['salt'] = $offset;
+        if (is_null($offset)) {
+             if ($value instanceof AbOpRandom) {
+                if (!array_key_exists('salt', $value->args)) {
+                    $value->args['salt'] = $offset;
+                }
+                $this->data[] = $value->execute($this);
             }
-            $this->data[$offset] = $value->execute($this);
+            else {
+                $this->data[] = $value;
+            }
         }
         else {
-            $this->data[$offset] = $value;
+            if ($value instanceof AbOpRandom) {
+                if (!array_key_exists('salt', $value->args)) {
+                    $value->args['salt'] = $offset;
+                }
+                $this->data[$offset] = $value->execute($this);
+            }
+            else {
+                $this->data[$offset] = $value;
+            }
         }
     }
 
