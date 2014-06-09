@@ -48,3 +48,51 @@ class AbOpRandom extends AbOpSimple
         return $min_val + $zero_to_one * ($max_val - $min_val);
     }
 }
+
+class RandomFloat extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'min' => array(
+                'required' => 1,
+                'description' => 'min (float) value drawn'
+            ),
+            'max' => array(
+                'required' => 1,
+                'description' => 'max (float) value drawn'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $min_val = $this->parameters['min'];
+        $max_val = $this->parameters['max'];
+        return $this->getUniform($min_val, $max_val);
+    }
+}
+
+class RandomInteger extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'min' => array(
+                'required' => 1,
+                'description' => 'min (int) value drawn'
+            ),
+            'max' => array(
+                'required' => 1,
+                'description' => 'max (int) value drawn'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $min_val = $this->parameters['min'];
+        $max_val = $this->parameters['max'];
+        return $min_val + $this->getHash() % ($max_val - $min_val + 1);
+    }
+}
