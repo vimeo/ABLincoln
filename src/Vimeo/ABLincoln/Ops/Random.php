@@ -2,16 +2,29 @@
 
 namespace Vimeo\ABLincoln\Ops;
 
+/**
+ * Base class for random operators.
+ */
 class AbOpRandom extends AbOpSimple
 {
     private $long_scale;
 
+    /**
+     * Constructor: store given parameters and establish scale for hashing
+     *
+     * @param array $parameters array mapping operator parameters to values
+     */
     public function __construct($parameters)
     {
         parent::__construct($parameters);
         $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
     }
 
+    /**
+     * All random operators require a unit to hash on and an optional salt
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -26,6 +39,13 @@ class AbOpRandom extends AbOpSimple
         );
     }
 
+
+    /**
+     * Format all units into an array before hashing
+     *
+     * @param mixed $appended_unit optional extra unit used for hashing
+     * @return array array of units used for hashing
+     */
     private function getUnit($appended_unit = null)
     {
         $unit = $this->parameters['unit'];
@@ -38,6 +58,12 @@ class AbOpRandom extends AbOpSimple
         return unit;
     }
 
+    /**
+     * Form a complete salt string and hash it to a number
+     *
+     * @param mixed $appended_unit optional extra unit used for hashing
+     * @return int decimal representation of computed SHA1 hash
+     */
     protected function getHash($appended_unit = null)
     {
         $salt = $this->parameters['salt'];
@@ -47,6 +73,13 @@ class AbOpRandom extends AbOpSimple
         return hexdec(substr(sha1("$salty.$unit_str"), 0, 15));
     }
 
+    /**
+     * Get a random decimal between two provided values
+     *
+     * @param float $min_value start value for random number range
+     * @param float $max_value end value for random number range
+     * @return float random number between the two provided values
+     */
     protected function getUniform($min_val = 0.0, $max_val = 1.0,
                                   $appended_unit = null)
     {
@@ -55,8 +88,16 @@ class AbOpRandom extends AbOpSimple
     }
 }
 
+/**
+ * Random operator used to calculate pseudorandom floating point numbers
+ */
 class RandomFloat extends AbOpRandom
 {
+    /**
+     * The operator requires a minimum and maximum value for the range
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -71,6 +112,11 @@ class RandomFloat extends AbOpRandom
         );
     }
 
+    /**
+     * Calculate a random floating point number in the given range
+     *
+     * @return float the calculated random float
+     */
     protected function simpleExecute()
     {
         $min_val = $this->parameters['min'];
@@ -79,8 +125,16 @@ class RandomFloat extends AbOpRandom
     }
 }
 
+/**
+ * Random operator used to calculate pseudorandom integers
+ */
 class RandomInteger extends AbOpRandom
 {
+    /**
+     * The operator requires a minimum and maximum value for the range
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -95,6 +149,11 @@ class RandomInteger extends AbOpRandom
         );
     }
 
+    /**
+     * Calculate a random integer in the given range
+     *
+     * @return int the calculated random integer
+     */
     protected function simpleExecute()
     {
         $min_val = $this->parameters['min'];
@@ -103,8 +162,16 @@ class RandomInteger extends AbOpRandom
     }
 }
 
+/**
+ * Simulate a Bernoulli Trial by choosing 1 or 0 with a given probability
+ */
 class BernoulliTrial extends AbOpRandom
 {
+    /**
+     * The operator requires a probability value to run
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -115,6 +182,11 @@ class BernoulliTrial extends AbOpRandom
         );
     }
 
+    /**
+     * Calculate either 1 or 0 with a given probability
+     *
+     * @return int 1 with probability p, 0 otherwise
+     */
     protected function simpleExecute()
     {
         $p = $this->parameters['p'];
@@ -123,8 +195,16 @@ class BernoulliTrial extends AbOpRandom
     }    
 }
 
+/**
+ * Filter an array with Bernoulli Trial probability for each element
+ */
 class BernoulliFilter extends AbOpRandom
 {
+    /**
+     * The operator requires a probability value and choices array to filter
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -139,6 +219,11 @@ class BernoulliFilter extends AbOpRandom
         );
     }
 
+    /**
+     * Filter the parameter array on each element with probability p
+     *
+     * @return array the filtered choices array
+     */
     protected function simpleExecute()
     {
         $p = $this->parameters['p'];
@@ -153,8 +238,16 @@ class BernoulliFilter extends AbOpRandom
     }
 }
 
+/**
+ * Randomly select a choice from an array of options
+ */
 class UniformChoice extends AbOpRandom
 {
+    /**
+     * The operator requires an array of choices to draw from
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -165,6 +258,11 @@ class UniformChoice extends AbOpRandom
         );
     }
 
+    /**
+     * Choose an element randomly from the parameter array
+     *
+     * @return mixed the element chosen from the given array
+     */
     protected function simpleExecute()
     {
         $choices = $this->parameters['choices'];
@@ -176,8 +274,16 @@ class UniformChoice extends AbOpRandom
     }
 }
 
+/**
+ * Select an element from a choices array according to given probabilities
+ */
 class WeightedChoice extends AbOpRandom
 {
+    /**
+     * The operator requires an set of choices to draw from and weights to use
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -192,6 +298,11 @@ class WeightedChoice extends AbOpRandom
         );
     }
 
+    /**
+     * Choose an element with weighted probability from the parameter array
+     *
+     * @return mixed the element chosen from the given array
+     */
     protected function simpleExecute()
     {
         $choices = $this->parameters['choices'];
@@ -214,8 +325,16 @@ class WeightedChoice extends AbOpRandom
     }
 }
 
+/**
+ * Select a random sample from a given choices array
+ */
 class Sample extends AbOpRandom
 {
+    /**
+     * The operator requires an set of choices to draw from and number to draw
+     *
+     * @return array the array of required parameters
+     */
     public function options()
     {
         return array(
@@ -230,6 +349,11 @@ class Sample extends AbOpRandom
         );
     }
 
+    /**
+     * Choose a random sample of choices from the parameter array
+     *
+     * @return array the random sample select from the parameter array
+     */
     protected function simpleExecute()
     {
         $choices = array();
