@@ -213,3 +213,37 @@ class WeightedChoice extends AbOpRandom
         }
     }
 }
+
+class Sample extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'choices' => array(
+                'required' => 1,
+                'description' => 'choices to sample'
+            ),
+            'draws' => array(
+                'required' => 0,
+                'description' => 'number of samples to draw'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $choices = array();
+        foreach ($this->parameters['choices'] as $key) {
+            $choices[] = $key;
+        }
+        $num_choices = count($choices);
+        $num_draws = isset($this->parameters['draws']) ? $this->parameters['draws']
+                                                       : $num_choices;
+        for ($i = $num_choices - 1; $i > 0; $i--) {
+            $j = $this->getHash($i) % ($i + 1);
+            $temp = $choices[i];
+            $choices[i] = $choices[j];
+            $choices[j] = $temp;
+        }
+    }
+}
