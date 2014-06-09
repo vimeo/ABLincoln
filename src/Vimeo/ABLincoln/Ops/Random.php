@@ -4,7 +4,13 @@ namespace Vimeo\ABLincoln\Ops;
 
 class AbOpRandom extends AbOpSimple
 {
-    const LONG_SCALE = floatval(0xFFFFFFFFFFFFFFF);
+    private $long_scale;
+
+    public function __construct($parameters)
+    {
+        parent::__construct($parameters);
+        $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
+    }
 
     public function options()
     {
@@ -20,7 +26,7 @@ class AbOpRandom extends AbOpSimple
         );
     }
 
-    protected function getUnit($appended_unit = null)
+    private function getUnit($appended_unit = null)
     {
         $unit = $this->parameters['unit'];
         if (!is_array($unit)) {
@@ -44,7 +50,7 @@ class AbOpRandom extends AbOpSimple
     protected function getUniform($min_val = 0.0, $max_val = 1.0,
                                   $appended_unit = null)
     {
-        $zero_to_one = $this->getHash(appended_unit) / self::LONG_SCALE;
+        $zero_to_one = $this->getHash($appended_unit) / $this->long_scale;
         return $min_val + $zero_to_one * ($max_val - $min_val);
     }
 }
@@ -133,13 +139,38 @@ class BernoulliFilter extends AbOpRandom
         );
     }
 
-    public simpleExecute()
+    protected function simpleExecute()
     {
         $p = $this->parameters['p'];
         $choices = $this->parameters['choices'];
         $num_choices = count($choices);
         if (!$num_choices) {
-            return array()
+            return array();
+        }
+        return array_filter($choices, function($item) use ($p) {
+            return $this->getUniform(0.0, 1.0, $item) <= $p;
+        });
+    }
+}
+
+class UniformChoice extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'choices' => array(
+                'required' => 1,
+                'description' => 'elements to draw from'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $choices = $this->parameters['choices'];
+        $num_choices = count($choices);
+        if (!$num_choices) {
+            return array();
         }
         return $choices[$this->getHash() % $num_choices];
     }
