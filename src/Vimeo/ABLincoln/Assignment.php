@@ -1,13 +1,13 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops;
+namespace Vimeo\ABLincoln;
 
 /**
  * The Assignment class is essentially an array (and can be used like one),
  * but allows the execution of random operators using the names of variables
  * as salts.
  */
-class Assignment implements ArrayAccess
+class Assignment implements \ArrayAccess
 {
     private $data;
 
@@ -34,7 +34,7 @@ class Assignment implements ArrayAccess
 
     /**
      * Check if a given key is set in the array
-     *
+     *  
      * @param mixed $offset key to check for in the array
      * @return boolean true if key exists, false otherwise
      */

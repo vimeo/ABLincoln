@@ -1,17 +1,19 @@
 <?php
 
-class AssignmentTest extends PHPUnit_Framework_TestCase
+use Vimeo\ABLincoln\Assignment;
+
+class AssignmentTest extends \PHPUnit_Framework_TestCase
 {
     private $tester_salt = 'test_salt';
 
     public function testOffsetSetUnset()
     {
         $a = new Assignment($this->tester_salt);
-        $this->assert(!isset($a[0]));
+        $this->assertFalse(isset($a[0]));
         $a[0] = 5;
-        $this->assert(isset($a[0]));
+        $this->assertTrue(isset($a[0]));
         unset($a[0]);
-        $this->assert(!isset($a[0]);
+        $this->assertFalse(isset($a[0]));
     }
 
     public function testSetGetConstant()
