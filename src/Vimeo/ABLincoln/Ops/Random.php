@@ -175,3 +175,41 @@ class UniformChoice extends AbOpRandom
         return $choices[$this->getHash() % $num_choices];
     }
 }
+
+class WeightedChoice extends AbOpRandom
+{
+    public function options()
+    {
+        return array(
+            'choices' => array(
+                'required' => 1,
+                'description' => 'elements to draw from'
+            ),
+            'weights' => array(
+                'required' => 1,
+                'description' => 'probability of draw'
+            )
+        );
+    }
+
+    protected function simpleExecute()
+    {
+        $choices = $this->parameters['choices'];
+        $weights = $this->parameters['weights'];
+        if (!count($choices)) {
+            return array();
+        }
+        $cum_weights = array_combine($choices, $weights);
+        $cum_sum = 0.0;
+        foreach ($cum_weights as $choice => $weight) {
+            $cum_sum += $weight;
+            $cum_weights[$choice] = $cum_sum;
+        }
+        $stop_value = $this->getUniform(0.0, $cum_sum);
+        foreach ($cum_weights as $choice => $weight) {
+            if ($stop_value <= $weight) {
+                return $choice;
+            }
+        }
+    }
+}
