@@ -7,7 +7,7 @@ use Vimeo\ABLincoln\Assignment;
 /*
  * Abstract base class for experiments
  */
-abstract class Experiment
+abstract class AbstractExperiment
 {
     protected $inputs;
     protected $logger_configured = false;
