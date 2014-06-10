@@ -1,11 +1,11 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Base;
+namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Interface for defining commutative operators.
  */
-abstract class OpCommutative extends OpSimple
+abstract class Commutative extends AbstractOperator
 {
     /**
      * Commutative operators take a single 'values' array of operands

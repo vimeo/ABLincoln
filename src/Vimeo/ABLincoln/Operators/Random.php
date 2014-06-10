@@ -1,11 +1,11 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Base;
+namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Base class for random operators.
  */
-class OpRandom extends OpSimple
+class Random extends AbstractOperator
 {
     private $long_scale;
 

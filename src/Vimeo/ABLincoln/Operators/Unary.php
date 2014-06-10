@@ -1,11 +1,11 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Base;
+namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Interface for defining unary operators.
  */
-abstract class OpUnary extends OpSimple
+abstract class Unary extends AbstractOperator
 {
     /**
      * Unary operators take a single 'value' operand

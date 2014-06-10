@@ -1,11 +1,11 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Base;
+namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Interface for defining binary operators.
  */
-abstract class OpBinary extends OpSimple
+abstract class Binary extends AbstractOperator
 {
     /**
      * Binary operators take a 'left' and 'right' operands
