@@ -6,7 +6,7 @@ namespace Vimeo\ABLincoln\Experiments;
  * Dummy experiment which has no logging. Default experiments used by 
  * namespaces should inherit from this class
  */
-class Default extends AbstractExperiment
+class DefaultExperiment extends AbstractExperiment
 {
     /**
      * We don't need a logger when there's no experiment
@@ -18,14 +18,14 @@ class Default extends AbstractExperiment
      *
      * @param array $data the data which we will not be logging
      */
-    public function log($data) {}
+    protected function log($data) {}
 
     /**
      * Assume all data passed in has already been logged
      *
      * @return boolean true always since we're assuming data's been logged
      */
-    public function previouslyLogged()
+    protected function previouslyLogged()
     {
         return true;
     }
