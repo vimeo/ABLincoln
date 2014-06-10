@@ -12,7 +12,7 @@ use \Psr\Log\LoggerInterface;
 class Simple extends AbstractExperiment
 {
     protected $logger;
-    const LOG_FORMAT = '%s with event type: %s';å
+    const LOG_FORMAT = '%s with event type: %s';
 
     /**
      * Construct a new Simple experiment, passing in hashing inputs and logger
