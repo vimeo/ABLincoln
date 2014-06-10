@@ -1,12 +1,13 @@
 <?php
 
 namespace Vimeo\ABLincoln\Operators\Random;
-use \Vimeo\ABLincoln\Operators as Operators;
+
+use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Select an element from a choices array according to given probabilities
  */
-class WeightedChoice extends Operators\Random
+class WeightedChoice extends RandomOperator
 {
     /**
      * The operator requires an set of choices to draw from and weights to use

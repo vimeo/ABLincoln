@@ -1,12 +1,13 @@
 <?php
 
 namespace Vimeo\ABLincoln\Operators\Random;
-use \Vimeo\ABLincoln\Operators as Operators;
+
+use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Filter an array with Bernoulli Trial probability for each element
  */
-class BernoulliFilter extends Operators\Random
+class BernoulliFilter extends RandomOperator
 {
     /**
      * The operator requires a probability value and choices array to filter

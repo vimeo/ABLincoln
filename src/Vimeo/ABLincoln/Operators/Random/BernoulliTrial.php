@@ -1,12 +1,13 @@
 <?php
 
 namespace Vimeo\ABLincoln\Operators\Random;
-use \Vimeo\ABLincoln\Operators as Operators;
+
+use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Simulate a Bernoulli Trial by choosing 1 or 0 with a given probability
  */
-class BernoulliTrial extends Operators\Random
+class BernoulliTrial extends RandomOperator
 {
     /**
      * The operator requires a probability value to run
