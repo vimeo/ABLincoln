@@ -2,10 +2,12 @@
 
 namespace Vimeo\ABLincoln\Experiments;
 
+use Vimeo\ABLincoln\Assignment;
+
 /*
  * Abstract base class for experiments
  */
-abstract class Experiment
+abstract class AbstractExperiment
 {
     protected $inputs;
     protected $logger_configured = false;
@@ -42,8 +44,8 @@ abstract class Experiment
      */
     private function requiresAssignment()
     {
-        if (!self.assigned) {
-            self.assignSetup();
+        if (!$this->assigned) {
+            $this->assignSetup();
         }
     }
 
@@ -52,17 +54,21 @@ abstract class Experiment
      */
     private function assignSetup()
     {
-
+        $this->configureLogger();
+        $this->assign($this->assignment, $this->inputs);
+        $this->in_experiment = isset($this->assignment['in_experiment']) ? 
+                $this->assignment['in_experiment'] : $this->in_experiment;
+        $this->logged = $this->previouslyLogged();
     }
 
     /**
-     * Get the assignment belonging to the current experiment
+     * Get a new assignment belonging to the current experiment
      *
-     * @return Assignment the current experiment's asssignment
+     * @return Assignment the current experiment's assignment
      */
-    public function getAssignment()
+    private function getAssignment()
     {
-
+        return new Assignment($this->salt);
     }
 
     /**
@@ -119,7 +125,7 @@ abstract class Experiment
      * @param array $extras extra data to include in array
      * @return array experiment data
      */
-    private function asBlob($extras = array())
+    protected function asBlob($extras = array())
     {
         $ret = array(
             'name' => $this->name,
@@ -164,13 +170,16 @@ abstract class Experiment
     }
 
     /**
-     * Get all experiment parameters - triggers exposure log
+     * Get all experiment parameters - triggers exposure log. In general, this
+     * should only be used by custom loggers
      *
      * @return array experiment parameters
      */
     public function getParams()
     {
-
+        $this->requiresAssignment();
+        $this->requiresExposureLogging();
+        return $this->assignment->asArray();
     }
 
     /**
@@ -182,7 +191,10 @@ abstract class Experiment
      */
     public function get($name, $default = null)
     {
-
+        $this->requiresAssignment();
+        $this->requiresExposureLogging();
+        return isset($this->assignment[$name]) ? $this->assignment[$name]
+                                               : $default;
     }
 
     /**
@@ -192,13 +204,15 @@ abstract class Experiment
      */
     public function __toString()
     {
+        $this->requiresAssignment();
+        $this->requiresExposureLogging();
         return json_encode($this->asBlob());
     }
 
     /**
      * Checks if experiment requires exposure logging, and if so exposure logs
      */
-    public function requiresExposureLogging()
+    protected function requiresExposureLogging()
     {
         if ($this->auto_exposure_log && $this->in_experiment 
                                      && !$this->exposure_logged) {
@@ -213,8 +227,8 @@ abstract class Experiment
      */
     public function logExposure($extras = null)
     {
-        $this->exposureLogged = true;
         $this->logEvent('exposure', $extras);
+        $this->exposureLogged = true;
     }
 
     /**
@@ -237,7 +251,7 @@ abstract class Experiment
     /**
      * Set up files, database connections, sockets, etc for logging
      */
-    abstract public function configureLogger();
+    abstract protected function configureLogger();
 
     /**
      * Log experiment data

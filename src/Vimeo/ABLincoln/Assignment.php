@@ -23,13 +23,23 @@ class Assignment implements \ArrayAccess
 
     /**
      * Evaluate a given parameter and return its value. Currently just directly
-     * returns the given argument but can be modified with more complex behavior.
+     * returns the given argument but can be modified with more complex behavior
      *
      * @param mixed $value the parameter to evaluate
      */
     public function evaluate($value)
     {
         return $value;
+    }
+
+    /**
+     * Get the array representation of this Assignment
+     *
+     * @return array the Assignment's array representation
+     */
+    public function asArray()
+    {
+        return $data;
     }
 
     /**
