@@ -258,12 +258,12 @@ abstract class AbstractExperiment
      *
      * @param array $data data to log
      */
-    abstract public function log($data);
+    abstract protected function log($data);
 
     /**
      * Check if the input has already been logged
      *
      * @return boolean true if previously logged, false otherwise
      */
-    abstract public function previouslyLogged();
+    abstract protected function previouslyLogged();
 }

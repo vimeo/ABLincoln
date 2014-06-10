@@ -18,14 +18,14 @@ class Default extends AbstractExperiment
      *
      * @param array $data the data which we will not be logging
      */
-    public function log($data) {}
+    protected function log($data) {}
 
     /**
      * Assume all data passed in has already been logged
      *
      * @return boolean true always since we're assuming data's been logged
      */
-    public function previouslyLogged()
+    protected function previouslyLogged()
     {
         return true;
     }
