@@ -1,12 +1,12 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Random;
-use Vimeo\ABLincoln\Ops\Base\OpRandom;
+namespace Vimeo\ABLincoln\Operators\Random;
+use \Vimeo\ABLincoln\Operators as Operators;
 
 /**
  * Random operator used to calculate pseudorandom floating point numbers
  */
-class RandomFloat extends OpRandom
+class RandomFloat extends Operators\Random
 {
     /**
      * The operator requires a minimum and maximum value for the range

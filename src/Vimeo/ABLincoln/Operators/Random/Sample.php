@@ -1,12 +1,12 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Random;
-use Vimeo\ABLincoln\Ops\Base\OpRandom;
+namespace Vimeo\ABLincoln\Operators\Random;
+use \Vimeo\ABLincoln\Operators as Operators;
 
 /**
  * Select a random sample from a given choices array
  */
-class Sample extends OpRandom
+class Sample extends Operators\Random
 {
     /**
      * The operator requires an set of choices to draw from and number to draw
