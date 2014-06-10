@@ -1,30 +1,52 @@
 <?php
 
-namespace Vimeo\ABLincoln\Ops\Base;
+namespace Vimeo\ABLincoln\Operators;
 
 /**
- * Abstract base class for operators.
+ * Easiest way to implement simple operators. The class automatically evaluates
+ * the values of all parameters passed in via execute(), and stores the mapper 
+ * object and evaluated parameters as instance variables.  The user can then 
+ * extend AbstractOperator and implement simpleExecute().
  */
-abstract class Op
+abstract class AbstractOperator
 {
     protected $args;
+    protected $parameters;
+    protected $mapper;
 
     /**
      * Store the set of parameters to use as required and optional arguments
      *
-     * @param array $parameters array mapping operator parameters to values
+     * @param array $args array mapping operator parameters to values
      */
-    public function __construct($parameters)
+    public function __construct($args)
     {
-        $this->args = $parameters;
+        $this->args = $args;
     }
 
     /**
-     * Execute the operator using its predefined arguments
+     * Evaluate all parameters and store as instance variables, then execute
+     * the operator as defined in simpleExecute()
      *
      * @param Assignment $mapper mapper object used to evaluate parameters
+     * @return mixed the evaluated expression
      */
-    abstract public function execute($mapper);
+    public function execute($mapper)
+    {
+        $this->mapper = $mapper;
+        $this->parameters = array();  // evaluated parameters
+        foreach ($this->args as $key => $val) {
+            $this->parameters[$key] = $mapper->evaluate($val);
+        }
+        return $this->simpleExecute();
+    }
+
+    /**
+     * Implement with operator functionality
+     *
+     * @return mixed the evaluated expression
+     */
+    abstract protected function simpleExecute();
 
     /**
      * All operators must specify required and optional arguments to be used in
