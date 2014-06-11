@@ -58,7 +58,7 @@ class SimpleNamespace extends AbstractNamespace
         $unit = isArray($value) ? $value : array($value);
     }
 
-    public function addExperiment($name, $exp_object, $num_segments)
+    public function addExperiment($name, $exp_class, $num_segments)
     {
         $num_available = count($this->available_segments);
         if ($num_available < $num_segments) {
@@ -80,5 +80,24 @@ class SimpleNamespace extends AbstractNamespace
             $this->segment_allocations[$segment] = $name;
             unset($this->available_segments[$segment]);
         }
+
+        // associate the experiment name with a class to instantiate
+        $this->current_experiments[$name] = $exp_class;
+    }
+
+    public function removeExperiment($name)
+    {
+        if (!array_key_exists($name, $this->current_experiments)) {
+            return;  // given experiment not currently running
+        }
+
+        // make segments available for allocation again, remove experiment name
+        foreach ($this->segment_allocations as $segment => $exp_name) {
+            if (!strcmp($exp_name, $name)) {
+                unset($this->segment_allocations[$segment]);
+                $this->available_segments[$segment] = $segment;
+            }
+        }
+        unset($this->current_experiments[$name]);
     }
 }

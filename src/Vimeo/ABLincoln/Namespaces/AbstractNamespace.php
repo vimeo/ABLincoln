@@ -8,7 +8,7 @@ abstract class AbstractNamespace
 
     abstract public function inExperiment();
 
-    abstract public function addExperiment($name, $exp_object, $num_segments);
+    abstract public function addExperiment($name, $exp_class, $num_segments);
 
     abstract public function removeExperiment($name);
 
