@@ -12,6 +12,7 @@ class SimpleNamespace extends AbstractNamespace
     protected $inputs;
     protected $primary_unit;
     protected $num_segments;
+    protected $in_experiment;
     
     private $experiment;
     private $default_experiment;
@@ -26,6 +27,7 @@ class SimpleNamespace extends AbstractNamespace
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
         $this->num_segments = null;      // num_segments set in setup()
+        $this->in_experiment = false;    // not in experiment until unit assigned
 
         // array mapping segments to experiment names
         $this->segment_allocations = array();  // map segmnents to experiment names
@@ -72,7 +74,8 @@ class SimpleNamespace extends AbstractNamespace
         $a = new Assignment($this->name);
         $a['sampled_segments'] = new Sample(array(
             'choices' => $this->available_segments,
-            'draws' => $num_segments
+            'draws' => $num_segments,
+            'unit' => $name
         ));
 
         // assign each segment to the experiment name
@@ -99,5 +102,54 @@ class SimpleNamespace extends AbstractNamespace
             }
         }
         unset($this->current_experiments[$name]);
+    }
+
+    public function getSegment()
+    {
+        $a = new Assignment($this->name);
+        $a['segment'] = new RandomInteger(array(
+            'min' => 0,
+            'max' => $this->num_segments - 1,
+            'unit' => $this->inputs[$this->primary_unit]
+        ));
+        return $a['segment'];
+    }
+
+    public function requiresExperiment()
+    {
+        if (!isset($this->experiment)) {
+            $this->assignExperiment();
+        }
+    }
+
+    public function requiresDefaultExperiment()
+    {
+        if (!isset($this->default_experiment)) {
+            $this->assignDefaultExperiment();
+        }
+    }
+
+    public function assignExperiment()
+    {
+        $segment = $this->getSegment();
+
+        // is the unit allocated to an experiment?
+        if (array_key_exists($segment, $this->segment_allocations)) {
+            $exp_name = $this->segment_allocations[$segment];
+            $experiment = new $this->current_experiments[$exp_name]($this->inputs);
+            $experiment.setName("{$this->name}-{$exp_name}");
+            $experiment.setSalt("{$this->name}.{$exp_name}");
+            $this->experiment = $experiment;
+            $this->in_experiment = $experiment->inExperiment();
+        }
+        else {
+            $this->assignDefaultExperiment();
+            $this->in_experiment = false;
+        }
+    }
+
+    public function assignDefaultExperiment()
+    {
+        $this->default_experiment = $this->default_experiment_class($this->inputs);
     }
 }
