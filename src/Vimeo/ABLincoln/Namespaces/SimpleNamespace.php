@@ -6,7 +6,7 @@ use \Vimeo\ABLincoln\Assignment;
 use \Vimeo\ABLincoln\Experiments\DefaultExperiment;
 use \Vimeo\ABLincoln\Operators\Random\Sample;
 
-class SimpleNamespace extends AbstractNamespace
+abstract class SimpleNamespace extends AbstractNamespace
 {
     protected $name;
     protected $inputs;

@@ -9,7 +9,7 @@ abstract class AbstractNamespace
      *
      * @param array $inputs data to determine parameter assignments, e.g. userid
      */
-    abstract public function __contruct($inputs) {}
+    abstract public function __contruct($inputs);
 
     /**
      * In-experiment accessor
