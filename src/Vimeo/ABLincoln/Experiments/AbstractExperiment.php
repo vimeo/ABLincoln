@@ -2,7 +2,7 @@
 
 namespace Vimeo\ABLincoln\Experiments;
 
-use Vimeo\ABLincoln\Assignment;
+use \Vimeo\ABLincoln\Assignment;
 
 /*
  * Abstract base class for experiments

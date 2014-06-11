@@ -1,6 +1,6 @@
 <?php
 
-use Vimeo\ABLincoln\Assignment;
+use \Vimeo\ABLincoln\Assignment;
 
 /**
  * PHPUnit Assignment test class
