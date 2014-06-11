@@ -152,4 +152,49 @@ class SimpleNamespace extends AbstractNamespace
     {
         $this->default_experiment = $this->default_experiment_class($this->inputs);
     }
+
+    public function inExperiment()
+    {
+        $this->requiresExperiment();
+        return $this->in_experiment;
+    }
+
+    public function get($name, $default = null)
+    {
+        $this->requiresExperiment();
+        if (!isset($this->experiment)) {
+            return $this->defaultGet($name, $default);
+        }
+        return $this->experiment->get($name, $this->defaultGet($name, $default));
+    }
+
+    public function defaultGet($name, $default = null)
+    {
+        $this->requiresDefaultExperiment();
+        return $this->default_experiment->get($name, $default);
+    }
+
+    public function setAutoExposureLogging($value)
+    {
+        $this->requiresExperiment();
+        if (isset($this->experiment)) {
+            $this->experiment->setAutoExposureLogging($value);
+        }
+    }
+
+    public function logExposure($extras = null)
+    {
+        $this->requiresExperiment();
+        if (isset($this->experiment)) {
+            $this->experiment->logExposure($extras);
+        }
+    }
+
+    public function logEvent($event_type, $extras = null)
+    {
+        $this->requiresExperiment();
+        if (isset($this->experiment)) {
+            $this->experiment->logEvent($event_type, $extras);
+        }
+    }
 }
