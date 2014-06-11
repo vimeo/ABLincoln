@@ -120,6 +120,26 @@ abstract class AbstractExperiment
     }
 
     /**
+     * In-experiment accessor
+     *
+     * @return boolean true if currently in experiment, false otherwise
+     */
+    public function inExperiment()
+    {
+        return $this->in_experiment;
+    }
+
+    /**
+     * In-experiment setter
+     *
+     * @param boolean $value true if currently in experiment, false otherwise
+     */
+    public function setInExperiment($value)
+    {
+        $this->in_experiment = $value;
+    }
+
+    /**
      * Get an array representation of the experiment data
      *
      * @param array $extras extra data to include in array
