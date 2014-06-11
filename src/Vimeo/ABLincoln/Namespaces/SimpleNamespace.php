@@ -12,11 +12,11 @@ class SimpleNamespace extends AbstractNamespace
     protected $inputs;
     protected $primary_unit;
     protected $num_segments;
-    protected $in_experiment;
     
     private $experiment;
     private $default_experiment;
     private $default_experiment_class;
+    private $in_experiment;
     private $current_experiments;
 
     private $available_segments;
@@ -104,7 +104,7 @@ class SimpleNamespace extends AbstractNamespace
         unset($this->current_experiments[$name]);
     }
 
-    public function getSegment()
+    private function getSegment()
     {
         $a = new Assignment($this->name);
         $a['segment'] = new RandomInteger(array(
@@ -115,21 +115,21 @@ class SimpleNamespace extends AbstractNamespace
         return $a['segment'];
     }
 
-    public function requiresExperiment()
+    protected function requiresExperiment()
     {
         if (!isset($this->experiment)) {
             $this->assignExperiment();
         }
     }
 
-    public function requiresDefaultExperiment()
+    protected function requiresDefaultExperiment()
     {
         if (!isset($this->default_experiment)) {
             $this->assignDefaultExperiment();
         }
     }
 
-    public function assignExperiment()
+    private function assignExperiment()
     {
         $segment = $this->getSegment();
 
@@ -148,7 +148,7 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
-    public function assignDefaultExperiment()
+    private function assignDefaultExperiment()
     {
         $this->default_experiment = $this->default_experiment_class($this->inputs);
     }
@@ -168,7 +168,7 @@ class SimpleNamespace extends AbstractNamespace
         return $this->experiment->get($name, $this->defaultGet($name, $default));
     }
 
-    public function defaultGet($name, $default = null)
+    private function defaultGet($name, $default = null)
     {
         $this->requiresDefaultExperiment();
         return $this->default_experiment->get($name, $default);
