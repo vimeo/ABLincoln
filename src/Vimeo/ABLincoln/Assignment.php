@@ -2,6 +2,8 @@
 
 namespace Vimeo\ABLincoln;
 
+use \Vimeo\ABLincoln\Operators\RandomOperator;
+
 /**
  * The Assignment class is essentially an array (and can be used like one),
  * but allows the execution of random operators using the names of variables
@@ -73,7 +75,7 @@ class Assignment implements \ArrayAccess
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
-             if ($value instanceof AbOpRandom) {
+             if ($value instanceof RandomOperator) {
                 if (!array_key_exists('salt', $value->args)) {
                     $value->args['salt'] = $offset;
                 }
@@ -84,7 +86,7 @@ class Assignment implements \ArrayAccess
             }
         }
         else {
-            if ($value instanceof AbOpRandom) {
+            if ($value instanceof RandomOperator) {
                 if (!array_key_exists('salt', $value->args)) {
                     $value->args['salt'] = $offset;
                 }
