@@ -36,8 +36,8 @@ class Sample extends RandomOperator
     protected function simpleExecute()
     {
         $choices = array();
-        foreach ($this->parameters['choices'] as $key) {
-            $choices[] = $key;
+        foreach ($this->parameters['choices'] as $key => $value) {
+            $choices[] = $value;
         }
         $num_choices = count($choices);
         $num_draws = isset($this->parameters['draws']) ? $this->parameters['draws']
@@ -48,5 +48,6 @@ class Sample extends RandomOperator
             $choices[i] = $choices[j];
             $choices[j] = $temp;
         }
+        return array_slice($choices, 0, $num_draws);
     }
 }
