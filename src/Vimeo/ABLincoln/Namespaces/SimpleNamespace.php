@@ -22,6 +22,11 @@ class SimpleNamespace extends AbstractNamespace
     private $available_segments;
     private $segment_allocations;
 
+    /**
+     * Set up attributes needed for the namespace
+     *
+     * @param array $inputs data to determine parameter assignments, e.g. userid
+     */
     public function __construct($inputs)
     {
         $this->inputs = $inputs;         // input data
@@ -46,20 +51,59 @@ class SimpleNamespace extends AbstractNamespace
         $this->setupExperiments();  // load namespace with experiments
     }
 
+    /**
+     * Set namespace attributes for run. Developers extending this class should
+     * set the following variables:
+     *     this->name = 'sample namespace';
+     *     this->primary_unit = 'userid';
+     *     this->num_segments = 10000;
+     */
     abstract protected function setup();
 
+    /**
+     * Setup experiments segments will be assigned to:
+     *     $this->addExperiment('first experiment', Exp1, 100);
+     */
     abstract protected function setupExperiments();
 
+    /**
+     * Get the primary unit that will be mapped to segments
+     *
+     * @return array array containing value(s) used for unit assignment
+     */
     public function primaryUnit()
     {
         return $this->primary_unit;
     }
 
+    /**
+     * Set the primary unit that will be used to map to segments
+     *
+     * @param mixed $value value or array used for unit assignment to segments
+     */
     public function setPrimaryUnit($value)
     {
         $unit = isArray($value) ? $value : array($value);
     }
 
+    /**
+     * In-experiment accessor
+     *
+     * @return boolean true if primary unit mapped to an experiment, false otherwise
+     */
+    public function inExperiment()
+    {
+        $this->requiresExperiment();
+        return $this->in_experiment;
+    }
+
+    /**
+     * Map a new experiment to a given number of segments in the namespace
+     *
+     * @param string $name name to give the new experiment
+     * @param string $exp_class string version of experiment class to instantiate
+     * @param int $num_segments number of segments to allocate to experiment
+     */
     public function addExperiment($name, $exp_class, $num_segments)
     {
         $num_available = count($this->available_segments);
@@ -88,6 +132,11 @@ class SimpleNamespace extends AbstractNamespace
         $this->current_experiments[$name] = $exp_class;
     }
 
+    /**
+     * Remove a given experiment from the namespace and free its associated segments
+     *
+     * @param string $name previously defined name of experiment to remove
+     */
     public function removeExperiment($name)
     {
         if (!array_key_exists($name, $this->current_experiments)) {
@@ -104,6 +153,11 @@ class SimpleNamespace extends AbstractNamespace
         unset($this->current_experiments[$name]);
     }
 
+    /**
+     * Use the primary unit value(s) to obtain a segment and associated experiment
+     *
+     * @return int the segment corresponding to the primary unit value(s)
+     */
     private function getSegment()
     {
         $a = new Assignment($this->name);
@@ -115,6 +169,10 @@ class SimpleNamespace extends AbstractNamespace
         return $a['segment'];
     }
 
+    /**
+     * Checks if primary unit segment is assigned to an experiment, 
+     * and if not assigns it to one
+     */
     protected function requiresExperiment()
     {
         if (!isset($this->experiment)) {
@@ -122,6 +180,10 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
+    /**
+     * Checks if primary unit segment is assigned to a default experiment,
+     * and if not assigns it to one
+     */
     protected function requiresDefaultExperiment()
     {
         if (!isset($this->default_experiment)) {
@@ -129,6 +191,10 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
+    /**
+     * Assigns the primary unit value(s) and associated segment to a new 
+     * experiment and updates the experiment name/salt accordingly
+     */
     private function assignExperiment()
     {
         $segment = $this->getSegment();
@@ -148,17 +214,22 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
+    /**
+     * Assigns the primary unit value(s) and associated segment to a new
+     * default experiment used if segment not assigned to a real one
+     */
     private function assignDefaultExperiment()
     {
-        $this->default_experiment = $this->default_experiment_class($this->inputs);
+        $this->default_experiment = new $this->default_experiment_class($this->inputs);
     }
 
-    public function inExperiment()
-    {
-        $this->requiresExperiment();
-        return $this->in_experiment;
-    }
-
+    /**
+     * Get the value of a given experiment parameter - triggers exposure log
+     *
+     * @param string $name parameter to get the value of
+     * @param string $default optional value to return if parameter undefined
+     * @return the value of the given parameter
+     */
     public function get($name, $default = null)
     {
         $this->requiresExperiment();
@@ -168,12 +239,25 @@ class SimpleNamespace extends AbstractNamespace
         return $this->experiment->get($name, $this->defaultGet($name, $default));
     }
 
+    /**
+     * Get the value of a given default experiment parameter. Called on get()
+     * if primary unit value(s) not mapped to a real experiment
+     *
+     * @param string $name parameter to get the value of
+     * @param string $default optional value to return if parameter undefined
+     * @return the value of the given parameter
+     */
     private function defaultGet($name, $default = null)
     {
         $this->requiresDefaultExperiment();
         return $this->default_experiment->get($name, $default);
     }
 
+    /**
+     * Disables / enables auto exposure logging (enabled by default)
+     *
+     * @param boolean $value true to enable, false to disable
+     */
     public function setAutoExposureLogging($value)
     {
         $this->requiresExperiment();
@@ -182,6 +266,11 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
+    /**
+     * Logs exposure to treatment
+     *
+     * @param array $extras optional extra data to include in exposure log
+     */
     public function logExposure($extras = null)
     {
         $this->requiresExperiment();
@@ -190,6 +279,12 @@ class SimpleNamespace extends AbstractNamespace
         }
     }
 
+    /**
+     * Log an arbitrary event
+     *
+     * @param string $eventType name of event to kig]
+     * @param array $extras optional extra data to include in log
+     */
     public function logEvent($event_type, $extras = null)
     {
         $this->requiresExperiment();
