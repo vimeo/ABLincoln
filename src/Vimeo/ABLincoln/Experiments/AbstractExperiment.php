@@ -140,26 +140,6 @@ abstract class AbstractExperiment
     }
 
     /**
-     * Get an array representation of the experiment data
-     *
-     * @param array $extras extra data to include in array
-     * @return array experiment data
-     */
-    protected function asBlob($extras = array())
-    {
-        $ret = array(
-            'name' => $this->name,
-            'time' => time(),
-            'salt' => $this->salt,
-            'inputs' => $this->inputs
-        );
-        foreach ($extras as $key => $val) {
-            $ret[$key] = $val;
-        }
-        return $ret;
-    }
-
-    /**
      * See whether the experiment has already been exposure logged
      *
      * @return boolean true if exposure logged, false otherwise
@@ -187,6 +167,26 @@ abstract class AbstractExperiment
     public function setAutoExposureLogging($value)
     {
         $this->auto_exposure_log = $value;
+    }
+
+    /**
+     * Get an array representation of the experiment data
+     *
+     * @param array $extras extra data to include in array
+     * @return array experiment data
+     */
+    protected function asBlob($extras = array())
+    {
+        $ret = array(
+            'name' => $this->name,
+            'time' => time(),
+            'salt' => $this->salt,
+            'inputs' => $this->inputs
+        );
+        foreach ($extras as $key => $val) {
+            $ret[$key] = $val;
+        }
+        return $ret;
     }
 
     /**
