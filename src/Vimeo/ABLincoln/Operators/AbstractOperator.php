@@ -10,7 +10,8 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class AbstractOperator
 {
-    protected $args;
+    public $args;
+    
     protected $parameters;
     protected $mapper;
 
