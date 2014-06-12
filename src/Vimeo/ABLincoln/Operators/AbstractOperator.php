@@ -10,8 +10,7 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class AbstractOperator
 {
-    public $args;
-    
+    protected $args;
     protected $parameters;
     protected $mapper;
 
@@ -48,6 +47,27 @@ abstract class AbstractOperator
      * @return mixed the evaluated expression
      */
     abstract protected function simpleExecute();
+
+    /**
+     * Argument accessor
+     *
+     * @return array operator arguments
+     */
+    public function args()
+    {
+        return $this->args;
+    }
+
+    /**
+     * Argument setter
+     *
+     * @param mixed $key name of argument to set
+     * @param mixed $value value to set argument
+     */
+    public function setArg($key, $value)
+    {
+        $this->args[$key] = $value;
+    }
 
     /**
      * All operators must specify required and optional arguments to be used in
