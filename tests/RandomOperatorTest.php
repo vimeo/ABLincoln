@@ -47,6 +47,40 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Make sure an experiment object generates the desired frequencies
+     *
+     * @param function $func experiment object helper method
+     * @param array $value_mass array containing values and their respective frequencies
+     * @param int $N total number of outcomes
+     */
+    private function listDistributionTester($func, $value_mass, $N = 1000)
+    {
+        // run and store the results of $N trials of $func() with input $i
+        $values = array();
+        for ($i = 0; $i < $N; $i++) {
+            $values[] = call_user_func($func, $i);
+        }
+        $value_density = self::valueMassToDensity($value_mass);
+
+        // transpose values array
+        $rows = $N;
+        $cols = count($values[0]);
+        $values_trans = array();
+        for ($i = 0; $i < $rows; $i++) {
+            for ($j = 0; $j < $cols; $j++) {
+                $values_trans[$j][$i] = $values[$i][$j];
+            }
+        }
+
+        // test outcome frequencies against expected density. each $list is a 
+        // row of the transpose of $values, and is expected to have the same
+        // distribution as $value_density
+        foreach ($values_trans as $key => $list) {
+            $this->assertProbs($list, $value_density, floatval($N));
+        }
+    }
+
+    /**
      * Check that a list of values has roughly the expected density
      *
      * @param array $values array containing all operator values
@@ -56,7 +90,6 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private function assertProbs($values, $expected_density, $N)
     {
         $hist = array_count_values($values);
-        print_r($hist);
         foreach ($hist as $value => $value_sum) {
             $this->assertProp($value_sum / $N, $expected_density[$value], $N);
         }
@@ -117,6 +150,19 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         WeightedHelper::setArgs(array('choices' => array('a', 'b', 'c'), 'weights' => $w));
         $this->distributionTester('WeightedHelper::execute', $w);
     }
+
+    /**
+     * Test Sample random operator
+     */
+    public function testSample()
+    {
+        SampleHelper::setArgs(array('choices' => array(1, 2, 3), 'draws' => 3));
+        $this->listDistributionTester('SampleHelper::execute', array(1 => 1, 2 => 1, 3 => 1));
+        SampleHelper::setArgs(array('choices' => array(1, 2, 3), 'draws' => 2));
+        $this->listDistributionTester('SampleHelper::execute', array(1 => 1, 2 => 1, 3 => 1));
+        SampleHelper::setArgs(array('choices' => array('a', 'a', 'b'), 'draws' => 3));
+        $this->listDistributionTester('SampleHelper::execute', array('a' => 2, 'b' => 1));
+    }
 }
 
 abstract class TestHelper
@@ -163,6 +209,20 @@ class WeightedHelper extends TestHelper
         $a['x'] = new Random\WeightedChoice(array(
             'choices' => self::$args['choices'],
             'weights' => self::$args['weights'],
+            'unit' => $i
+        ));
+        return $a['x'];
+    }
+}
+
+class SampleHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $a = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
+        $a['x'] = new Random\Sample(array(
+            'choices' => self::$args['choices'],
+            'draws' => self::$args['draws'],
             'unit' => $i
         ));
         return $a['x'];
