@@ -183,10 +183,7 @@ abstract class AbstractExperiment
             'salt' => $this->salt,
             'inputs' => $this->inputs
         );
-        foreach ($extras as $key => $val) {
-            $ret[$key] = $val;
-        }
-        return $ret;
+        return array_merge($ret, $extras);
     }
 
     /**
