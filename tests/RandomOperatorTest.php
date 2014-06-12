@@ -101,6 +101,22 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         UniformHelper::setArgs(array('choices' => array(1, 2, 3, 4)));
         $this->distributionTester('UniformHelper::execute', array(1 => 1, 2 => 1, 3 => 1, 4 => 1));
     }
+
+    /**
+     * Test WeightedChoice random operator
+     */
+    public function testWeightedChoice()
+    {
+        $w = array('a' => 1);
+        WeightedHelper::setArgs(array('choices' => array('a'), 'weights' => $w));
+        $this->distributionTester('WeightedHelper::execute', $w);
+        $w = array('a' => 1, 'b' => 2);
+        WeightedHelper::setArgs(array('choices' => array('a', 'b'), 'weights' => $w));
+        $this->distributionTester('WeightedHelper::execute', $w);
+        $w = array('a' => 0, 'b' => 2, 'c' => 0);
+        WeightedHelper::setArgs(array('choices' => array('a', 'b', 'c'), 'weights' => $w));
+        $this->distributionTester('WeightedHelper::execute', $w);
+    }
 }
 
 abstract class TestHelper
@@ -130,9 +146,23 @@ class UniformHelper extends TestHelper
 {
     public static function execute($i)
     {
-        $a = new Assignment(implode(',', array_map('strval', self::$args)));
+        $a = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
         $a['x'] = new Random\UniformChoice(array(
             'choices' => self::$args['choices'],
+            'unit' => $i
+        ));
+        return $a['x'];
+    }
+}
+
+class WeightedHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $a = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
+        $a['x'] = new Random\WeightedChoice(array(
+            'choices' => self::$args['choices'],
+            'weights' => self::$args['weights'],
             'unit' => $i
         ));
         return $a['x'];
