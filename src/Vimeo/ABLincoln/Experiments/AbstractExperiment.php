@@ -23,7 +23,7 @@ abstract class AbstractExperiment
     /**
      * Set up attributes needed for experiment
      *
-     * @param array $inputs input data to determine parameter assignments, e.g. userid
+     * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
      */
     public function __construct($inputs)
     {
@@ -177,11 +177,13 @@ abstract class AbstractExperiment
      */
     protected function asBlob($extras = array())
     {
+        requiresAssignment();
         $ret = array(
             'name' => $this->name,
             'time' => time(),
             'salt' => $this->salt,
-            'inputs' => $this->inputs
+            'inputs' => $this->inputs,
+            'params' => $this->assignment->asArray();
         );
         return array_merge($ret, $extras);
     }

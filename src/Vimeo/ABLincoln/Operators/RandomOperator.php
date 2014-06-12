@@ -12,33 +12,30 @@ abstract class RandomOperator extends AbstractOperator
     /**
      * Constructor: store given parameters and establish scale for hashing
      *
-     * @param array $parameters array mapping operator parameters to values
+     * @param array $options array mapping operator options to values
+     * @param mixed $inputs input value/array used for hashing
      */
-    public function __construct($parameters)
+    public function __construct($options, $inputs)
     {
-        parent::__construct($parameters);
+        parent::__construct($options, $inputs);
         $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
     }
 
     /**
-     * All random operators require a unit to hash on and an optional salt
+     * All random operators take an optional salt that replaces the parameter
+     * name for hashing if it is set
      *
      * @return array the array of required parameters
      */
     public function options()
     {
         return array(
-            'unit' => array(
-                'required' => 1,
-                'description' => 'unit to hash on'
-            ),
             'salt' => array(
                 'required' => 0,
                 'description' => 'salt for hash. should generally be unique for each random variable. if not specified parameter name is used'
             )
         );
     }
-
 
     /**
      * Format all units into an array before hashing
