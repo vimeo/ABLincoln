@@ -56,7 +56,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private function assertProbs($values, $expected_density, $N)
     {
         $hist = array_count_values($values);
-        var_dump($hist);
+        print_r($hist);
         foreach ($hist as $value => $value_sum) {
             $this->assertProp($value_sum / $N, $expected_density[$value], $N);
         }
@@ -81,34 +81,60 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testBernoulli()
     {
-        BernoulliHelper::setP(0.0);
+        BernoulliHelper::setArgs(array('p' => 0.0));
         $this->distributionTester('BernoulliHelper::execute', array(0 => 1, 1 => 0));
-        BernoulliHelper::setP(0.1);
+        BernoulliHelper::setArgs(array('p' => 0.1));
         $this->distributionTester('BernoulliHelper::execute', array(0 => 0.9, 1 => 0.1));
-        BernoulliHelper::setP(1.0);
+        BernoulliHelper::setArgs(array('p' => 1.0));
         $this->distributionTester('BernoulliHelper::execute', array(0 => 0, 1 => 1));
+    }
+
+    /**
+     * Test UniformChoice random operator
+     */
+    public function testUniformChoice()
+    {
+        UniformHelper::setArgs(array('choices' => array('a')));
+        $this->distributionTester('UniformHelper::execute', array('a' => 1));
+        UniformHelper::setArgs(array('choices' => array('a', 'b')));
+        $this->distributionTester('UniformHelper::execute', array('a' => 1, 'b' => 1));
+        UniformHelper::setArgs(array('choices' => array(1, 2, 3, 4)));
+        $this->distributionTester('UniformHelper::execute', array(1 => 1, 2 => 1, 3 => 1, 4 => 1));
     }
 }
 
-class BernoulliHelper {
-    private static $p;
-    public static function setP($p) {
-        self::$p = $p;
+abstract class TestHelper
+{
+    protected static $args;
+    public static function setArgs($args)
+    {
+        self::$args = $args;
     }
-    public static function execute($i) {
-        $a = new Assignment(self::$p);
-        $a['x'] = new Random\BernoulliTrial(array('p' => self::$p, 'unit' => $i));
+    abstract public static function execute($i);
+}
+
+class BernoulliHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $a = new Assignment(self::$args['p']);
+        $a['x'] = new Random\BernoulliTrial(array(
+            'p' => self::$args['p'],
+            'unit' => $i
+        ));
         return $a['x'];
     }
 }
 
-
-
-
-
-
-
-
-
-
-
+class UniformHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $a = new Assignment(implode(',', array_map('strval', self::$args)));
+        $a['x'] = new Random\UniformChoice(array(
+            'choices' => self::$args['choices'],
+            'unit' => $i
+        ));
+        return $a['x'];
+    }
+}
