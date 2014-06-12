@@ -110,6 +110,45 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test RandomFloat random operator
+     */
+    public function testFloat()
+    {
+        $N = 5;
+        $min = 0; $max = 1;
+        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        for ($i = 0; $i < $N; $i++) {
+            $f = FloatHelper::execute($i);
+            $this->assertTrue($min <= $f && $f <= $max);
+        }
+        $min = 5; $max = 7;
+        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        for ($i = 0; $i < $N; $i++) {
+            $f = FloatHelper::execute($i);
+            $this->assertTrue($min <= $f && $f <= $max);
+        }
+        $min = 2; $max = 2;
+        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        for ($i = 0; $i < $N; $i++) {
+            $f = FloatHelper::execute($i);
+            $this->assertTrue($min <= $f && $f <= $max);
+        }
+    }
+
+    /**
+     * Test RandomInteger random operator
+     */
+    public function testInteger()
+    {
+        IntegerHelper::setArgs(array('min' => 0, 'max' => 1));
+        $this->distributionTester('IntegerHelper::execute', array(0 => 1, 1 => 1));
+        IntegerHelper::setArgs(array('min' => 5, 'max' => 7));
+        $this->distributionTester('IntegerHelper::execute', array(5 => 1, 6 => 1, 7 => 1));
+        IntegerHelper::setArgs(array('min' => 2, 'max' => 2));
+        $this->distributionTester('IntegerHelper::execute', array(2 => 1));
+    }
+
+    /**
      * Test BernoulliTrial random operator
      */
     public function testBernoulli()
@@ -173,6 +212,36 @@ abstract class TestHelper
         self::$args = $args;
     }
     abstract public static function execute($i);
+}
+
+class FloatHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
+        $a = new Assignment($exp_salt);
+        $a['x'] = new Random\RandomFloat(array(
+            'min' => self::$args['min'],
+            'max' => self::$args['max'],
+            'unit' => $i
+        ));
+        return $a['x'];
+    }
+}
+
+class IntegerHelper extends TestHelper
+{
+    public static function execute($i)
+    {
+        $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
+        $a = new Assignment($exp_salt);
+        $a['x'] = new Random\RandomInteger(array(
+            'min' => self::$args['min'],
+            'max' => self::$args['max'],
+            'unit' => $i
+        ));
+        return $a['x'];
+    }
 }
 
 class BernoulliHelper extends TestHelper
