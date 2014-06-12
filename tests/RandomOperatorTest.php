@@ -1,5 +1,6 @@
 <?php
 
+use \Vimeo\ABLincoln\Assignment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
 /**
@@ -37,7 +38,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         // run and store the results of $N trials of $func() with input $i
         $values = array();
         for ($i = 0; $i < $N; $i++) {
-            $values[] = $func($i);
+            $values[] = call_user_func($func, $i);
         }
         $value_density = self::valueMassToDensity($value_mass);
 
@@ -55,6 +56,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private function assertProbs($values, $expected_density, $N)
     {
         $hist = array_count_values($values);
+        var_dump($hist);
         foreach ($hist as $value => $value_sum) {
             $this->assertProp($value_sum / $N, $expected_density[$value], $N);
         }
@@ -73,4 +75,40 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         $se = self::Z * sqrt($expected_p * (1 - $expected_p) / $N);
         $this->assertTrue(abs($observed_p - $expected_p) <= $se);
     }
+
+    /**
+     * Test BernoulliTrial random operator
+     */
+    public function testBernoulli()
+    {
+        BernoulliHelper::setP(0.0);
+        $this->distributionTester('BernoulliHelper::execute', array(0 => 1, 1 => 0));
+        BernoulliHelper::setP(0.1);
+        $this->distributionTester('BernoulliHelper::execute', array(0 => 0.9, 1 => 0.1));
+        BernoulliHelper::setP(1.0);
+        $this->distributionTester('BernoulliHelper::execute', array(0 => 0, 1 => 1));
+    }
 }
+
+class BernoulliHelper {
+    private static $p;
+    public static function setP($p) {
+        self::$p = $p;
+    }
+    public static function execute($i) {
+        $a = new Assignment(self::$p);
+        $a['x'] = new Random\BernoulliTrial(array('p' => self::$p, 'unit' => $i));
+        return $a['x'];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
