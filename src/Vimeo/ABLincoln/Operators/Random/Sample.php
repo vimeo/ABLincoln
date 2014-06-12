@@ -44,9 +44,9 @@ class Sample extends RandomOperator
                                                        : $num_choices;
         for ($i = $num_choices - 1; $i > 0; $i--) {
             $j = $this->getHash($i) % ($i + 1);
-            $temp = $choices[i];
-            $choices[i] = $choices[j];
-            $choices[j] = $temp;
+            $temp = $choices[$i];
+            $choices[$i] = $choices[$j];
+            $choices[$j] = $temp;
         }
         return array_slice($choices, 0, $num_draws);
     }

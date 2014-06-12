@@ -76,8 +76,8 @@ class Assignment implements \ArrayAccess
     {
         if (is_null($offset)) {
              if ($value instanceof RandomOperator) {
-                if (!array_key_exists('salt', $value->args)) {
-                    $value->args['salt'] = $offset;
+                if (!array_key_exists('salt', $value->args())) {
+                    $value->setArg('salt', $offset);
                 }
                 $this->data[] = $value->execute($this);
             }
@@ -87,8 +87,8 @@ class Assignment implements \ArrayAccess
         }
         else {
             if ($value instanceof RandomOperator) {
-                if (!array_key_exists('salt', $value->args)) {
-                    $value->args['salt'] = $offset;
+                if (!array_key_exists('salt', $value->args())) {
+                    $value->setArg('salt', $offset);
                 }
                 $this->data[$offset] = $value->execute($this);
             }

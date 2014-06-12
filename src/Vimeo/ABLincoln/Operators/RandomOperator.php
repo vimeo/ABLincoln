@@ -5,7 +5,7 @@ namespace Vimeo\ABLincoln\Operators;
 /**
  * Base class for random operators.
  */
-class RandomOperator extends AbstractOperator
+abstract class RandomOperator extends AbstractOperator
 {
     private $long_scale;
 
@@ -55,7 +55,7 @@ class RandomOperator extends AbstractOperator
         if (!is_null($appended_unit)) {
             $unit[] = $appended_unit;
         }
-        return unit;
+        return $unit;
     }
 
     /**
