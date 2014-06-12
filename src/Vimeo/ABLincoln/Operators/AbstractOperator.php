@@ -10,18 +10,21 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class AbstractOperator
 {
-    protected $args;
     protected $parameters;
     protected $mapper;
+
+    private $args;
 
     /**
      * Store the set of parameters to use as required and optional arguments
      *
-     * @param array $args array mapping operator parameters to values
+     * @param array $options array mapping operator options to values
+     * @param mixed $inputs input value/array used for hashing
      */
-    public function __construct($args)
+    public function __construct($options, $inputs)
     {
-        $this->args = $args;
+        $this->args = $options;
+        $this->args['unit'] = $inputs;
     }
 
     /**
@@ -49,25 +52,25 @@ abstract class AbstractOperator
     abstract protected function simpleExecute();
 
     /**
-     * Argument accessor
-     *
-     * @return array operator arguments
-     */
-    public function args()
-    {
-        return $this->args;
-    }
-
-    /**
-     * Argument setter
-     *
-     * @param mixed $key name of argument to set
-     * @param mixed $value value to set argument
-     */
-    public function setArg($key, $value)
-    {
-        $this->args[$key] = $value;
-    }
+      * Argument accessor
+      *
+      * @return array operator arguments
+      */
+     public function args()
+     {
+         return $this->args;
+     }
+ 
+     /**
+      * Argument setter
+      *
+      * @param mixed $key name of argument to set
+      * @param mixed $value value to set argument
+      */
+     public function setArg($key, $value)
+     {
+         $this->args[$key] = $value;
+     }
 
     /**
      * All operators must specify required and optional arguments to be used in
