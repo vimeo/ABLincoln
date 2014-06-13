@@ -64,7 +64,7 @@ class Assignment implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        if ($offset === 'experiment_salt')) {
+        if ($offset === 'experiment_salt') {
             return $this->experiment_salt;
         }
         return isset($this->data[$offset]) ? $this->data[$offset] : null;

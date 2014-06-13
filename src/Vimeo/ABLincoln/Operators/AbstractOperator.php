@@ -95,7 +95,7 @@ abstract class AbstractOperator
      */
     public function getOptions()
     {
-        if (!strcmp(get_class($this), get_class())) {
+        if (get_class($this) === get_class()) {
             return array();
         }
         $instance_ops = options();
