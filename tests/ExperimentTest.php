@@ -35,12 +35,12 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
 
 class TestVanillaExperiment extends AbstractExperiment
 {
-    protected function setup()
+    protected function _setup()
     {
-        $this->name = 'test_name';
+        $this->_name = 'test_name';
     }
 
-    protected function assign($params, $inputs)
+    protected function _assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array('a', 'b')),
@@ -48,14 +48,14 @@ class TestVanillaExperiment extends AbstractExperiment
         );
     }
 
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return false;
     }
 
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
-    protected function log($data)
+    protected function _log($data)
     {
         ExperimentTest::$log[] = $data;
     }

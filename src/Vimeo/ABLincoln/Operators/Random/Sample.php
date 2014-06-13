@@ -33,17 +33,17 @@ class Sample extends RandomOperator
      *
      * @return array the random sample select from the parameter array
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $choices = array();
-        foreach ($this->parameters['choices'] as $key => $value) {
+        foreach ($this->_parameters['choices'] as $key => $value) {
             $choices[] = $value;
         }
         $num_choices = count($choices);
-        $num_draws = isset($this->parameters['draws']) ? $this->parameters['draws']
-                                                       : $num_choices;
+        $num_draws = isset($this->_parameters['draws']) ? $this->_parameters['draws']
+                                                        : $num_choices;
         for ($i = $num_choices - 1; $i > 0; $i--) {
-            $j = $this->getHash($i) % ($i + 1);
+            $j = $this->_getHash($i) % ($i + 1);
             $temp = $choices[$i];
             $choices[$i] = $choices[$j];
             $choices[$j] = $temp;

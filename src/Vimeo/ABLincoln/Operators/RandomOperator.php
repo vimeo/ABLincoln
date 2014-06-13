@@ -7,7 +7,7 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class RandomOperator extends AbstractOperator
 {
-    private $long_scale;
+    private $_long_scale;
 
     /**
      * Constructor: store given parameters and establish scale for hashing
@@ -18,7 +18,7 @@ abstract class RandomOperator extends AbstractOperator
     public function __construct($options, $inputs)
     {
         parent::__construct($options, $inputs);
-        $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
+        $this->_long_scale = floatval(0xFFFFFFFFFFFFFFF);
     }
 
     /**
@@ -43,9 +43,9 @@ abstract class RandomOperator extends AbstractOperator
      * @param mixed $appended_unit optional extra unit used for hashing
      * @return array array of units used for hashing
      */
-    private function getUnit($appended_unit = null)
+    private function _getUnit($appended_unit = null)
     {
-        $unit = $this->parameters['unit'];
+        $unit = $this->_parameters['unit'];
         if (!is_array($unit)) {
             $unit = array($unit);
         }
@@ -61,11 +61,11 @@ abstract class RandomOperator extends AbstractOperator
      * @param mixed $appended_unit optional extra unit used for hashing
      * @return int decimal representation of computed SHA1 hash
      */
-    protected function getHash($appended_unit = null)
+    protected function _getHash($appended_unit = null)
     {
-        $salt = $this->parameters['salt'];
-        $salty = $this->mapper['experiment_salt'] . '.' . $salt;
-        $unit_str_arr = array_map('strval', $this->getUnit($appended_unit));
+        $salt = $this->_parameters['salt'];
+        $salty = $this->_mapper['experiment_salt'] . '.' . $salt;
+        $unit_str_arr = array_map('strval', $this->_getUnit($appended_unit));
         $unit_str = implode('.', $unit_str_arr);
         return hexdec(substr(sha1($salty . '.' . $unit_str), 0, 15));
     }
@@ -77,10 +77,10 @@ abstract class RandomOperator extends AbstractOperator
      * @param float $max_value end value for random number range
      * @return float random number between the two provided values
      */
-    protected function getUniform($min_val = 0.0, $max_val = 1.0,
+    protected function _getUniform($min_val = 0.0, $max_val = 1.0,
                                   $appended_unit = null)
     {
-        $zero_to_one = $this->getHash($appended_unit) / $this->long_scale;
+        $zero_to_one = $this->_getHash($appended_unit) / $this->_long_scale;
         return $min_val + $zero_to_one * ($max_val - $min_val);
     }
 }

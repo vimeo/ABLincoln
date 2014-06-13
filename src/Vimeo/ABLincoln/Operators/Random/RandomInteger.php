@@ -33,10 +33,10 @@ class RandomInteger extends RandomOperator
      *
      * @return int the calculated random integer
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
-        $min_val = $this->parameters['min'];
-        $max_val = $this->parameters['max'];
-        return $min_val + $this->getHash() % ($max_val - $min_val + 1);
+        $min_val = $this->_parameters['min'];
+        $max_val = $this->_parameters['max'];
+        return $min_val + $this->_getHash() % ($max_val - $min_val + 1);
     }
 }

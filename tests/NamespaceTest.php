@@ -22,7 +22,7 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
             array('userid' => $userid1, 'username' => $username1)
         );
         $foo = $namespace->get('foo');
-        $this->assertEquals($foo, 1);
+        $this->assertEquals($foo, 3);
         $this->assertEquals(count(self::$log), 1);
 
         $namespace = new TestVanillaNamespace(
@@ -40,14 +40,14 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
 
 class TestVanillaNamespace extends SimpleNamespace
 {
-    protected function setup()
+    protected function _setup()
     {
-        $this->name = 'namespace_demo';
-        $this->primary_unit = 'userid';
-        $this->num_segments = 1000;
+        $this->_name = 'namespace_demo';
+        $this->_primary_unit = 'userid';
+        $this->_num_segments = 1000;
     }
 
-    protected function setupExperiments()
+    protected function _setupExperiments()
     {
         $this->addExperiment('first', 'TestVanillaExperiment', 300);
         $this->addExperiment('second', 'TestVanillaExperiment2', 700);
@@ -56,12 +56,12 @@ class TestVanillaNamespace extends SimpleNamespace
 
 class TestVanillaExperiment extends AbstractExperiment
 {
-    protected function setup()
+    protected function _setup()
     {
-        $this->name = 'test_name';
+        $this->_name = 'test_name';
     }
 
-    protected function assign($params, $inputs)
+    protected function _assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array('a', 'b')),
@@ -69,14 +69,14 @@ class TestVanillaExperiment extends AbstractExperiment
         );
     }
 
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return false;
     }
 
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
-    protected function log($data)
+    protected function _log($data)
     {
         NamespaceTest::$log[] = $data;
     }
@@ -84,12 +84,12 @@ class TestVanillaExperiment extends AbstractExperiment
 
 class TestVanillaExperiment2 extends TestVanillaExperiment
 {
-    protected function setup()
+    protected function _setup()
     {
         $this->name = 'test2_name';
     }
 
-    protected function assign($params, $inputs)
+    protected function _assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array(1, 2, 3)),

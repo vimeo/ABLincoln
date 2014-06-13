@@ -7,19 +7,19 @@ use \Vimeo\ABLincoln\Operators\Random as Random;
 
 abstract class SimpleNamespace extends AbstractNamespace
 {
-    protected $name;
-    protected $inputs;
-    protected $primary_unit;
-    protected $num_segments;
+    protected $_name;
+    protected $_inputs;
+    protected $_primary_unit;
+    protected $_num_segments;
     
-    private $experiment;
-    private $default_experiment;
-    private $default_experiment_class;
-    private $in_experiment;
-    private $current_experiments;
+    private $_experiment;
+    private $_default_experiment;
+    private $_default_experiment_class;
+    private $_in_experiment;
+    private $_current_experiments;
 
-    private $available_segments;
-    private $segment_allocations;
+    private $_available_segments;
+    private $_segment_allocations;
 
     /**
      * Set up attributes needed for the namespace
@@ -28,26 +28,26 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function __construct($inputs)
     {
-        $this->inputs = $inputs;         // input data
-        $this->name = get_class($this);  // use class name as default name
-        $this->num_segments = null;      // num_segments set in setup()
-        $this->in_experiment = false;    // not in experiment until unit assigned
+        $this->_inputs = $inputs;         // input data
+        $this->_name = get_class($this);  // use class name as default name
+        $this->_num_segments = null;      // num_segments set in setup()
+        $this->_in_experiment = false;    // not in experiment until unit assigned
 
         // array mapping segments to experiment names
-        $this->segment_allocations = array();
+        $this->_segment_allocations = array();
 
         // array mapping experiment names to experiment objects
-        $this->current_experiments = array();
+        $this->_current_experiments = array();
 
-        $this->experiment = null;          // memoized experiment object
-        $this->default_experiment = null;  // memoized default experiment object
-        $this->default_experiment_class = 'Vimeo\ABLincoln\Experiments\DefaultExperiment';
+        $this->_experiment = null;          // memoized experiment object
+        $this->_default_experiment = null;  // memoized default experiment object
+        $this->_default_experiment_class = 'Vimeo\ABLincoln\Experiments\DefaultExperiment';
 
         // setup name, primary key, number of segments, etc
-        $this->setup();
-        $this->available_segments = range(0, $this->num_segments - 1);
+        $this->_setup();
+        $this->_available_segments = range(0, $this->_num_segments - 1);
         
-        $this->setupExperiments();  // load namespace with experiments
+        $this->_setupExperiments();  // load namespace with experiments
     }
 
     /**
@@ -57,13 +57,13 @@ abstract class SimpleNamespace extends AbstractNamespace
      *     this->primary_unit = 'userid';
      *     this->num_segments = 10000;
      */
-    abstract protected function setup();
+    abstract protected function _setup();
 
     /**
      * Setup experiments segments will be assigned to:
      *     $this->addExperiment('first experiment', Exp1, 100);
      */
-    abstract protected function setupExperiments();
+    abstract protected function _setupExperiments();
 
     /**
      * Get the primary unit that will be mapped to segments
@@ -72,7 +72,7 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function primaryUnit()
     {
-        return $this->primary_unit;
+        return $this->_primary_unit;
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function setPrimaryUnit($value)
     {
-        $unit = isArray($value) ? $value : array($value);
+        $unit = is_array($value) ? $value : array($value);
     }
 
     /**
@@ -92,8 +92,8 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function inExperiment()
     {
-        $this->requiresExperiment();
-        return $this->in_experiment;
+        $this->_requiresExperiment();
+        return $this->_in_experiment;
     }
 
     /**
@@ -105,29 +105,29 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function addExperiment($name, $exp_class, $num_segments)
     {
-        $num_available = count($this->available_segments);
+        $num_available = count($this->_available_segments);
         if ($num_available < $num_segments) {
             return;  // more segments requested than available, exit
         }
-        if (array_key_exists($name, $this->current_experiments)) {
+        if (array_key_exists($name, $this->_current_experiments)) {
             return;  // experiment name collision, exit
         }
 
         // randomly select the given numer of segments from all available options
-        $assignment = new Assignment($this->name);
+        $assignment = new Assignment($this->_name);
         $assignment['sampled_segments'] = new Random\Sample(
-            array('choices' => $this->available_segments, 'draws' => $num_segments),
+            array('choices' => $this->_available_segments, 'draws' => $num_segments),
             array('unit' => $name)
         );
 
         // assign each segment to the experiment name
         foreach ($assignment['sampled_segments'] as $key => $segment) {
-            $this->segment_allocations[$segment] = $name;
-            unset($this->available_segments[$segment]);
+            $this->_segment_allocations[$segment] = $name;
+            unset($this->_available_segments[$segment]);
         }
 
         // associate the experiment name with a class to instantiate
-        $this->current_experiments[$name] = $exp_class;
+        $this->_current_experiments[$name] = $exp_class;
     }
 
     /**
@@ -137,23 +137,23 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function removeExperiment($name)
     {
-        if (!array_key_exists($name, $this->current_experiments)) {
+        if (!array_key_exists($name, $this->_current_experiments)) {
             return;  // given experiment not currently running
         }
 
         // make segments available for allocation again, remove experiment name
-        foreach ($this->segment_allocations as $segment => $exp_name) {
+        foreach ($this->_segment_allocations as $segment => $exp_name) {
             if ($exp_name === $name) {
-                unset($this->segment_allocations[$segment]);
-                $this->available_segments[$segment] = $segment;
+                unset($this->_segment_allocations[$segment]);
+                $this->_available_segments[$segment] = $segment;
             }
         }
-        unset($this->current_experiments[$name]);
+        unset($this->_current_experiments[$name]);
 
         // currently assigned experiment just deleted!
-        if ($this->experiment->name() === $this->name . '-' . $name) {
-            $this->experiment = null;
-            $this->in_experiment = false;
+        if ($this->_experiment->name() === $this->_name . '-' . $name) {
+            $this->_experiment = null;
+            $this->_in_experiment = false;
         }
     }
 
@@ -162,12 +162,12 @@ abstract class SimpleNamespace extends AbstractNamespace
      *
      * @return int the segment corresponding to the primary unit value(s)
      */
-    private function getSegment()
+    private function _getSegment()
     {
-        $assignment = new Assignment($this->name);
+        $assignment = new Assignment($this->_name);
         $assignment['segment'] = new Random\RandomInteger(
-            array('min' => 0, 'max' => $this->num_segments - 1),
-            array('unit' => $this->inputs[$this->primary_unit])
+            array('min' => 0, 'max' => $this->_num_segments - 1),
+            array('unit' => $this->_inputs[$this->_primary_unit])
         );
         return $assignment['segment'];
     }
@@ -176,10 +176,10 @@ abstract class SimpleNamespace extends AbstractNamespace
      * Checks if primary unit segment is assigned to an experiment, 
      * and if not assigns it to one
      */
-    protected function requiresExperiment()
+    protected function _requiresExperiment()
     {
-        if (!isset($this->experiment)) {
-            $this->assignExperiment();
+        if (!isset($this->_experiment)) {
+            $this->_assignExperiment();
         }
     }
 
@@ -187,10 +187,10 @@ abstract class SimpleNamespace extends AbstractNamespace
      * Checks if primary unit segment is assigned to a default experiment,
      * and if not assigns it to one
      */
-    protected function requiresDefaultExperiment()
+    protected function _requiresDefaultExperiment()
     {
         if (!isset($this->default_experiment)) {
-            $this->assignDefaultExperiment();
+            $this->_assignDefaultExperiment();
         }
     }
 
@@ -198,22 +198,22 @@ abstract class SimpleNamespace extends AbstractNamespace
      * Assigns the primary unit value(s) and associated segment to a new 
      * experiment and updates the experiment name/salt accordingly
      */
-    private function assignExperiment()
+    private function _assignExperiment()
     {
-        $segment = $this->getSegment();
+        $segment = $this->_getSegment();
 
         // is the unit allocated to an experiment?
-        if (array_key_exists($segment, $this->segment_allocations)) {
-            $exp_name = $this->segment_allocations[$segment];
-            $experiment = new $this->current_experiments[$exp_name]($this->inputs);
-            $experiment->setName($this->name . '-' . $exp_name);
-            $experiment->setSalt($this->name . '.' . $exp_name);
-            $this->experiment = $experiment;
-            $this->in_experiment = $experiment->inExperiment();
+        if (array_key_exists($segment, $this->_segment_allocations)) {
+            $exp_name = $this->_segment_allocations[$segment];
+            $experiment = new $this->_current_experiments[$exp_name]($this->_inputs);
+            $experiment->setName($this->_name . '-' . $exp_name);
+            $experiment->setSalt($this->_name . '.' . $exp_name);
+            $this->_experiment = $experiment;
+            $this->_in_experiment = $experiment->inExperiment();
         }
         else {
-            $this->assignDefaultExperiment();
-            $this->in_experiment = false;
+            $this->_assignDefaultExperiment();
+            $this->_in_experiment = false;
         }
     }
 
@@ -221,9 +221,9 @@ abstract class SimpleNamespace extends AbstractNamespace
      * Assigns the primary unit value(s) and associated segment to a new
      * default experiment used if segment not assigned to a real one
      */
-    private function assignDefaultExperiment()
+    private function _assignDefaultExperiment()
     {
-        $this->default_experiment = new $this->default_experiment_class($this->inputs);
+        $this->_default_experiment = new $this->_default_experiment_class($this->_inputs);
     }
 
     /**
@@ -235,11 +235,11 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function get($name, $default = null)
     {
-        $this->requiresExperiment();
-        if (!isset($this->experiment)) {
-            return $this->defaultGet($name, $default);
+        $this->_requiresExperiment();
+        if (!isset($this->_experiment)) {
+            return $this->_defaultGet($name, $default);
         }
-        return $this->experiment->get($name, $this->defaultGet($name, $default));
+        return $this->_experiment->get($name, $this->_defaultGet($name, $default));
     }
 
     /**
@@ -250,10 +250,10 @@ abstract class SimpleNamespace extends AbstractNamespace
      * @param string $default optional value to return if parameter undefined
      * @return the value of the given parameter
      */
-    private function defaultGet($name, $default = null)
+    private function _defaultGet($name, $default = null)
     {
-        $this->requiresDefaultExperiment();
-        return $this->default_experiment->get($name, $default);
+        $this->_requiresDefaultExperiment();
+        return $this->_default_experiment->get($name, $default);
     }
 
     /**
@@ -263,9 +263,9 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function setAutoExposureLogging($value)
     {
-        $this->requiresExperiment();
-        if (isset($this->experiment)) {
-            $this->experiment->setAutoExposureLogging($value);
+        $this->_requiresExperiment();
+        if (isset($this->_experiment)) {
+            $this->_experiment->setAutoExposureLogging($value);
         }
     }
 
@@ -276,9 +276,9 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function logExposure($extras = null)
     {
-        $this->requiresExperiment();
-        if (isset($this->experiment)) {
-            $this->experiment->logExposure($extras);
+        $this->_requiresExperiment();
+        if (isset($this->_experiment)) {
+            $this->_experiment->logExposure($extras);
         }
     }
 
@@ -290,9 +290,9 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function logEvent($event_type, $extras = null)
     {
-        $this->requiresExperiment();
-        if (isset($this->experiment)) {
-            $this->experiment->logEvent($event_type, $extras);
+        $this->_requiresExperiment();
+        if (isset($this->_experiment)) {
+            $this->_experiment->logEvent($event_type, $extras);
         }
     }
 }

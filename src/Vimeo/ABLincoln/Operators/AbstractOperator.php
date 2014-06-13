@@ -10,10 +10,10 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class AbstractOperator
 {
-    protected $parameters;
-    protected $mapper;
+    protected $_parameters;
+    protected $_mapper;
 
-    private $args;
+    private $_args;
 
     /**
      * Store the set of parameters to use as required and optional arguments
@@ -23,8 +23,8 @@ abstract class AbstractOperator
      */
     public function __construct($options, $inputs)
     {
-        $this->args = $options;
-        $this->args['unit'] = $inputs;
+        $this->_args = $options;
+        $this->_args['unit'] = $inputs;
     }
 
     /**
@@ -36,12 +36,12 @@ abstract class AbstractOperator
      */
     public function execute($mapper)
     {
-        $this->mapper = $mapper;
-        $this->parameters = array();  // evaluated parameters
-        foreach ($this->args as $key => $val) {
-            $this->parameters[$key] = $mapper->evaluate($val);
+        $this->_mapper = $mapper;
+        $this->_parameters = array();  // evaluated parameters
+        foreach ($this->_args as $key => $val) {
+            $this->_parameters[$key] = $mapper->evaluate($val);
         }
-        return $this->simpleExecute();
+        return $this->_simpleExecute();
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class AbstractOperator
      *
      * @return mixed the evaluated expression
      */
-    abstract protected function simpleExecute();
+    abstract protected function _simpleExecute();
 
     /**
       * Argument accessor
@@ -58,7 +58,7 @@ abstract class AbstractOperator
       */
      public function args()
      {
-         return $this->args;
+         return $this->_args;
      }
  
      /**
@@ -69,7 +69,7 @@ abstract class AbstractOperator
       */
      public function setArg($key, $value)
      {
-         $this->args[$key] = $value;
+         $this->_args[$key] = $value;
      }
 
     /**
