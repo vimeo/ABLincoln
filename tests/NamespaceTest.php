@@ -4,16 +4,15 @@ use \Vimeo\ABLincoln\Namespaces\SimpleNamespace;
 use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
-$global_log = array();
-
 /**
  * PHPUnit Namespace test class
  */
 class NamespaceTest extends \PHPUnit_Framework_TestCase
 {
+    public static $log = array();
+
     public function testVanillaNamespace()
     {
-        global $global_log;
         $userid1 = 3;
         $username1 = 'user1';
         $userid2 = 7;
@@ -25,7 +24,7 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         ));
         $foo = $e->get('foo');
         $this->assertEquals($foo, 1);
-        $this->assertEquals(count($global_log), 1);
+        $this->assertEquals(count(self::$log), 1);
 
         $e = new TestVanillaNamespace(array(
             'userid' => $userid2,
@@ -33,7 +32,7 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         ));
         $foo = $e->get('foo');
         $this->assertEquals($foo, 'a');
-        $this->assertEquals(count($global_log), 2);
+        $this->assertEquals(count(self::$log), 2);
 
         $e->removeExperiment('first');
         $foo = $e->get('foo');
@@ -80,8 +79,7 @@ class TestVanillaExperiment extends AbstractExperiment
 
     protected function log($data)
     {
-        global $global_log;
-        $global_log[] = $data;
+        NamespaceTest::$log[] = $data;
     }
 }
 
