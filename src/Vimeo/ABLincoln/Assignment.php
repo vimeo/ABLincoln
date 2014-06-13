@@ -11,7 +11,7 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
  */
 class Assignment implements \ArrayAccess
 {
-    private $data;
+    private $data = array();
     private $experiment_salt;
 
     /**
@@ -21,7 +21,6 @@ class Assignment implements \ArrayAccess
      */
     public function __construct($experiment_salt)
     {
-        $this->data = array();
         $this->experiment_salt = $experiment_salt;
     }
 
@@ -65,7 +64,7 @@ class Assignment implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        if (!strcmp($offset, 'experiment_salt')) {
+        if ($offset === 'experiment_salt') {
             return $this->experiment_salt;
         }
         return isset($this->data[$offset]) ? $this->data[$offset] : null;

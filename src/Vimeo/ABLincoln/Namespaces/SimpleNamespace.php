@@ -3,8 +3,7 @@
 namespace Vimeo\ABLincoln\Namespaces;
 
 use \Vimeo\ABLincoln\Assignment;
-use \Vimeo\ABLincoln\Experiments\DefaultExperiment;
-use \Vimeo\ABLincoln\Operators\Random\Sample;
+use \Vimeo\ABLincoln\Operators\Random as Random;
 
 abstract class SimpleNamespace extends AbstractNamespace
 {
@@ -35,14 +34,14 @@ abstract class SimpleNamespace extends AbstractNamespace
         $this->in_experiment = false;    // not in experiment until unit assigned
 
         // array mapping segments to experiment names
-        $this->segment_allocations = array();  // map segmnents to experiment names
+        $this->segment_allocations = array();
 
         // array mapping experiment names to experiment objects
         $this->current_experiments = array();
 
         $this->experiment = null;          // memoized experiment object
         $this->default_experiment = null;  // memoized default experiment object
-        $this->default_experiment_class = 'DefaultExperiment';
+        $this->default_experiment_class = 'Vimeo\ABLincoln\Experiments\DefaultExperiment';
 
         // setup name, primary key, number of segments, etc
         $this->setup();
@@ -116,11 +115,10 @@ abstract class SimpleNamespace extends AbstractNamespace
 
         // randomly select the given numer of segments from all available options
         $a = new Assignment($this->name);
-        $a['sampled_segments'] = new Sample(array(
+        $a['sampled_segments'] = new Random\Sample(array(
             'choices' => $this->available_segments,
-            'draws' => $num_segments,
-            'unit' => $name
-        ));
+            'draws' => $num_segments
+        ), array('unit' => $name));
 
         // assign each segment to the experiment name
         foreach ($a['sampled_segments'] as $key => $segment) {
@@ -145,12 +143,18 @@ abstract class SimpleNamespace extends AbstractNamespace
 
         // make segments available for allocation again, remove experiment name
         foreach ($this->segment_allocations as $segment => $exp_name) {
-            if (!strcmp($exp_name, $name)) {
+            if ($exp_name === $name) {
                 unset($this->segment_allocations[$segment]);
                 $this->available_segments[$segment] = $segment;
             }
         }
         unset($this->current_experiments[$name]);
+
+        // currently assigned experiment just deleted!
+        if ($this->experiment->name() === $this->name . '-' . $name) {
+            $this->experiment = null;
+            $this->in_experiment = false;
+        }
     }
 
     /**
@@ -161,11 +165,10 @@ abstract class SimpleNamespace extends AbstractNamespace
     private function getSegment()
     {
         $a = new Assignment($this->name);
-        $a['segment'] = new RandomInteger(array(
+        $a['segment'] = new Random\RandomInteger(array(
             'min' => 0,
-            'max' => $this->num_segments - 1,
-            'unit' => $this->inputs[$this->primary_unit]
-        ));
+            'max' => $this->num_segments - 1
+        ), array('unit' => $this->inputs[$this->primary_unit]));
         return $a['segment'];
     }
 
@@ -203,8 +206,8 @@ abstract class SimpleNamespace extends AbstractNamespace
         if (array_key_exists($segment, $this->segment_allocations)) {
             $exp_name = $this->segment_allocations[$segment];
             $experiment = new $this->current_experiments[$exp_name]($this->inputs);
-            $experiment.setName("{$this->name}-{$exp_name}");
-            $experiment.setSalt("{$this->name}.{$exp_name}");
+            $experiment->setName("{$this->name}-{$exp_name}");
+            $experiment->setSalt("{$this->name}.{$exp_name}");
             $this->experiment = $experiment;
             $this->in_experiment = $experiment->inExperiment();
         }

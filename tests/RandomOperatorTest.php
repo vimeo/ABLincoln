@@ -223,7 +223,7 @@ class FloatHelper extends TestHelper
         $a['x'] = new Random\RandomFloat(array(
             'min' => self::$args['min'],
             'max' => self::$args['max'],
-        ), $i);
+        ), array('unit' => $i));
         return $a['x'];
     }
 }
@@ -237,7 +237,7 @@ class IntegerHelper extends TestHelper
         $a['x'] = new Random\RandomInteger(array(
             'min' => self::$args['min'],
             'max' => self::$args['max'],
-        ), $i);
+        ), array('unit' => $i));
         return $a['x'];
     }
 }
@@ -249,7 +249,7 @@ class BernoulliHelper extends TestHelper
         $a = new Assignment(self::$args['p']);
         $a['x'] = new Random\BernoulliTrial(array(
             'p' => self::$args['p'],
-        ), array($i));
+        ), array('unit' => $i));
         return $a['x'];
     }
 }
@@ -261,7 +261,7 @@ class UniformHelper extends TestHelper
         $a = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
         $a['x'] = new Random\UniformChoice(array(
             'choices' => self::$args['choices'],
-        ), $i);
+        ), array('unit' => $i));
         return $a['x'];
     }
 }
@@ -274,7 +274,7 @@ class WeightedHelper extends TestHelper
         $a['x'] = new Random\WeightedChoice(array(
             'choices' => self::$args['choices'],
             'weights' => self::$args['weights'],
-        ), array($i));
+        ), array('unit' => $i));
         return $a['x'];
     }
 }
@@ -287,7 +287,7 @@ class SampleHelper extends TestHelper
         $a['x'] = new Random\Sample(array(
             'choices' => self::$args['choices'],
             'draws' => self::$args['draws'],
-        ), $i);
+        ), array('unit' => $i));
         return $a['x'];
     }
 }

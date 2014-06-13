@@ -3,29 +3,34 @@
 use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
-$global_log = array();
-
 /**
  * PHPUnit Experiment test class
  */
 class ExperimentTest extends \PHPUnit_Framework_TestCase
 {
+    public static $log = array();
+
     public function testVanillaExperiment()
     {
-        global $global_log;
-        $userid = 42; $username = 'a_name';
+        $userid = 42;
+        $username = 'a_name';
 
-        $e = new TestVanillaExperiment($userid);
+        $e = new TestVanillaExperiment(array(
+            'userid' => $userid
+        ));
         $params = $e->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
-        $this->assertEquals(count($global_log), 1);
+        $this->assertEquals(count(self::$log), 1);
 
-        $e = new TestVanillaExperiment(array($userid, $username));
+        $e = new TestVanillaExperiment(array(
+            'userid' => $userid,
+            'username' => $username
+        ));
         $params = $e->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
-        $this->assertEquals(count($global_log), 2);
+        $this->assertEquals(count(self::$log), 2);
     }
 }
 
@@ -39,7 +44,7 @@ class TestVanillaExperiment extends AbstractExperiment
     protected function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array('a', 'b'),
+            'choices' => array('a', 'b')
         ), $inputs);
     }
 
@@ -52,7 +57,6 @@ class TestVanillaExperiment extends AbstractExperiment
 
     protected function log($data)
     {
-        global $global_log;
-        $global_log[] = $data;
+        ExperimentTest::$log[] = $data;
     }
 }
