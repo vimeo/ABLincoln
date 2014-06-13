@@ -37,7 +37,7 @@ class WeightedChoice extends RandomOperator
     {
         $choices = $this->_parameters['choices'];
         $weights = $this->_parameters['weights'];
-        if (!count($choices)) {
+        if (empty($choices)) {
             return array();
         }
         $cum_weights = array_combine($choices, $weights);

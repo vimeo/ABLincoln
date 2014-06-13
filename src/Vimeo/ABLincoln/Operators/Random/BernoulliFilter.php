@@ -37,8 +37,7 @@ class BernoulliFilter extends RandomOperator
     {
         $p = $this->_parameters['p'];
         $choices = $this->_parameters['choices'];
-        $num_choices = count($choices);
-        if (!$num_choices) {
+        if (empty($choices)) {
             return array();
         }
         return array_filter($choices, function($item) use ($p) {
