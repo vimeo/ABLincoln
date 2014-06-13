@@ -58,7 +58,7 @@ abstract class AbstractExperiment
     {
         $this->_configureLogger();
         $this->_assign($this->_assignment, $this->_inputs);
-        $this->_in_experiment = isset($this->_assignment['in_experiment']) ? $this->_assignment['in_experiment'] : $this->_in_experiment;
+        $this->_in_experiment = array_key_exists('in_experiment', $this->_assignment->asArray()) ? $this->_assignment['in_experiment'] : $this->_in_experiment;
         $this->_logged = $this->_previouslyLogged();
     }
 
@@ -213,7 +213,7 @@ abstract class AbstractExperiment
     {
         $this->_requiresAssignment();
         $this->_requiresExposureLogging();
-        return isset($this->_assignment[$name]) ? $this->_assignment[$name] : $default;
+        return array_key_exists($name, $this->_assignment->asArray()) ? $this->_assignment[$name] : $default;
     }
 
     /**
