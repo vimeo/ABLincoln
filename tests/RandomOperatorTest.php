@@ -207,10 +207,12 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
 abstract class TestHelper
 {
     protected static $args;
+
     public static function setArgs($args)
     {
         self::$args = $args;
     }
+
     abstract public static function execute($i);
 }
 
@@ -220,10 +222,10 @@ class FloatHelper extends TestHelper
     {
         $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
         $assignment = new Assignment($exp_salt);
-        $assignment['x'] = new Random\RandomFloat(array(
-            'min' => self::$args['min'],
-            'max' => self::$args['max'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\RandomFloat(
+            array('min' => self::$args['min'], 'max' => self::$args['max']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }
@@ -234,10 +236,10 @@ class IntegerHelper extends TestHelper
     {
         $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
         $assignment = new Assignment($exp_salt);
-        $assignment['x'] = new Random\RandomInteger(array(
-            'min' => self::$args['min'],
-            'max' => self::$args['max'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\RandomInteger(
+            array('min' => self::$args['min'], 'max' => self::$args['max']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }
@@ -247,9 +249,10 @@ class BernoulliHelper extends TestHelper
     public static function execute($i)
     {
         $assignment = new Assignment(self::$args['p']);
-        $assignment['x'] = new Random\BernoulliTrial(array(
-            'p' => self::$args['p'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\BernoulliTrial(
+            array('p' => self::$args['p']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }
@@ -259,9 +262,10 @@ class UniformHelper extends TestHelper
     public static function execute($i)
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
-        $assignment['x'] = new Random\UniformChoice(array(
-            'choices' => self::$args['choices'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\UniformChoice(
+            array('choices' => self::$args['choices']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }
@@ -271,10 +275,10 @@ class WeightedHelper extends TestHelper
     public static function execute($i)
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
-        $assignment['x'] = new Random\WeightedChoice(array(
-            'choices' => self::$args['choices'],
-            'weights' => self::$args['weights'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\WeightedChoice(
+            array('choices' => self::$args['choices'], 'weights' => self::$args['weights']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }
@@ -284,10 +288,10 @@ class SampleHelper extends TestHelper
     public static function execute($i)
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
-        $assignment['x'] = new Random\Sample(array(
-            'choices' => self::$args['choices'],
-            'draws' => self::$args['draws'],
-        ), array('unit' => $i));
+        $assignment['x'] = new Random\Sample(
+            array('choices' => self::$args['choices'], 'draws' => self::$args['draws']),
+            array('unit' => $i)
+        );
         return $assignment['x'];
     }
 }

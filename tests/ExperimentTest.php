@@ -15,18 +15,17 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $userid = 42;
         $username = 'a_name';
 
-        $experiment = new TestVanillaExperiment(array(
-            'userid' => $userid
-        ));
+        $experiment = new TestVanillaExperiment(
+            array('userid' => $userid)
+        );
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
         $this->assertEquals(count(self::$log), 1);
 
-        $experiment = new TestVanillaExperiment(array(
-            'userid' => $userid,
-            'username' => $username
-        ));
+        $experiment = new TestVanillaExperiment(
+            array('userid' => $userid, 'username' => $username)
+        );
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
@@ -43,9 +42,10 @@ class TestVanillaExperiment extends AbstractExperiment
 
     protected function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array('a', 'b')
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array('a', 'b')),
+            $inputs
+        );
     }
 
     protected function previouslyLogged()

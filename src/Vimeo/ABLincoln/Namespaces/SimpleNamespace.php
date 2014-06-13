@@ -115,10 +115,10 @@ abstract class SimpleNamespace extends AbstractNamespace
 
         // randomly select the given numer of segments from all available options
         $assignment = new Assignment($this->name);
-        $assignment['sampled_segments'] = new Random\Sample(array(
-            'choices' => $this->available_segments,
-            'draws' => $num_segments
-        ), array('unit' => $name));
+        $assignment['sampled_segments'] = new Random\Sample(
+            array('choices' => $this->available_segments, 'draws' => $num_segments),
+            array('unit' => $name)
+        );
 
         // assign each segment to the experiment name
         foreach ($assignment['sampled_segments'] as $key => $segment) {
@@ -165,10 +165,10 @@ abstract class SimpleNamespace extends AbstractNamespace
     private function getSegment()
     {
         $assignment = new Assignment($this->name);
-        $assignment['segment'] = new Random\RandomInteger(array(
-            'min' => 0,
-            'max' => $this->num_segments - 1
-        ), array('unit' => $this->inputs[$this->primary_unit]));
+        $assignment['segment'] = new Random\RandomInteger(
+            array('min' => 0, 'max' => $this->num_segments - 1),
+            array('unit' => $this->inputs[$this->primary_unit])
+        );
         return $assignment['segment'];
     }
 

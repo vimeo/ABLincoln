@@ -18,18 +18,16 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $userid2 = 7;
         $username2 = 'user2';
 
-        $namespace = new TestVanillaNamespace(array(
-            'userid' => $userid1,
-            'username' => $username1
-        ));
+        $namespace = new TestVanillaNamespace(
+            array('userid' => $userid1, 'username' => $username1)
+        );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 1);
         $this->assertEquals(count(self::$log), 1);
 
-        $namespace = new TestVanillaNamespace(array(
-            'userid' => $userid2,
-            'username' => $username2
-        ));
+        $namespace = new TestVanillaNamespace(
+            array('userid' => $userid2, 'username' => $username2)
+        );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
         $this->assertEquals(count(self::$log), 2);
@@ -65,9 +63,10 @@ class TestVanillaExperiment extends AbstractExperiment
 
     protected function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array('a', 'b')
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array('a', 'b')),
+            $inputs
+        );
     }
 
     protected function previouslyLogged()
@@ -92,8 +91,9 @@ class TestVanillaExperiment2 extends TestVanillaExperiment
 
     protected function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array(1, 2, 3)
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array(1, 2, 3)),
+            $inputs
+        );
     }
 }
