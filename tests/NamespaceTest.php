@@ -14,8 +14,10 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
     public function testVanillaNamespace()
     {
         global $global_log;
-        $userid1 = 3; $username1 = 'user1';
-        $userid2 = 7; $username2 = 'user2';
+        $userid1 = 3;
+        $username1 = 'user1';
+        $userid2 = 7;
+        $username2 = 'user2';
 
         $e = new TestVanillaNamespace(array(
             'userid' => $userid1,

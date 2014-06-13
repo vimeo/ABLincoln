@@ -143,7 +143,7 @@ abstract class SimpleNamespace extends AbstractNamespace
 
         // make segments available for allocation again, remove experiment name
         foreach ($this->segment_allocations as $segment => $exp_name) {
-            if (!strcmp($exp_name, $name)) {
+            if ($exp_name === $name) {
                 unset($this->segment_allocations[$segment]);
                 $this->available_segments[$segment] = $segment;
             }
@@ -151,7 +151,7 @@ abstract class SimpleNamespace extends AbstractNamespace
         unset($this->current_experiments[$name]);
 
         // currently assigned experiment just deleted!
-        if (!strcmp($this->experiment->name(), "{$this->name}-{$name}")) {
+        if ($this->experiment->name() === $this->name . '-' . $name) {
             $this->experiment = null;
             $this->in_experiment = false;
         }

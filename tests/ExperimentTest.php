@@ -13,7 +13,8 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
     public function testVanillaExperiment()
     {
         global $global_log;
-        $userid = 42; $username = 'a_name';
+        $userid = 42;
+        $username = 'a_name';
 
         $e = new TestVanillaExperiment(array(
             'userid' => $userid
