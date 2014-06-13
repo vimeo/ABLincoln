@@ -49,8 +49,7 @@ class SimpleExperiment extends AbstractExperiment
     protected function _log($data)
     {
         if (isset($this->_logger)) {
-            $this->_logger->info(sprintf(self::LOG_FORMAT, $this->_name,
-                                        $data['event']), $data);
+            $this->_logger->info(sprintf(self::LOG_FORMAT, $this->_name, $data['event']), $data);
         }
     }
 

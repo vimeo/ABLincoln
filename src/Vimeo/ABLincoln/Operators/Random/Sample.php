@@ -40,8 +40,7 @@ class Sample extends RandomOperator
             $choices[] = $value;
         }
         $num_choices = count($choices);
-        $num_draws = isset($this->_parameters['draws']) ? $this->_parameters['draws']
-                                                        : $num_choices;
+        $num_draws = isset($this->_parameters['draws']) ? $this->_parameters['draws'] : $num_choices;
         for ($i = $num_choices - 1; $i > 0; $i--) {
             $j = $this->_getHash($i) % ($i + 1);
             $temp = $choices[$i];
