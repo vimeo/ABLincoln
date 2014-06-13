@@ -189,7 +189,7 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     protected function _requiresDefaultExperiment()
     {
-        if (!isset($this->default_experiment)) {
+        if (!isset($this->_default_experiment)) {
             $this->_assignDefaultExperiment();
         }
     }
