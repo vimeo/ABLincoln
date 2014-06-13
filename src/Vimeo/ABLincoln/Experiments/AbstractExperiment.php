@@ -9,12 +9,13 @@ use \Vimeo\ABLincoln\Assignment;
  */
 abstract class AbstractExperiment
 {
+    protected $name;
+    protected $salt = null;
+
     protected $inputs;
     protected $logger_configured = false;
     protected $in_experiment = true;
 
-    private $name;
-    private $salt = null;
     private $exposure_logged = false;
     private $auto_exposure_log = true;
     private $assigned = false;
@@ -30,6 +31,7 @@ abstract class AbstractExperiment
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
         $this->setup();                  // manually set name, salt, etc.
+        $this->salt = $this->salt();     // salt defaults to experiment name
 
         $this->assignment = $this->getAssignment();
     }
@@ -37,7 +39,7 @@ abstract class AbstractExperiment
     /*
      * Optionally set experiment attributes before run, e.g. name and salt
      */
-    public function setup() {}
+    protected function setup() {}
 
     /**
      * Checks if an assignment has been made, assigns one if not
@@ -77,7 +79,7 @@ abstract class AbstractExperiment
      * @param Assignment $params assignment in which to place new parameters
      * @param array $inputs input data to determine parameter assignments
      */
-    abstract public function assign($params, $inputs);
+    abstract protected function assign($params, $inputs);
 
     /**
      * Experiment-level salt accessor
@@ -177,13 +179,13 @@ abstract class AbstractExperiment
      */
     protected function asBlob($extras = array())
     {
-        requiresAssignment();
+        $this->requiresAssignment();
         $ret = array(
             'name' => $this->name,
             'time' => time(),
             'salt' => $this->salt,
             'inputs' => $this->inputs,
-            'params' => $this->assignment->asArray();
+            'params' => $this->assignment->asArray()
         );
         return array_merge($ret, $extras);
     }
