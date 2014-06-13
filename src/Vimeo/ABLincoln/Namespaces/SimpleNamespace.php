@@ -34,7 +34,7 @@ abstract class SimpleNamespace extends AbstractNamespace
         $this->in_experiment = false;    // not in experiment until unit assigned
 
         // array mapping segments to experiment names
-        $this->segment_allocations = array();  // map segmnents to experiment names
+        $this->segment_allocations = array();
 
         // array mapping experiment names to experiment objects
         $this->current_experiments = array();
