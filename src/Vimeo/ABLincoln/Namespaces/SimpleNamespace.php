@@ -206,8 +206,8 @@ abstract class SimpleNamespace extends AbstractNamespace
         if (array_key_exists($segment, $this->segment_allocations)) {
             $exp_name = $this->segment_allocations[$segment];
             $experiment = new $this->current_experiments[$exp_name]($this->inputs);
-            $experiment->setName("{$this->name}-{$exp_name}");
-            $experiment->setSalt("{$this->name}.{$exp_name}");
+            $experiment->setName($this->name . '-' . $exp_name);
+            $experiment->setSalt($this->name . '.' . $exp_name);
             $this->experiment = $experiment;
             $this->in_experiment = $experiment->inExperiment();
         }

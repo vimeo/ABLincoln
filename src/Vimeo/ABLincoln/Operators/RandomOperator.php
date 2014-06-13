@@ -64,10 +64,10 @@ abstract class RandomOperator extends AbstractOperator
     protected function getHash($appended_unit = null)
     {
         $salt = $this->parameters['salt'];
-        $salty = "{$this->mapper['experiment_salt']}.$salt";
+        $salty = $this->mapper['experiment_salt'] . '.' . $salt;
         $unit_str_arr = array_map('strval', $this->getUnit($appended_unit));
         $unit_str = implode('.', $unit_str_arr);
-        return hexdec(substr(sha1("$salty.$unit_str"), 0, 15));
+        return hexdec(substr(sha1($salty . '.' . $unit_str), 0, 15));
     }
 
     /**
