@@ -15,19 +15,19 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $userid = 42;
         $username = 'a_name';
 
-        $e = new TestVanillaExperiment(array(
+        $experiment = new TestVanillaExperiment(array(
             'userid' => $userid
         ));
-        $params = $e->getParams();
+        $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
         $this->assertEquals(count(self::$log), 1);
 
-        $e = new TestVanillaExperiment(array(
+        $experiment = new TestVanillaExperiment(array(
             'userid' => $userid,
             'username' => $username
         ));
-        $params = $e->getParams();
+        $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
         $this->assertEquals(count(self::$log), 2);

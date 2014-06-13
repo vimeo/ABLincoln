@@ -18,24 +18,24 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $userid2 = 7;
         $username2 = 'user2';
 
-        $e = new TestVanillaNamespace(array(
+        $namespace = new TestVanillaNamespace(array(
             'userid' => $userid1,
             'username' => $username1
         ));
-        $foo = $e->get('foo');
+        $foo = $namespace->get('foo');
         $this->assertEquals($foo, 1);
         $this->assertEquals(count(self::$log), 1);
 
-        $e = new TestVanillaNamespace(array(
+        $namespace = new TestVanillaNamespace(array(
             'userid' => $userid2,
             'username' => $username2
         ));
-        $foo = $e->get('foo');
+        $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
         $this->assertEquals(count(self::$log), 2);
 
-        $e->removeExperiment('first');
-        $foo = $e->get('foo');
+        $namespace->removeExperiment('first');
+        $foo = $namespace->get('foo');
         $this->assertNull($foo);
     }
 }
