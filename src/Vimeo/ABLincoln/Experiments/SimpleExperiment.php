@@ -9,7 +9,7 @@ use \Psr\Log\LoggerInterface;
  * specifications. User experiments extending this class should pass in their
  * own compatible logger instance.
  */
-class SimpleExperiment extends AbstractExperiment
+abstract class SimpleExperiment extends AbstractExperiment
 {
     protected $logger;
     const LOG_FORMAT = '%s with event type: %s';
