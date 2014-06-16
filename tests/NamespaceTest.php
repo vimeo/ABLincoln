@@ -18,82 +18,82 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $userid2 = 7;
         $username2 = 'user2';
 
-        $e = new TestVanillaNamespace(array(
-            'userid' => $userid1,
-            'username' => $username1
-        ));
-        $foo = $e->get('foo');
+        $namespace = new TestVanillaNamespace(
+            array('userid' => $userid1, 'username' => $username1)
+        );
+        $foo = $namespace->get('foo');
         $this->assertEquals($foo, 1);
         $this->assertEquals(count(self::$log), 1);
 
-        $e = new TestVanillaNamespace(array(
-            'userid' => $userid2,
-            'username' => $username2
-        ));
-        $foo = $e->get('foo');
+        $namespace = new TestVanillaNamespace(
+            array('userid' => $userid2, 'username' => $username2)
+        );
+        $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
         $this->assertEquals(count(self::$log), 2);
 
-        $e->removeExperiment('first');
-        $foo = $e->get('foo');
+        $namespace->removeExperiment('first');
+        $foo = $namespace->get('foo');
         $this->assertNull($foo);
     }
 }
 
 class TestVanillaNamespace extends SimpleNamespace
 {
-    protected function setup()
+    public function setup()
     {
         $this->name = 'namespace_demo';
         $this->primary_unit = 'userid';
         $this->num_segments = 1000;
     }
 
-    protected function setupExperiments()
+    public function setupExperiments()
     {
-        $this->addExperiment('first', 'TestVanillaExperiment', 300);
-        $this->addExperiment('second', 'TestVanillaExperiment2', 700);
+        $this->addExperiment('first', 'TestExperiment', 300);
+        $this->addExperiment('second', 'TestExperiment2', 700);
     }
 }
 
-class TestVanillaExperiment extends AbstractExperiment
+class TestExperiment extends AbstractExperiment
 {
-    protected function setup()
+    public function setup()
     {
         $this->name = 'test_name';
     }
 
-    protected function assign($params, $inputs)
+    public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array('a', 'b')
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array('a', 'b')),
+            $inputs
+        );
     }
 
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return false;
     }
 
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
-    protected function log($data)
+    protected function _log($data)
     {
         NamespaceTest::$log[] = $data;
     }
 }
 
-class TestVanillaExperiment2 extends TestVanillaExperiment
+class TestExperiment2 extends TestExperiment
 {
-    protected function setup()
+    public function setup()
     {
         $this->name = 'test2_name';
     }
 
-    protected function assign($params, $inputs)
+    public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array(1, 2, 3)
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array(1, 2, 3)),
+            $inputs
+        );
     }
 }

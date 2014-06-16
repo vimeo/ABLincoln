@@ -33,34 +33,33 @@ abstract class AbstractExperiment
         $this->setup();                  // manually set name, salt, etc.
         $this->salt = $this->salt();     // salt defaults to experiment name
 
-        $this->assignment = $this->getAssignment();
+        $this->assignment = $this->_getAssignment();
     }
 
     /*
      * Optionally set experiment attributes before run, e.g. name and salt
      */
-    protected function setup() {}
+    public function setup() {}
 
     /**
      * Checks if an assignment has been made, assigns one if not
      */
-    private function requiresAssignment()
+    private function _requiresAssignment()
     {
         if (!$this->assigned) {
-            $this->assignSetup();
+            $this->_assignSetup();
         }
     }
 
     /**
      * Assignment and setup that happens when we need to log data
      */
-    private function assignSetup()
+    private function _assignSetup()
     {
-        $this->configureLogger();
+        $this->_configureLogger();
         $this->assign($this->assignment, $this->inputs);
-        $this->in_experiment = isset($this->assignment['in_experiment']) ? 
-                $this->assignment['in_experiment'] : $this->in_experiment;
-        $this->logged = $this->previouslyLogged();
+        $this->in_experiment = array_key_exists('in_experiment', $this->assignment->asArray()) ? $this->assignment['in_experiment'] : $this->in_experiment;
+        $this->logged = $this->_previouslyLogged();
     }
 
     /**
@@ -68,7 +67,7 @@ abstract class AbstractExperiment
      *
      * @return Assignment the current experiment's assignment
      */
-    private function getAssignment()
+    private function _getAssignment()
     {
         return new Assignment($this->salt);
     }
@@ -79,7 +78,7 @@ abstract class AbstractExperiment
      * @param Assignment $params assignment in which to place new parameters
      * @param array $inputs input data to determine parameter assignments
      */
-    abstract protected function assign($params, $inputs);
+    abstract public function assign($params, $inputs);
 
     /**
      * Experiment-level salt accessor
@@ -177,9 +176,9 @@ abstract class AbstractExperiment
      * @param array $extras extra data to include in array
      * @return array experiment data
      */
-    protected function asBlob($extras = array())
+    protected function _asBlob($extras = array())
     {
-        $this->requiresAssignment();
+        $this->_requiresAssignment();
         $ret = array(
             'name' => $this->name,
             'time' => time(),
@@ -198,8 +197,8 @@ abstract class AbstractExperiment
      */
     public function getParams()
     {
-        $this->requiresAssignment();
-        $this->requiresExposureLogging();
+        $this->_requiresAssignment();
+        $this->_requiresExposureLogging();
         return $this->assignment->asArray();
     }
 
@@ -212,10 +211,9 @@ abstract class AbstractExperiment
      */
     public function get($name, $default = null)
     {
-        $this->requiresAssignment();
-        $this->requiresExposureLogging();
-        return isset($this->assignment[$name]) ? $this->assignment[$name]
-                                               : $default;
+        $this->_requiresAssignment();
+        $this->_requiresExposureLogging();
+        return array_key_exists($name, $this->assignment->asArray()) ? $this->assignment[$name] : $default;
     }
 
     /**
@@ -225,18 +223,17 @@ abstract class AbstractExperiment
      */
     public function __toString()
     {
-        $this->requiresAssignment();
-        $this->requiresExposureLogging();
-        return json_encode($this->asBlob());
+        $this->_requiresAssignment();
+        $this->_requiresExposureLogging();
+        return json_encode($this->_asBlob());
     }
 
     /**
      * Checks if experiment requires exposure logging, and if so exposure logs
      */
-    protected function requiresExposureLogging()
+    protected function _requiresExposureLogging()
     {
-        if ($this->auto_exposure_log && $this->in_experiment 
-                                     && !$this->exposure_logged) {
+        if ($this->auto_exposure_log && $this->in_experiment && !$this->exposure_logged) {
             $this->logExposure();
         }
     }
@@ -266,25 +263,25 @@ abstract class AbstractExperiment
         else {
             $extraPayload = array('event' => $eventType);
         }
-        $this->log($this->asBlob($extraPayload));
+        $this->_log($this->_asBlob($extraPayload));
     }
 
     /**
      * Set up files, database connections, sockets, etc for logging
      */
-    abstract protected function configureLogger();
+    abstract protected function _configureLogger();
 
     /**
      * Log experiment data
      *
      * @param array $data data to log
      */
-    abstract protected function log($data);
+    abstract protected function _log($data);
 
     /**
      * Check if the input has already been logged
      *
      * @return boolean true if previously logged, false otherwise
      */
-    abstract protected function previouslyLogged();
+    abstract protected function _previouslyLogged();
 }

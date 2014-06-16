@@ -29,10 +29,10 @@ class BernoulliTrial extends RandomOperator
      *
      * @return int 1 with probability p, 0 otherwise
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $p = $this->parameters['p'];
-        $rand_val = $this->getUniform(0.0, 1.0);
+        $rand_val = $this->_getUniform(0.0, 1.0);
         return ($rand_val <= $p) ? 1 : 0;
     }    
 }

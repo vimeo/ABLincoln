@@ -41,7 +41,7 @@ abstract class AbstractOperator
         foreach ($this->args as $key => $val) {
             $this->parameters[$key] = $mapper->evaluate($val);
         }
-        return $this->simpleExecute();
+        return $this->_simpleExecute();
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class AbstractOperator
      *
      * @return mixed the evaluated expression
      */
-    abstract protected function simpleExecute();
+    abstract protected function _simpleExecute();
 
     /**
       * Argument accessor
@@ -112,7 +112,7 @@ abstract class AbstractOperator
     public function getOptionDescription($op_name)
     {
         $ops = $this->getOptions();
-        return isset($ops[$op_name]) ? $ops[$op_name]['description'] : $op_name;
+        return array_key_exists($op_name, $ops) ? $ops[$op_name]['description'] : $op_name;
     }
 
     /**
@@ -124,6 +124,6 @@ abstract class AbstractOperator
     public function getOptionRequired($op_name)
     {
         $ops = $this->getOptions();
-        return isset($ops[$op_name]) ? $ops[$op_name]['required'] : 1;
+        return array_key_exists($op_name, $ops) ? $ops[$op_name]['required'] : 1;
     }
 }

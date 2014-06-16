@@ -39,25 +39,24 @@ class SimpleExperiment extends AbstractExperiment
     /**
      * All logger configuring will be done outside of this class
      */
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
     /**
      * Use the logging instance to log experiment name, event type, and data
      *
      * @param array $data exposure log data to record
      */
-    protected function log($data)
+    protected function _log($data)
     {
-        if (isset($logger)) {
-            $this->logger->info(sprintf(self::LOG_FORMAT, $this->name,
-                                        $data['event']), $data);
+        if (isset($this->logger)) {
+            $this->logger->info(sprintf(self::LOG_FORMAT, $this->name, $data['event']), $data);
         }
     }
 
     /**
      * Assume data has never been logged before for a Simple experiment
      */
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return false;
     }

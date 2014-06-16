@@ -15,19 +15,18 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $userid = 42;
         $username = 'a_name';
 
-        $e = new TestVanillaExperiment(array(
-            'userid' => $userid
-        ));
-        $params = $e->getParams();
+        $experiment = new TestVanillaExperiment(
+            array('userid' => $userid)
+        );
+        $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
         $this->assertEquals(count(self::$log), 1);
 
-        $e = new TestVanillaExperiment(array(
-            'userid' => $userid,
-            'username' => $username
-        ));
-        $params = $e->getParams();
+        $experiment = new TestVanillaExperiment(
+            array('userid' => $userid, 'username' => $username)
+        );
+        $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
         $this->assertEquals(count(self::$log), 2);
@@ -36,26 +35,27 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
 
 class TestVanillaExperiment extends AbstractExperiment
 {
-    protected function setup()
+    public function setup()
     {
         $this->name = 'test_name';
     }
 
-    protected function assign($params, $inputs)
+    public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(array(
-            'choices' => array('a', 'b')
-        ), $inputs);
+        $params['foo'] = new Random\UniformChoice(
+            array('choices' => array('a', 'b')),
+            $inputs
+        );
     }
 
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return false;
     }
 
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
-    protected function log($data)
+    protected function _log($data)
     {
         ExperimentTest::$log[] = $data;
     }

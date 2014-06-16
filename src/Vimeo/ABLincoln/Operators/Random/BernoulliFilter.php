@@ -33,16 +33,15 @@ class BernoulliFilter extends RandomOperator
      *
      * @return array the filtered choices array
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $p = $this->parameters['p'];
         $choices = $this->parameters['choices'];
-        $num_choices = count($choices);
-        if (!$num_choices) {
+        if (empty($choices)) {
             return array();
         }
         return array_filter($choices, function($item) use ($p) {
-            return $this->getUniform(0.0, 1.0, $item) <= $p;
+            return $this->_getUniform(0.0, 1.0, $item) <= $p;
         });
     }
 }

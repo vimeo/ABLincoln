@@ -29,13 +29,13 @@ class UniformChoice extends RandomOperator
      *
      * @return mixed the element chosen from the given array
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $choices = $this->parameters['choices'];
         $num_choices = count($choices);
         if (!$num_choices) {
             return array();
         }
-        return $choices[$this->getHash() % $num_choices];
+        return $choices[$this->_getHash() % $num_choices];
     }
 }

@@ -33,10 +33,10 @@ class RandomFloat extends RandomOperator
      *
      * @return float the calculated random float
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $min_val = $this->parameters['min'];
         $max_val = $this->parameters['max'];
-        return $this->getUniform($min_val, $max_val);
+        return $this->_getUniform($min_val, $max_val);
     }
 }

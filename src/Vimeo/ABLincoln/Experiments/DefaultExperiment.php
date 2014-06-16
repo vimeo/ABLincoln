@@ -11,21 +11,21 @@ class DefaultExperiment extends AbstractExperiment
     /**
      * We don't need a logger when there's no experiment
      */
-    protected function configureLogger() {}
+    protected function _configureLogger() {}
 
     /**
      * Don't log anything when there's no experiment
      *
      * @param array $data the data which we will not be logging
      */
-    protected function log($data) {}
+    protected function _log($data) {}
 
     /**
      * Assume all data passed in has already been logged
      *
      * @return boolean true always since we're assuming data's been logged
      */
-    protected function previouslyLogged()
+    protected function _previouslyLogged()
     {
         return true;
     }

@@ -33,11 +33,11 @@ class WeightedChoice extends RandomOperator
      *
      * @return mixed the element chosen from the given array
      */
-    protected function simpleExecute()
+    protected function _simpleExecute()
     {
         $choices = $this->parameters['choices'];
         $weights = $this->parameters['weights'];
-        if (!count($choices)) {
+        if (empty($choices)) {
             return array();
         }
         $cum_weights = array_combine($choices, $weights);
@@ -46,7 +46,7 @@ class WeightedChoice extends RandomOperator
             $cum_sum += $weight;
             $cum_weights[$choice] = $cum_sum;
         }
-        $stop_value = $this->getUniform(0.0, $cum_sum);
+        $stop_value = $this->_getUniform(0.0, $cum_sum);
         foreach ($cum_weights as $choice => $weight) {
             if ($stop_value <= $weight) {
                 return $choice;
