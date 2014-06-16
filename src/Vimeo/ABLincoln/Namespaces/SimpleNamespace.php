@@ -5,12 +5,19 @@ namespace Vimeo\ABLincoln\Namespaces;
 use \Vimeo\ABLincoln\Assignment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
+/**
+ * Simple namespace base class that handles user assignment when dealing with
+ * multiple concurrent experiments. Exposure logs according to PSR-3 logging
+ * specifications. User experiments extending this class should pass in their
+ * own compatible logger instance.
+ */
 abstract class SimpleNamespace extends AbstractNamespace
 {
     protected $name;
     protected $inputs;
     protected $primary_unit;
     protected $num_segments;
+    protected $logger;
     
     private $experiment;
     private $default_experiment;
@@ -25,13 +32,15 @@ abstract class SimpleNamespace extends AbstractNamespace
      * Set up attributes needed for the namespace
      *
      * @param array $inputs data to determine parameter assignments, e.g. userid
+     * @param LoggerInterface $logger optional PSR-3 logging instance to use
      */
-    public function __construct($inputs)
+    public function __construct($inputs, LoggerInterface $logger = null)
     {
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
         $this->num_segments = null;      // num_segments set in setup()
         $this->in_experiment = false;    // not in experiment until unit assigned
+        $this->logger = $logger;         // track PSR logger if assigned
 
         // array mapping segments to experiment names
         $this->segment_allocations = array();
@@ -64,6 +73,16 @@ abstract class SimpleNamespace extends AbstractNamespace
      *     $this->addExperiment('first experiment', Exp1, 100);
      */
     abstract public function setupExperiments();
+
+    /**
+     * Set a new PSR-3 logging instance to use for output
+     *
+     * @param LoggerInterface $logger PSR-3 compliant logger to use for output
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * Get the primary unit that will be mapped to segments
@@ -205,7 +224,7 @@ abstract class SimpleNamespace extends AbstractNamespace
         // is the unit allocated to an experiment?
         if (array_key_exists($segment, $this->segment_allocations)) {
             $exp_name = $this->segment_allocations[$segment];
-            $experiment = new $this->current_experiments[$exp_name]($this->inputs);
+            $experiment = new $this->current_experiments[$exp_name]($this->inputs, $this->logger);
             $experiment->setName($this->name . '-' . $exp_name);
             $experiment->setSalt($this->name . '.' . $exp_name);
             $this->experiment = $experiment;
