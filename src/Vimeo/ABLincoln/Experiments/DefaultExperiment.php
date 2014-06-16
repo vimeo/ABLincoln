@@ -36,7 +36,7 @@ class DefaultExperiment extends AbstractExperiment
      * @param Assignment $params assignment in which to place new parameters
      * @param array $inputs input data to determine parameter assignments
      */
-    protected function _assign($params, $inputs)
+    public function assign($params, $inputs)
     {
         foreach ($this->getDefaultParams() as $key => $val) {
             $params[$key] = $val;

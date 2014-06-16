@@ -35,8 +35,8 @@ class BernoulliFilter extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $p = $this->_parameters['p'];
-        $choices = $this->_parameters['choices'];
+        $p = $this->parameters['p'];
+        $choices = $this->parameters['choices'];
         if (empty($choices)) {
             return array();
         }

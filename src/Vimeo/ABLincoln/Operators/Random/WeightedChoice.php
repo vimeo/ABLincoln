@@ -35,8 +35,8 @@ class WeightedChoice extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $choices = $this->_parameters['choices'];
-        $weights = $this->_parameters['weights'];
+        $choices = $this->parameters['choices'];
+        $weights = $this->parameters['weights'];
         if (empty($choices)) {
             return array();
         }

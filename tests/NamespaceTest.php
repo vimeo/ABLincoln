@@ -22,7 +22,7 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
             array('userid' => $userid1, 'username' => $username1)
         );
         $foo = $namespace->get('foo');
-        $this->assertEquals($foo, 3);
+        $this->assertEquals($foo, 1);
         $this->assertEquals(count(self::$log), 1);
 
         $namespace = new TestVanillaNamespace(
@@ -40,28 +40,28 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
 
 class TestVanillaNamespace extends SimpleNamespace
 {
-    protected function _setup()
+    public function setup()
     {
-        $this->_name = 'namespace_demo';
-        $this->_primary_unit = 'userid';
-        $this->_num_segments = 1000;
+        $this->name = 'namespace_demo';
+        $this->primary_unit = 'userid';
+        $this->num_segments = 1000;
     }
 
-    protected function _setupExperiments()
+    public function setupExperiments()
     {
-        $this->addExperiment('first', 'TestVanillaExperiment', 300);
-        $this->addExperiment('second', 'TestVanillaExperiment2', 700);
+        $this->addExperiment('first', 'TestExperiment', 300);
+        $this->addExperiment('second', 'TestExperiment2', 700);
     }
 }
 
-class TestVanillaExperiment extends AbstractExperiment
+class TestExperiment extends AbstractExperiment
 {
-    protected function _setup()
+    public function setup()
     {
-        $this->_name = 'test_name';
+        $this->name = 'test_name';
     }
 
-    protected function _assign($params, $inputs)
+    public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array('a', 'b')),
@@ -82,14 +82,14 @@ class TestVanillaExperiment extends AbstractExperiment
     }
 }
 
-class TestVanillaExperiment2 extends TestVanillaExperiment
+class TestExperiment2 extends TestExperiment
 {
-    protected function _setup()
+    public function setup()
     {
         $this->name = 'test2_name';
     }
 
-    protected function _assign($params, $inputs)
+    public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array(1, 2, 3)),

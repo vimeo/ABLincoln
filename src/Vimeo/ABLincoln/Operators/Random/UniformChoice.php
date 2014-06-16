@@ -31,7 +31,7 @@ class UniformChoice extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $choices = $this->_parameters['choices'];
+        $choices = $this->parameters['choices'];
         $num_choices = count($choices);
         if (!$num_choices) {
             return array();

@@ -35,12 +35,12 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
 
 class TestVanillaExperiment extends AbstractExperiment
 {
-    protected function _setup()
+    public function setup()
     {
-        $this->_name = 'test_name';
+        $this->name = 'test_name';
     }
 
-    protected function _assign($params, $inputs)
+    public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
             array('choices' => array('a', 'b')),

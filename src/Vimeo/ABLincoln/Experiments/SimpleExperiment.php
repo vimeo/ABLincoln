@@ -11,7 +11,7 @@ use \Psr\Log\LoggerInterface;
  */
 class SimpleExperiment extends AbstractExperiment
 {
-    protected $_logger;
+    protected $logger;
     const LOG_FORMAT = '%s with event type: %s';
 
     /**
@@ -23,7 +23,7 @@ class SimpleExperiment extends AbstractExperiment
     public function __construct($inputs, LoggerInterface $logger = null)
     {
         parent::__construct($inputs);
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -33,7 +33,7 @@ class SimpleExperiment extends AbstractExperiment
      */
     public function setLogger(LoggerInterface $logger)
     {
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -48,8 +48,8 @@ class SimpleExperiment extends AbstractExperiment
      */
     protected function _log($data)
     {
-        if (isset($this->_logger)) {
-            $this->_logger->info(sprintf(self::LOG_FORMAT, $this->_name, $data['event']), $data);
+        if (isset($this->logger)) {
+            $this->logger->info(sprintf(self::LOG_FORMAT, $this->name, $data['event']), $data);
         }
     }
 

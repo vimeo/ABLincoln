@@ -7,7 +7,7 @@ namespace Vimeo\ABLincoln\Operators;
  */
 abstract class RandomOperator extends AbstractOperator
 {
-    private $_long_scale;
+    private $long_scale;
 
     /**
      * Constructor: store given parameters and establish scale for hashing
@@ -18,7 +18,7 @@ abstract class RandomOperator extends AbstractOperator
     public function __construct($options, $inputs)
     {
         parent::__construct($options, $inputs);
-        $this->_long_scale = floatval(0xFFFFFFFFFFFFFFF);
+        $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class RandomOperator extends AbstractOperator
      */
     private function _getUnit($appended_unit = null)
     {
-        $unit = $this->_parameters['unit'];
+        $unit = $this->parameters['unit'];
         if (!is_array($unit)) {
             $unit = array($unit);
         }
@@ -63,8 +63,8 @@ abstract class RandomOperator extends AbstractOperator
      */
     protected function _getHash($appended_unit = null)
     {
-        $salt = $this->_parameters['salt'];
-        $salty = $this->_mapper['experiment_salt'] . '.' . $salt;
+        $salt = $this->parameters['salt'];
+        $salty = $this->mapper['experiment_salt'] . '.' . $salt;
         $unit_str_arr = array_map('strval', $this->_getUnit($appended_unit));
         $unit_str = implode('.', $unit_str_arr);
         return hexdec(substr(sha1($salty . '.' . $unit_str), 0, 15));
@@ -80,7 +80,7 @@ abstract class RandomOperator extends AbstractOperator
     protected function _getUniform($min_val = 0.0, $max_val = 1.0,
                                   $appended_unit = null)
     {
-        $zero_to_one = $this->_getHash($appended_unit) / $this->_long_scale;
+        $zero_to_one = $this->_getHash($appended_unit) / $this->long_scale;
         return $min_val + $zero_to_one * ($max_val - $min_val);
     }
 }

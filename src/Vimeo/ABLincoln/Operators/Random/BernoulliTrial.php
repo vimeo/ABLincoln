@@ -31,7 +31,7 @@ class BernoulliTrial extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $p = $this->_parameters['p'];
+        $p = $this->parameters['p'];
         $rand_val = $this->_getUniform(0.0, 1.0);
         return ($rand_val <= $p) ? 1 : 0;
     }    

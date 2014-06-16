@@ -35,8 +35,8 @@ class RandomFloat extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $min_val = $this->_parameters['min'];
-        $max_val = $this->_parameters['max'];
+        $min_val = $this->parameters['min'];
+        $max_val = $this->parameters['max'];
         return $this->_getUniform($min_val, $max_val);
     }
 }

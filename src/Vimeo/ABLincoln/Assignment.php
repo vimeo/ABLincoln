@@ -11,8 +11,8 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
  */
 class Assignment implements \ArrayAccess
 {
-    private $_data = array();
-    private $_experiment_salt;
+    private $data = array();
+    private $experiment_salt;
 
     /**
      * Store the given experiment salt in a private data array
@@ -21,7 +21,7 @@ class Assignment implements \ArrayAccess
      */
     public function __construct($experiment_salt)
     {
-        $this->_experiment_salt = $experiment_salt;
+        $this->experiment_salt = $experiment_salt;
     }
 
     /**
@@ -42,7 +42,7 @@ class Assignment implements \ArrayAccess
      */
     public function asArray()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -53,7 +53,7 @@ class Assignment implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->_data[$offset]);
+        return isset($this->data[$offset]);
     }
 
     /**
@@ -65,9 +65,9 @@ class Assignment implements \ArrayAccess
     public function offsetGet($offset)
     {
         if ($offset === 'experiment_salt') {
-            return $this->_experiment_salt;
+            return $this->experiment_salt;
         }
-        return isset($this->_data[$offset]) ? $this->_data[$offset] : null;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
     /**
@@ -83,10 +83,10 @@ class Assignment implements \ArrayAccess
                 if (!array_key_exists('salt', $value->args())) {
                     $value->setArg('salt', $offset);
                 }
-                $this->_data[] = $value->execute($this);
+                $this->data[] = $value->execute($this);
             }
             else {
-                $this->_data[] = $value;
+                $this->data[] = $value;
             }
         }
         else {
@@ -94,10 +94,10 @@ class Assignment implements \ArrayAccess
                 if (!array_key_exists('salt', $value->args())) {
                     $value->setArg('salt', $offset);
                 }
-                $this->_data[$offset] = $value->execute($this);
+                $this->data[$offset] = $value->execute($this);
             }
             else {
-                $this->_data[$offset] = $value;
+                $this->data[$offset] = $value;
             }
         }
     }
@@ -109,6 +109,6 @@ class Assignment implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->_data[$offset]);
+        unset($this->data[$offset]);
     }
 }
