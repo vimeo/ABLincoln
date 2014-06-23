@@ -15,11 +15,11 @@ abstract class AbstractExperiment
     protected $inputs;
     protected $logger_configured = false;
     protected $in_experiment = true;
+    protected $assignment;
 
     private $exposure_logged = false;
     private $auto_exposure_log = true;
     private $assigned = false;
-    private $assignment;
 
     /**
      * Set up attributes needed for experiment
