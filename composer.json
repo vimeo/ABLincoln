@@ -1,7 +1,7 @@
 {
     "name": "vimeo/ablincoln",
     "description": "PHP library for designing online experiments",
-    "license": "BSD",
+    "license": "",
     "authors": [
         {
             "name": "Alex Kalicki",
