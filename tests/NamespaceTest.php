@@ -1,7 +1,7 @@
 <?php
 
 use \Vimeo\ABLincoln\Namespaces\SimpleNamespace;
-use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
+use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
 /**
@@ -54,7 +54,7 @@ class TestVanillaNamespace extends SimpleNamespace
     }
 }
 
-class TestExperiment extends AbstractExperiment
+class TestExperiment extends SimpleExperiment
 {
     public function setup()
     {

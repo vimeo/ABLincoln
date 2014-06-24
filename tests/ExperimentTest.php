@@ -1,6 +1,6 @@
 <?php
 
-use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
+use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
 /**
@@ -33,7 +33,7 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class TestVanillaExperiment extends AbstractExperiment
+class TestVanillaExperiment extends SimpleExperiment
 {
     public function setup()
     {
