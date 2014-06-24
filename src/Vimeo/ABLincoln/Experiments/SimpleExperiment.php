@@ -5,7 +5,7 @@ namespace Vimeo\ABLincoln\Experiments;
 use \Psr\Log\LoggerInterface;
 
 /**
- * Simple experiment class that exposure logs according to PSR-3 logging
+ * Simple experiment base class that exposure logs according to PSR-3 logging
  * specifications. User experiments extending this class should pass in their
  * own compatible logger instance.
  */
