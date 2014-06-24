@@ -5,9 +5,9 @@ namespace Vimeo\ABLincoln\Experiments;
 use \Vimeo\ABLincoln\Assignment;
 
 /*
- * Abstract base class for experiments
+ * Abstract base trait used in all experiments
  */
-abstract class AbstractExperiment
+trait AbstractExperiment
 {
     protected $name;
     protected $salt = null;
@@ -26,7 +26,7 @@ abstract class AbstractExperiment
      *
      * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
      */
-    public function __construct($inputs)
+    public function initialize($inputs)
     {
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
