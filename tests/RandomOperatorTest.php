@@ -213,7 +213,7 @@ abstract class TestHelper
         self::$args = $args;
     }
 
-    abstract public static function execute($i);
+    public static function execute($i) {}
 }
 
 class FloatHelper extends TestHelper
