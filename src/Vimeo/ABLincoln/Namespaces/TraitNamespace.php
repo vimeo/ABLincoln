@@ -4,15 +4,18 @@ namespace Vimeo\ABLincoln\Namespaces;
 
 use \Vimeo\ABLincoln\Assignment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
+use \Psr\Log\LoggerInterface;
 
 /**
- * Simple namespace base class that handles user assignment when dealing with
+ * Simple namespace base trait that handles user assignment when dealing with
  * multiple concurrent experiments. Exposure logs according to PSR-3 logging
- * specifications. User experiments extending this class should pass in their
+ * specifications. User experiments utilizing this trait should pass in their
  * own compatible logger instance.
  */
-abstract class SimpleNamespace extends AbstractNamespace
+trait TraitNamespace
 {
+    use AbstractNamespace;
+
     protected $name;
     protected $inputs;
     protected $primary_unit;
@@ -34,7 +37,7 @@ abstract class SimpleNamespace extends AbstractNamespace
      * @param array $inputs data to determine parameter assignments, e.g. userid
      * @param LoggerInterface $logger optional PSR-3 logging instance to use
      */
-    public function __construct($inputs, LoggerInterface $logger = null)
+    public function initialize($inputs, LoggerInterface $logger = null)
     {
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
