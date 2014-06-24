@@ -6,8 +6,20 @@ namespace Vimeo\ABLincoln\Experiments;
  * Dummy experiment which has no logging. Default experiments used by 
  * namespaces should inherit from this class
  */
-class DefaultExperiment extends AbstractExperiment
+class DefaultExperiment
 {
+    use AbstractExperiment;
+
+    /**
+     * Set up attributes needed for experiment
+     *
+     * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
+     */
+    public function __construct($inputs)
+    {
+        $this->initialize($inputs);
+    }
+
     /**
      * We don't need a logger when there's no experiment
      */
