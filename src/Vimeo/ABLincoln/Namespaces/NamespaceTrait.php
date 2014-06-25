@@ -173,7 +173,7 @@ trait NamespaceTrait
         unset($this->current_experiments[$name]);
 
         // currently assigned experiment just deleted!
-        if ($this->experiment->name() === $this->name . '-' . $name) {
+        if (isset($this->experiment) && $this->experiment->name() === $this->name . '-' . $name) {
             $this->experiment = null;
             $this->in_experiment = false;
         }
