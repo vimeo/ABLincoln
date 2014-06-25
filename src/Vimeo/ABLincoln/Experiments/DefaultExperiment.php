@@ -8,7 +8,7 @@ namespace Vimeo\ABLincoln\Experiments;
  */
 class DefaultExperiment
 {
-    use AbstractExperiment;
+    use AbstractExperimentTrait;
 
     /**
      * Set up attributes needed for experiment

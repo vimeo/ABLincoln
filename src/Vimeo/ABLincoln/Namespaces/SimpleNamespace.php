@@ -12,7 +12,7 @@ use \Psr\Log\LoggerInterface;
  */
 abstract class SimpleNamespace
 {
-    use TraitNamespace;
+    use NamespaceTrait;
 
     /**
      * Set up attributes needed for the namespace

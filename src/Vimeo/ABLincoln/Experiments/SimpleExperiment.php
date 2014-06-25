@@ -11,7 +11,7 @@ use \Psr\Log\LoggerInterface;
  */
 abstract class SimpleExperiment
 {
-    use TraitExperiment;
+    use ExperimentTrait;
 
     /**
      * Construct a new Simple experiment, passing in hashing inputs and logger

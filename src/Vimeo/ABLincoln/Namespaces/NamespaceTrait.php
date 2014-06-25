@@ -12,9 +12,9 @@ use \Psr\Log\LoggerInterface;
  * specifications. User experiments utilizing this trait should pass in their
  * own compatible logger instance.
  */
-trait TraitNamespace
+trait NamespaceTrait
 {
-    use AbstractNamespace;
+    use AbstractNamespaceTrait;
 
     protected $name;
     protected $inputs;

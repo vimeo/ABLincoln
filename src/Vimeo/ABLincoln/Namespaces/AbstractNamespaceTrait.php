@@ -5,7 +5,7 @@ namespace Vimeo\ABLincoln\Namespaces;
 /*
  * Abstract base trait used to manage related experiments
  */
-trait AbstractNamespace
+trait AbstractNamespaceTrait
 {
     /**
      * Set up attributes needed for the namespace

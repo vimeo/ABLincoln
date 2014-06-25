@@ -7,7 +7,7 @@ use \Vimeo\ABLincoln\Assignment;
 /*
  * Abstract base trait used in all experiments
  */
-trait AbstractExperiment
+trait AbstractExperimentTrait
 {
     protected $name;
     protected $salt = null;

@@ -9,10 +9,10 @@ use \Psr\Log\LoggerInterface;
  * specifications. User experiments utilizing this trait should pass in their
  * own compatible logger instance.
  */
-trait TraitExperiment
+trait ExperimentTrait
 {
-    use AbstractExperiment {
-        AbstractExperiment::initialize as parentInitialize;
+    use AbstractExperimentTrait {
+        AbstractExperimentTrait::initialize as parentInitialize;
     }
 
     protected $logger;
