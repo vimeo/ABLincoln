@@ -247,7 +247,7 @@ trait AbstractExperimentTrait
     public function logExposure($extras = null)
     {
         $this->logEvent('exposure', $extras);
-        $this->exposureLogged = true;
+        $this->exposure_logged = true;
     }
 
     /**
