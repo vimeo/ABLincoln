@@ -17,6 +17,7 @@ trait AbstractExperimentTrait
     protected $in_experiment = true;
     protected $assignment;
 
+    private $logged;
     private $exposure_logged = false;
     private $auto_exposure_log = true;
     private $assigned = false;
