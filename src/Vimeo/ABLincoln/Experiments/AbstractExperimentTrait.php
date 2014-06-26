@@ -61,6 +61,7 @@ trait AbstractExperimentTrait
         $this->assign($this->assignment, $this->inputs);
         $this->in_experiment = array_key_exists('in_experiment', $this->assignment->asArray()) ? $this->assignment['in_experiment'] : $this->in_experiment;
         $this->logged = $this->_previouslyLogged();
+        $this->assigned = true;
     }
 
     /**
