@@ -3,6 +3,7 @@
 namespace Vimeo\ABLincoln\Experiments;
 
 use \Psr\Log\LoggerInterface;
+use \Psr\Log\LoggerAwareTrait;
 
 /**
  * Simple experiment trait that exposure logs according to PSR-3 logging
@@ -11,11 +12,10 @@ use \Psr\Log\LoggerInterface;
  */
 trait ExperimentTrait
 {
-    use AbstractExperimentTrait {
+    use AbstractExperimentTrait, LoggerAwareTrait {
         AbstractExperimentTrait::initialize as parentInitialize;
     }
 
-    protected $logger;
     protected $LOG_FORMAT = '%s with event type: %s';
 
     /**
@@ -27,16 +27,6 @@ trait ExperimentTrait
     public function initialize($inputs, LoggerInterface $logger = null)
     {
         $this->parentInitialize($inputs);
-        $this->logger = $logger;
-    }
-
-    /**
-     * Set a new PSR-3 logging instance to use for output
-     *
-     * @param LoggerInterface $logger PSR-3 compliant logger to use for output
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
         $this->logger = $logger;
     }
 

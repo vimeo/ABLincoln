@@ -5,6 +5,7 @@ namespace Vimeo\ABLincoln\Namespaces;
 use \Vimeo\ABLincoln\Assignment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 use \Psr\Log\LoggerInterface;
+use \Psr\Log\LoggerAwareTrait;
 
 /**
  * Simple namespace base trait that handles user assignment when dealing with
@@ -14,13 +15,12 @@ use \Psr\Log\LoggerInterface;
  */
 trait NamespaceTrait
 {
-    use AbstractNamespaceTrait;
+    use AbstractNamespaceTrait, LoggerAwaretrait;
 
     protected $name;
     protected $inputs;
     protected $primary_unit;
     protected $num_segments;
-    protected $logger;
     
     private $experiment;
     private $default_experiment;
@@ -76,16 +76,6 @@ trait NamespaceTrait
      *     $this->addExperiment('first experiment', Exp1, 100);
      */
     abstract public function setupExperiments();
-
-    /**
-     * Set a new PSR-3 logging instance to use for output
-     *
-     * @param LoggerInterface $logger PSR-3 compliant logger to use for output
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Get the primary unit that will be mapped to segments
