@@ -100,6 +100,7 @@ trait AbstractExperimentTrait
     public function setSalt($value)
     {
         $this->salt = $value;
+        $this->assignment = $this->_getAssignment();
     }
 
     /**

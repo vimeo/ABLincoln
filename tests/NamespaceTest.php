@@ -22,7 +22,7 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
             array('userid' => $userid1, 'username' => $username1)
         );
         $foo = $namespace->get('foo');
-        $this->assertEquals($foo, 1);
+        $this->assertEquals($foo, 2);
         $this->assertEquals(count(self::$log), 1);
 
         $namespace = new TestVanillaNamespace(
