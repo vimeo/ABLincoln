@@ -71,7 +71,7 @@ trait AbstractExperimentTrait
      */
     private function _getAssignment()
     {
-        return new Assignment($this->salt);
+        return new Assignment($this->salt());
     }
 
     /**
@@ -121,6 +121,7 @@ trait AbstractExperimentTrait
     public function setName($value)
     {
         $this->name = preg_replace('/\s+/', '-', $value);
+        $this->assignment = $this->_getAssignment();
     }
 
     /**
@@ -185,7 +186,7 @@ trait AbstractExperimentTrait
         $ret = array(
             'name' => $this->name,
             'time' => time(),
-            'salt' => $this->salt,
+            'salt' => $this->salt(),
             'inputs' => $this->inputs,
             'params' => $this->assignment->asArray()
         );
