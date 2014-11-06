@@ -98,7 +98,7 @@ class FirstExperiment extends SimpleExperiment
 
     protected function _log($data)
     {
-        print json_encode($data);
+        echo json_encode($data);
     }
 }
 
