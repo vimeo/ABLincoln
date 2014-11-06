@@ -115,9 +115,7 @@ to the console. Running the above generates the following output:
 ```
 Sign up. #ff0000
 
-{"name": "FirstExperiment", "time": 1415140890, "salt": "FirstExperiment",
-"inputs": {"userid": 12}, "params": {"button_color": "#ff0000", "button_text":
-"Sign up."}, "event":"exposure"}
+{"name": "FirstExperiment", "time": 1415140890, "salt": "FirstExperiment", "inputs": {"userid": 12}, "params": {"button_color": "#ff0000", "button_text": "Sign up."}, "event": "exposure"}
 ```
 
 The `SimpleExperiment` class will automatically concatenate the name of the
