@@ -109,7 +109,7 @@ echo $my_exp->get('button_text') . ' ' . $my_exp->get('button_color');
 The `_log()` method is run every time experiment parameters are queried to
 generate an appropriate exposure log. By default, the method exposure logs
 according to the object's corresponding PSR-logger. For demonstration purposes,
-we have overrident the method here and allowed it to simply print a log string
+we have overriden the method here and allowed it to simply print a log string
 to the console. Running the above generates the following output:
 
 ```
