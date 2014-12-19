@@ -2,34 +2,38 @@
 
 use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
+use \Psr\Log\AbstractLogger;
+
+require_once __DIR__ . '/TestLogger.php';
 
 /**
  * PHPUnit Experiment test class
  */
 class ExperimentTest extends \PHPUnit_Framework_TestCase
 {
-    public static $log = array();
-
     public function testVanillaExperiment()
     {
         $userid = 42;
         $username = 'a_name';
+        $logger = new TestLogger();
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid)
+            array('userid' => $userid),
+            $logger
         );
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
-        $this->assertEquals(count(self::$log), 1);
+        $this->assertEquals(count($logger->log), 1);
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid, 'username' => $username)
+            array('userid' => $userid, 'username' => $username),
+            $logger
         );
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
-        $this->assertEquals(count(self::$log), 2);
+        $this->assertEquals(count($logger->log), 2);
     }
 }
 
@@ -51,12 +55,5 @@ class TestVanillaExperiment extends SimpleExperiment
     protected function _previouslyLogged()
     {
         return false;
-    }
-
-    protected function _configureLogger() {}
-
-    protected function _log($data)
-    {
-        ExperimentTest::$log[] = $data;
     }
 }
