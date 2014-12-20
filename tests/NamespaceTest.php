@@ -4,8 +4,6 @@ use \Vimeo\ABLincoln\Namespaces\SimpleNamespace;
 use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
-require_once __DIR__ . '/TestLogger.php';
-
 /**
  * PHPUnit Namespace test class
  */
