@@ -4,33 +4,36 @@ use \Vimeo\ABLincoln\Namespaces\SimpleNamespace;
 use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
+require_once __DIR__ . '/TestLogger.php';
+
 /**
  * PHPUnit Namespace test class
  */
 class NamespaceTest extends \PHPUnit_Framework_TestCase
 {
-    public static $log = array();
-
     public function testVanillaNamespace()
     {
         $userid1 = 3;
         $username1 = 'user1';
         $userid2 = 7;
         $username2 = 'user2';
+        $logger = new TestLogger();
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid1, 'username' => $username1)
+            array('userid' => $userid1, 'username' => $username1),
+            $logger
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 2);
-        $this->assertEquals(count(self::$log), 1);
+        $this->assertEquals(count($logger->log), 1);
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid2, 'username' => $username2)
+            array('userid' => $userid2, 'username' => $username2),
+            $logger
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
-        $this->assertEquals(count(self::$log), 2);
+        $this->assertEquals(count($logger->log), 2);
 
         $namespace->removeExperiment('first');
         $foo = $namespace->get('foo');
@@ -72,13 +75,6 @@ class TestExperiment extends SimpleExperiment
     protected function _previouslyLogged()
     {
         return false;
-    }
-
-    protected function _configureLogger() {}
-
-    protected function _log($data)
-    {
-        NamespaceTest::$log[] = $data;
     }
 }
 

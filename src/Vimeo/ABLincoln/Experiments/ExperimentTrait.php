@@ -43,7 +43,7 @@ trait ExperimentTrait
     protected function _log($data)
     {
         if (isset($this->logger)) {
-            $this->logger->info(sprintf($LOG_FORMAT, $this->name, $data['event']), $data);
+            $this->logger->info(sprintf($this->LOG_FORMAT, $this->name, $data['event']), $data);
         }
     }
 
