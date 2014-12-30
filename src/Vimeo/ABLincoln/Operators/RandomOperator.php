@@ -11,7 +11,7 @@ namespace Vimeo\ABLincoln\Operators;
  *         variable). If 'salt' input not specified, parameter name is used as
  *         random variable salt.
  */
-abstract class RandomOperator extends AbstractOperator
+abstract class RandomOperator extends AbstractSimpleOperator
 {
     private $long_scale;
 

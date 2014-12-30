@@ -6,9 +6,9 @@ namespace Vimeo\ABLincoln\Operators;
  * Easiest way to implement simple operators. The class automatically evaluates
  * the values of all parameters passed in via execute(), and stores the mapper
  * object and evaluated parameters as instance variables.  The user can then
- * extend AbstractOperator and implement simpleExecute().
+ * extend AbstractSimpleOperator and implement simpleExecute().
  */
-abstract class AbstractOperator
+abstract class AbstractSimpleOperator
 {
     protected $parameters;
     protected $mapper;
