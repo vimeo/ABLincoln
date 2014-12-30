@@ -6,28 +6,14 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Filter an array with Bernoulli Trial probability for each element
+ *
+ * Required Inputs:
+ *   - 'p': probability of retaining element
+ *   - 'choices': array of elements being filtered
+ * Optional Inputs: None
  */
 class BernoulliFilter extends RandomOperator
 {
-    /**
-     * The operator requires a probability value and choices array to filter
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'p' => array(
-                'required' => 1,
-                'description' => 'probability of retaining element'
-            ),
-            'choices' => array(
-                'required' => 1,
-                'description' => 'elements being filtered'
-            )
-        );
-    }
-
     /**
      * Filter the parameter array on each element with probability p
      *

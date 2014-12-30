@@ -6,28 +6,14 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Select a random sample from a given choices array
+ *
+ * Required Inputs:
+ *   - 'choices': array of choices to sample
+ * Optional Inputs:
+ *   - 'draws': number of samples to draw
  */
 class Sample extends RandomOperator
 {
-    /**
-     * The operator requires an set of choices to draw from and number to draw
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'choices' => array(
-                'required' => 1,
-                'description' => 'choices to sample'
-            ),
-            'draws' => array(
-                'required' => 0,
-                'description' => 'number of samples to draw'
-            )
-        );
-    }
-
     /**
      * Choose a random sample of choices from the parameter array
      *

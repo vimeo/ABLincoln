@@ -6,24 +6,13 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Randomly select a choice from an array of options
+ *
+ * Required Inputs:
+ *   - 'choices': array of elements to draw from
+ * Optional Inputs: None
  */
 class UniformChoice extends RandomOperator
 {
-    /**
-     * The operator requires an array of choices to draw from
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'choices' => array(
-                'required' => 1,
-                'description' => 'elements to draw from'
-            )
-        );
-    }
-
     /**
      * Choose an element randomly from the parameter array
      *

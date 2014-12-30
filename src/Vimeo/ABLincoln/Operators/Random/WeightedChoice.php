@@ -6,28 +6,14 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Select an element from a choices array according to given probabilities
+ *
+ * Required Inputs:
+ *   - 'choices': array of elements to draw from
+ *   - 'weights': array of draw probabilities
+ * Optional Inputs: None
  */
 class WeightedChoice extends RandomOperator
 {
-    /**
-     * The operator requires an set of choices to draw from and weights to use
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'choices' => array(
-                'required' => 1,
-                'description' => 'elements to draw from'
-            ),
-            'weights' => array(
-                'required' => 1,
-                'description' => 'probability of draw'
-            )
-        );
-    }
-
     /**
      * Choose an element with weighted probability from the parameter array
      *

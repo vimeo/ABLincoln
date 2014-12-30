@@ -4,6 +4,12 @@ namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Base class for random operators.
+ *
+ * Required Inputs: None
+ * Optional Inputs:
+ *   - 'salt': salt for hash (should generally be unique for each random
+ *         variable). If 'salt' input not specified, parameter name is used as
+ *         random variable salt.
  */
 abstract class RandomOperator extends AbstractOperator
 {
@@ -19,22 +25,6 @@ abstract class RandomOperator extends AbstractOperator
     {
         parent::__construct($options, $inputs);
         $this->long_scale = floatval(0xFFFFFFFFFFFFFFF);
-    }
-
-    /**
-     * All random operators take an optional salt that replaces the parameter
-     * name for hashing if it is set
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'salt' => array(
-                'required' => 0,
-                'description' => 'salt for hash. should generally be unique for each random variable. if not specified parameter name is used'
-            )
-        );
     }
 
     /**

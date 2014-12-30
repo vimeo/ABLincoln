@@ -6,28 +6,14 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
  * Random operator used to calculate pseudorandom integers
+ *
+ * Required Inputs:
+ *   - 'min': min (int) value drawn
+ *   - 'max': max (int) value drawn
+ * Optional Inputs: None
  */
 class RandomInteger extends RandomOperator
 {
-    /**
-     * The operator requires a minimum and maximum value for the range
-     *
-     * @return array the array of required parameters
-     */
-    public function options()
-    {
-        return array(
-            'min' => array(
-                'required' => 1,
-                'description' => 'min (int) value drawn'
-            ),
-            'max' => array(
-                'required' => 1,
-                'description' => 'max (int) value drawn'
-            )
-        );
-    }
-
     /**
      * Calculate a random integer in the given range
      *
