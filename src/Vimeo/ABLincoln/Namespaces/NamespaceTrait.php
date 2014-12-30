@@ -21,7 +21,7 @@ trait NamespaceTrait
     protected $inputs;
     protected $primary_unit;
     protected $num_segments;
-    
+
     private $experiment;
     private $default_experiment;
     private $default_experiment_class;
@@ -58,7 +58,7 @@ trait NamespaceTrait
         // setup name, primary key, number of segments, etc
         $this->setup();
         $this->available_segments = range(0, $this->num_segments - 1);
-        
+
         $this->setupExperiments();  // load namespace with experiments
     }
 
@@ -185,7 +185,7 @@ trait NamespaceTrait
     }
 
     /**
-     * Checks if primary unit segment is assigned to an experiment, 
+     * Checks if primary unit segment is assigned to an experiment,
      * and if not assigns it to one
      */
     protected function _requiresExperiment()
@@ -207,11 +207,12 @@ trait NamespaceTrait
     }
 
     /**
-     * Assigns the primary unit value(s) and associated segment to a new 
+     * Assigns the primary unit value(s) and associated segment to a new
      * experiment and updates the experiment name/salt accordingly
      */
     private function _assignExperiment()
     {
+        $this->in_experiment = false;
         $segment = $this->_getSegment();
 
         // is the unit allocated to an experiment?
@@ -223,9 +224,9 @@ trait NamespaceTrait
             $this->experiment = $experiment;
             $this->in_experiment = $experiment->inExperiment();
         }
-        else {
+
+        if (!$this->in_experiment) {
             $this->_assignDefaultExperiment();
-            $this->in_experiment = false;
         }
     }
 
