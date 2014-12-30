@@ -110,12 +110,13 @@ The `_log()` method is run every time experiment parameters are queried to
 generate an appropriate exposure log. By default, the method exposure logs
 according to the object's corresponding PSR-logger. For demonstration purposes,
 we have overriden the method here and allowed it to simply print a log string
-to the console. Running the above generates the following output:
+to the console. Running the above generates the following output, consisting
+of the JSON log and the parameter values we have determined:
 
 ```
-Sign up. #ff0000
-
 {"name": "FirstExperiment", "time": 1415140890, "salt": "FirstExperiment", "inputs": {"userid": 12}, "params": {"button_color": "#ff0000", "button_text": "Sign up."}, "event": "exposure"}
+
+Sign up. #ff0000
 ```
 
 The `SimpleExperiment` class will automatically concatenate the name of the
