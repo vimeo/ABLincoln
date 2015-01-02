@@ -72,7 +72,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        // test outcome frequencies against expected density. each $list is a 
+        // test outcome frequencies against expected density. each $list is a
         // row of the transpose of $values, and is expected to have the same
         // distribution as $value_density
         foreach ($values_trans as $key => $list) {
@@ -188,6 +188,10 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         $weights = array('a' => 0, 'b' => 2, 'c' => 0);
         WeightedHelper::setArgs(array('choices' => array('a', 'b', 'c'), 'weights' => $weights));
         $this->_distributionTester('WeightedHelper::execute', $weights);
+
+        // test distribution with repeated choices
+        WeightedHelper::setArgs(array('choices' => array('a', 'b', 'a'), 'weights' => array(1, 2, 3)));
+        $this->_distributionTester('WeightedHelper::execute', array('a' => 2, 'b' => 1));
     }
 
     /**

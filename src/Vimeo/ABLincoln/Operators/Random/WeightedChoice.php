@@ -21,21 +21,25 @@ class WeightedChoice extends RandomOperator
      */
     protected function _simpleExecute()
     {
-        $choices = $this->parameters['choices'];
-        $weights = $this->parameters['weights'];
+        $choices = array_values($this->parameters['choices']);
+        $weights = array_values($this->parameters['weights']);
         if (empty($choices)) {
             return array();
         }
-        $cum_weights = array_combine($choices, $weights);
+
+        // initialize array for making weighted draw
         $cum_sum = 0.0;
-        foreach ($cum_weights as $choice => $weight) {
-            $cum_sum += $weight;
-            $cum_weights[$choice] = $cum_sum;
+        $cum_weights = array();
+        for ($i = 0; $i < count($choices); $i++) {
+            $cum_sum += $weights[$i];
+            $cum_weights[$i] = $cum_sum;
         }
+
+        // find first choice where cumulative weight is > stopping value
         $stop_value = $this->_getUniform(0.0, $cum_sum);
-        foreach ($cum_weights as $choice => $weight) {
-            if ($stop_value <= $weight) {
-                return $choice;
+        for ($i = 0; $i < count($choices); $i++) {
+            if ($stop_value <= $cum_weights[$i] && $cum_weights[$i] > 0) {
+                return $choices[$i];
             }
         }
     }
