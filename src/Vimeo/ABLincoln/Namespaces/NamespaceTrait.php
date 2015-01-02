@@ -22,8 +22,8 @@ trait NamespaceTrait
     protected $primary_unit;
     protected $num_segments;
 
-    private $experiment;
-    private $default_experiment;
+    private $experiment = null;
+    private $default_experiment = null;
     private $default_experiment_class;
     private $in_experiment;
     private $current_experiments;
@@ -163,7 +163,7 @@ trait NamespaceTrait
         unset($this->current_experiments[$name]);
 
         // currently assigned experiment just deleted!
-        if (isset($this->experiment) && $this->experiment->name() === $this->name . '-' . $name) {
+        if (!is_null($this->experiment) && $this->experiment->name() === $this->name . '-' . $name) {
             $this->experiment = null;
             $this->in_experiment = false;
         }
@@ -190,7 +190,7 @@ trait NamespaceTrait
      */
     protected function _requiresExperiment()
     {
-        if (!isset($this->experiment)) {
+        if (is_null($this->experiment)) {
             $this->_assignExperiment();
         }
     }
@@ -201,7 +201,7 @@ trait NamespaceTrait
      */
     protected function _requiresDefaultExperiment()
     {
-        if (!isset($this->default_experiment)) {
+        if (is_null($this->default_experiment)) {
             $this->_assignDefaultExperiment();
         }
     }
@@ -249,7 +249,7 @@ trait NamespaceTrait
     public function get($name, $default = null)
     {
         $this->_requiresExperiment();
-        if (!isset($this->experiment)) {
+        if (is_null($this->experiment)) {
             return $this->_defaultGet($name, $default);
         }
         return $this->experiment->get($name, $this->_defaultGet($name, $default));
@@ -277,7 +277,7 @@ trait NamespaceTrait
     public function setAutoExposureLogging($value)
     {
         $this->_requiresExperiment();
-        if (isset($this->experiment)) {
+        if (!is_null($this->experiment)) {
             $this->experiment->setAutoExposureLogging($value);
         }
     }
@@ -290,7 +290,7 @@ trait NamespaceTrait
     public function logExposure($extras = null)
     {
         $this->_requiresExperiment();
-        if (isset($this->experiment)) {
+        if (!is_null($this->experiment)) {
             $this->experiment->logExposure($extras);
         }
     }
@@ -304,7 +304,7 @@ trait NamespaceTrait
     public function logEvent($event_type, $extras = null)
     {
         $this->_requiresExperiment();
-        if (isset($this->experiment)) {
+        if (!is_null($this->experiment)) {
             $this->experiment->logEvent($event_type, $extras);
         }
     }

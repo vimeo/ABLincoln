@@ -47,13 +47,13 @@ class Assignment implements \ArrayAccess
 
     /**
      * Check if a given key is set in the array
-     *  
+     *
      * @param mixed $offset key to check for in the array
      * @return boolean true if key exists, false otherwise
      */
     public function offsetExists($offset)
     {
-        return isset($this->data[$offset]);
+        return array_key_exists($this->data[$offset]);
     }
 
     /**
@@ -67,7 +67,7 @@ class Assignment implements \ArrayAccess
         if ($offset === 'experiment_salt') {
             return $this->experiment_salt;
         }
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+        return array_key_exists($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
     /**

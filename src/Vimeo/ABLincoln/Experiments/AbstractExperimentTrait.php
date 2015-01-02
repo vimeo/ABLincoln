@@ -89,7 +89,7 @@ trait AbstractExperimentTrait
      */
     public function salt()
     {
-        return isset($this->salt) ? $this->salt : $this->name;
+        return is_null($this->salt) ? $this->name : $this->salt;
     }
 
     /**
@@ -261,7 +261,7 @@ trait AbstractExperimentTrait
      */
     public function logEvent($eventType, $extras = null)
     {
-        if (isset($extras)) {
+        if (!is_null($extras)) {
             $extraPayload = array('event' => $eventType, 'extra_data' => $extras);
         }
         else {
