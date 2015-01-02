@@ -53,7 +53,7 @@ class Assignment implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return array_key_exists($this->data[$offset]);
+        return array_key_exists($offset, $this->data);
     }
 
     /**
@@ -67,7 +67,7 @@ class Assignment implements \ArrayAccess
         if ($offset === 'experiment_salt') {
             return $this->experiment_salt;
         }
-        return array_key_exists($this->data[$offset]) ? $this->data[$offset] : null;
+        return array_key_exists($offset, $this->data) ? $this->data[$offset] : null;
     }
 
     /**
