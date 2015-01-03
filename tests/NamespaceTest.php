@@ -32,10 +32,6 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
         $this->assertEquals(count($logger->log), 2);
-
-        $namespace->removeExperiment('first');
-        $foo = $namespace->get('foo');
-        $this->assertNull($foo);
     }
 }
 

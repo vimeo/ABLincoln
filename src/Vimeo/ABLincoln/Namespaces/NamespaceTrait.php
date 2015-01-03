@@ -119,10 +119,13 @@ trait NamespaceTrait
     {
         $num_available = count($this->available_segments);
         if ($num_available < $num_segments) {
-            return;  // more segments requested than available, exit
+            throw new \Exception("Error: $num_segments requested, only $num_available available.");
         }
         if (array_key_exists($name, $this->current_experiments)) {
-            return;  // experiment name collision, exit
+            throw new \Exception("Error: there is already an experiment called $name.");
+        }
+        if (!is_null($this->experiment)) {
+            throw new \Exception('Error: addExperiment cannot be called after an assignment is made.');
         }
 
         // randomly select the given numer of segments from all available options
@@ -150,7 +153,10 @@ trait NamespaceTrait
     public function removeExperiment($name)
     {
         if (!array_key_exists($name, $this->current_experiments)) {
-            return;  // given experiment not currently running
+            throw new \Exception("Error: there is no experiment called $name.");
+        }
+        if (!is_null($this->experiment)) {
+            throw new \Exception('Error: removeExperiment cannot be called after an assignment is made.');
         }
 
         // make segments available for allocation again, remove experiment name
@@ -161,12 +167,6 @@ trait NamespaceTrait
             }
         }
         unset($this->current_experiments[$name]);
-
-        // currently assigned experiment just deleted!
-        if (!is_null($this->experiment) && $this->experiment->name() === $this->name . '-' . $name) {
-            $this->experiment = null;
-            $this->in_experiment = false;
-        }
     }
 
     /**
