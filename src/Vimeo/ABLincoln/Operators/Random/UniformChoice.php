@@ -20,6 +20,13 @@ class UniformChoice extends RandomOperator
      */
     protected function _simpleExecute()
     {
+        if (!array_key_exists('choices', $this->parameters)) {
+            throw new \Exception(get_class($this) . ": input 'choices' required.");
+        }
+        if (!is_array($this->parameters['choices'])) {
+            throw new \Exception(get_class($this) . ": 'choices' must be an array.");
+        }
+
         $choices = $this->parameters['choices'];
         $num_choices = count($choices);
         if (!$num_choices) {

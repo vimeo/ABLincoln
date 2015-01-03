@@ -21,8 +21,19 @@ class BernoulliFilter extends RandomOperator
      */
     protected function _simpleExecute()
     {
+        if (!array_key_exists('p', $this->parameters) || !array_key_exists('choices', $this->parameters)) {
+            throw new \Exception(get_class($this) . ": inputs 'p' and 'choices' required.");
+        }
+
         $p = $this->parameters['p'];
         $choices = $this->parameters['choices'];
+        if (!is_numeric($p) || $p < 0.0 || $p > 1.0) {
+            throw new \Exception(get_class($this) . ": 'p' must be a number between 0.0 and 1.0, not $p.");
+        }
+        if (!is_array($choices)) {
+            throw new \Exception(get_class($this) . ": 'choices' must be an array.");
+        }
+
         if (empty($choices)) {
             return array();
         }
