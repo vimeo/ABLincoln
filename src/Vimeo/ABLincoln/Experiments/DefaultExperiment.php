@@ -3,23 +3,11 @@
 namespace Vimeo\ABLincoln\Experiments;
 
 /**
- * Dummy experiment which has no logging. Default experiments used by 
+ * Dummy experiment which has no logging. Default experiments used by
  * namespaces should inherit from this class
  */
-class DefaultExperiment
+class DefaultExperiment extends AbstractExperiment
 {
-    use AbstractExperimentTrait;
-
-    /**
-     * Set up attributes needed for experiment
-     *
-     * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
-     */
-    public function __construct($inputs)
-    {
-        $this->initialize($inputs);
-    }
-
     /**
      * We don't need a logger when there's no experiment
      */
@@ -56,7 +44,7 @@ class DefaultExperiment
     }
 
     /**
-     * Default experiments that are just key-value stores should override 
+     * Default experiments that are just key-value stores should override
      * this method
      *
      * @return array array of default parameters
