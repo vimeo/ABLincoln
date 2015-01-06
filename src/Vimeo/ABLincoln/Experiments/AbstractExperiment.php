@@ -5,7 +5,7 @@ namespace Vimeo\ABLincoln\Experiments;
 use \Vimeo\ABLincoln\Assignment;
 
 /*
- * Abstract base class used in all experiments
+ * Abstract base class used in all experiments.
  */
 abstract class AbstractExperiment
 {

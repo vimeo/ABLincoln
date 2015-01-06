@@ -4,7 +4,7 @@ namespace Vimeo\ABLincoln\Experiments;
 
 /**
  * Dummy experiment which has no logging. Default experiments used by
- * namespaces should inherit from this class
+ * namespaces should inherit from this class.
  */
 class DefaultExperiment extends AbstractExperiment
 {
