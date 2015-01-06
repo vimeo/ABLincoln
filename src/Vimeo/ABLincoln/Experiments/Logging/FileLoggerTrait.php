@@ -4,27 +4,50 @@ namespace Vimeo\ABLincoln\Experiments\Logging;
 
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
+use \Monolog\Formatter\LineFormatter;
 
+/**
+ * Give experiments the ability to log to files. Configures a Monolog PSR-3
+ * file logger and uses it in conjunction with the methods defined in
+ * PSRLoggerTrait.
+ */
 trait FileLoggerTrait
 {
     use PSRLoggerTrait;
 
-    protected $file_path = null;
+    // We only want to set up the logger for each experiment once, the first
+    // time it's instantiated. We do this by maintaining these class variables.
+    protected static $loggers = array();
+    protected static $file_paths = array();
 
     /**
-     * Setup Monolog logger to write to file. _configureLogger() only gets
+     * Set up Monolog logger to write to file. _configureLogger() only gets
      * called once in AbstractExperiment upon making an experiment assignment
      * so the logger will only be initialized a single time when needed.
      */
     protected function _configureLogger()
     {
-        if (is_null($this->file_path)) {
-            $this->file_path = $this->name . '.log';
+        // use previously instantiated logger if already set up
+        if (array_key_exists($this->name, self::$loggers)) {
+            $this->setLogger(self::$loggers[$this->name]);
+            return;
         }
 
+        // if file path not set for experiment default to 'experiment_name.log'
+        if (!array_key_exists($this->name, self::$file_paths)) {
+            self::$file_paths[$this->name] = $this->name . '.log';
+        }
+
+        // create new logger with channel=experiment_name and given level/path
         $logger = new Logger($this->name);
-        $logger->pushHandler(new StreamHandler($this->file_path, $this->log_level));
+        $handler = new StreamHandler(self::$file_paths[$this->name], $this->log_level);
+
+        // format to ignore empty context + extra arrays
+        $handler->setFormatter(new LineFormatter(null, null, false, true));
+        $logger->pushHandler($handler);
+
         $this->setLogger($logger);
+        self::$loggers[$this->name] = $logger;
     }
 
     /**
@@ -37,6 +60,6 @@ trait FileLoggerTrait
      */
     public function setLogFile($path)
     {
-        $this->file_path = $path;
+        self::$file_paths[$this->name] = $path;
     }
 }

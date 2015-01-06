@@ -19,8 +19,8 @@ trait PSRLoggerTrait
 
     /**
      * Set the level at which to log, which must be one of the constants
-     * defined in the PSR\Log\LogLevel class. Should be called in the
-     * experiment setup() method so that the level is set before the logger
+     * defined in the PSR\Log\LogLevel class. Should be called externally or in
+     * the experiment setup() method so that the level is set before the logger
      * gets instantiated.
      *
      * @param string $level PSR level at which to log

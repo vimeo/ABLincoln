@@ -7,7 +7,7 @@ use \Vimeo\ABLincoln\Assignment;
 /*
  * Abstract base class used in all experiments
  */
-class AbstractExperiment
+abstract class AbstractExperiment
 {
     protected $name;
     protected $salt = null;
