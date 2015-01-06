@@ -13,13 +13,15 @@ trait PSRLoggerTrait
 {
     use LoggerAwareTrait;
 
-    protected $LOG_LEVEL = 'info';
+    protected $log_level = 'info';
     protected $ALLOWED_LOG_LEVELS = array('emergency', 'alert', 'critical', 'error',
                                           'warning', 'notice', 'info', 'debug');
 
     /**
-     * Set the level at which to log. Must be one of the constants defined in
-     * the PSR\Log\LogLevel class.
+     * Set the level at which to log, which must be one of the constants
+     * defined in the PSR\Log\LogLevel class. Should be called in the
+     * experiment setup() method so that the level is set before the logger
+     * gets instantiated.
      *
      * @param string $level PSR level at which to log
      */
@@ -29,7 +31,7 @@ trait PSRLoggerTrait
             throw new \Exception(get_class($this) . ": 'level' must be one of the constants defined in PSR\Log\LogLevel, not $level.");
         }
 
-        $this->LOG_LEVEL = $level;
+        $this->log_level = $level;
     }
 
     /**
@@ -49,7 +51,7 @@ trait PSRLoggerTrait
     protected function _log($data)
     {
         if (isset($this->logger)) {
-            $this->logger->log($this->LOG_LEVEL, json_encode($data));
+            $this->logger->log($this->log_level, json_encode($data));
         }
     }
 
