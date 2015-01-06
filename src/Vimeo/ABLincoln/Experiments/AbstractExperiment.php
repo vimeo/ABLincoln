@@ -256,7 +256,7 @@ class AbstractExperiment
     /**
      * Log an arbitrary event
      *
-     * @param string $eventType name of event to kig]
+     * @param string $eventType name of event to log
      * @param array $extras optional extra data to include in log
      */
     public function logEvent($eventType, $extras = null)
@@ -283,7 +283,8 @@ class AbstractExperiment
     abstract protected function _log($data);
 
     /**
-     * Check if the input has already been logged
+     * Check if the input has already been logged. Gets called once in the
+     * constructor
      *
      * @return boolean true if previously logged, false otherwise
      */

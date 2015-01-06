@@ -119,13 +119,13 @@ trait NamespaceTrait
     {
         $num_available = count($this->available_segments);
         if ($num_available < $num_segments) {
-            throw new \Exception("Error: $num_segments requested, only $num_available available.");
+            throw new \Exception(get_class($this) . ": $num_segments requested, only $num_available available.");
         }
         if (array_key_exists($name, $this->current_experiments)) {
-            throw new \Exception("Error: there is already an experiment called $name.");
+            throw new \Exception(get_class($this) . ": there is already an experiment called $name.");
         }
         if (!is_null($this->experiment)) {
-            throw new \Exception('Error: addExperiment cannot be called after an assignment is made.');
+            throw new \Exception(get_class($this) . ': addExperiment() cannot be called after an assignment is made.');
         }
 
         // randomly select the given numer of segments from all available options
@@ -153,10 +153,10 @@ trait NamespaceTrait
     public function removeExperiment($name)
     {
         if (!array_key_exists($name, $this->current_experiments)) {
-            throw new \Exception("Error: there is no experiment called $name.");
+            throw new \Exception(get_class($this) . ": there is no experiment called $name.");
         }
         if (!is_null($this->experiment)) {
-            throw new \Exception('Error: removeExperiment cannot be called after an assignment is made.');
+            throw new \Exception(get_class($this) . ': removeExperiment() cannot be called after an assignment is made.');
         }
 
         // make segments available for allocation again, remove experiment name
