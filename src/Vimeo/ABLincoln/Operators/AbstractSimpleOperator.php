@@ -37,7 +37,7 @@ abstract class AbstractSimpleOperator
     public function execute($mapper)
     {
         $this->mapper = $mapper;
-        $this->parameters = array();  // evaluated parameters
+        $this->parameters = [];  // evaluated parameters
         foreach ($this->args as $key => $val) {
             $this->parameters[$key] = $mapper->evaluate($val);
         }

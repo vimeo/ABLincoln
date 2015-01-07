@@ -18,7 +18,7 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $logger = new TestLogger();
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid)
+            ['userid' => $userid]
         );
         $experiment->setLogger($logger);
         $params = $experiment->getParams();
@@ -27,7 +27,7 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count($logger->log), 1);
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid, 'username' => $username)
+            ['userid' => $userid, 'username' => $username]
         );
         $experiment->setLogger($logger);
         $params = $experiment->getParams();
@@ -50,7 +50,7 @@ class TestVanillaExperiment extends AbstractExperiment
     public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
-            array('choices' => array('a', 'b')),
+            ['choices' => ['a', 'b']],
             $inputs
         );
     }

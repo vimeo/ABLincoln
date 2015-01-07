@@ -37,7 +37,7 @@ abstract class RandomOperator extends AbstractSimpleOperator
     {
         $unit = $this->parameters['unit'];
         if (!is_array($unit)) {
-            $unit = array($unit);
+            $unit = [$unit];
         }
         if (!is_null($appended_unit)) {
             $unit[] = $appended_unit;

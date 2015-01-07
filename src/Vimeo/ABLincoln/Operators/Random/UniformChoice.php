@@ -30,7 +30,7 @@ class UniformChoice extends RandomOperator
         $choices = $this->parameters['choices'];
         $num_choices = count($choices);
         if (!$num_choices) {
-            return array();
+            return [];
         }
         return $choices[$this->_getHash() % $num_choices];
     }

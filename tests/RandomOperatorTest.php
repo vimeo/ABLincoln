@@ -19,7 +19,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private static function _valueMassToDensity($value_mass)
     {
         $mass_sum = floatval(array_sum($value_mass));
-        $value_density = array();
+        $value_density = [];
         foreach ($value_mass as $value => $mass) {
             $value_density[$value] = $mass / $mass_sum;
         }
@@ -36,7 +36,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private function _distributionTester($func, $value_mass, $N = 1000)
     {
         // run and store the results of $N trials of $func() with input $i
-        $values = array();
+        $values = [];
         for ($i = 0; $i < $N; $i++) {
             $values[] = call_user_func($func, $i);
         }
@@ -56,7 +56,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     private function _listDistributionTester($func, $value_mass, $N = 1000)
     {
         // run and store the results of $N trials of $func() with input $i
-        $values = array();
+        $values = [];
         for ($i = 0; $i < $N; $i++) {
             $values[] = call_user_func($func, $i);
         }
@@ -65,7 +65,7 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
         // transpose values array
         $rows = $N;
         $cols = count($values[0]);
-        $values_trans = array();
+        $values_trans = [];
         for ($i = 0; $i < $rows; $i++) {
             for ($j = 0; $j < $cols; $j++) {
                 $values_trans[$j][$i] = $values[$i][$j];
@@ -116,19 +116,19 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
     {
         $N = 5;
         $min = 0; $max = 1;
-        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        FloatHelper::setArgs(['min' => $min, 'max' => $max]);
         for ($i = 0; $i < $N; $i++) {
             $f = FloatHelper::execute($i);
             $this->assertTrue($min <= $f && $f <= $max);
         }
         $min = 5; $max = 7;
-        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        FloatHelper::setArgs(['min' => $min, 'max' => $max]);
         for ($i = 0; $i < $N; $i++) {
             $f = FloatHelper::execute($i);
             $this->assertTrue($min <= $f && $f <= $max);
         }
         $min = 2; $max = 2;
-        FloatHelper::setArgs(array('min' => $min, 'max' => $max));
+        FloatHelper::setArgs(['min' => $min, 'max' => $max]);
         for ($i = 0; $i < $N; $i++) {
             $f = FloatHelper::execute($i);
             $this->assertTrue($min <= $f && $f <= $max);
@@ -140,12 +140,12 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInteger()
     {
-        IntegerHelper::setArgs(array('min' => 0, 'max' => 1));
-        $this->_distributionTester('IntegerHelper::execute', array(0 => 1, 1 => 1));
-        IntegerHelper::setArgs(array('min' => 5, 'max' => 7));
-        $this->_distributionTester('IntegerHelper::execute', array(5 => 1, 6 => 1, 7 => 1));
-        IntegerHelper::setArgs(array('min' => 2, 'max' => 2));
-        $this->_distributionTester('IntegerHelper::execute', array(2 => 1));
+        IntegerHelper::setArgs(['min' => 0, 'max' => 1]);
+        $this->_distributionTester('IntegerHelper::execute', [0 => 1, 1 => 1]);
+        IntegerHelper::setArgs(['min' => 5, 'max' => 7]);
+        $this->_distributionTester('IntegerHelper::execute', [5 => 1, 6 => 1, 7 => 1]);
+        IntegerHelper::setArgs(['min' => 2, 'max' => 2]);
+        $this->_distributionTester('IntegerHelper::execute', [2 => 1]);
     }
 
     /**
@@ -153,12 +153,12 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testBernoulli()
     {
-        BernoulliHelper::setArgs(array('p' => 0.0));
-        $this->_distributionTester('BernoulliHelper::execute', array(0 => 1, 1 => 0));
-        BernoulliHelper::setArgs(array('p' => 0.1));
-        $this->_distributionTester('BernoulliHelper::execute', array(0 => 0.9, 1 => 0.1));
-        BernoulliHelper::setArgs(array('p' => 1.0));
-        $this->_distributionTester('BernoulliHelper::execute', array(0 => 0, 1 => 1));
+        BernoulliHelper::setArgs(['p' => 0.0]);
+        $this->_distributionTester('BernoulliHelper::execute', [0 => 1, 1 => 0]);
+        BernoulliHelper::setArgs(['p' => 0.1]);
+        $this->_distributionTester('BernoulliHelper::execute', [0 => 0.9, 1 => 0.1]);
+        BernoulliHelper::setArgs(['p' => 1.0]);
+        $this->_distributionTester('BernoulliHelper::execute', [0 => 0, 1 => 1]);
     }
 
     /**
@@ -166,12 +166,12 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUniformChoice()
     {
-        UniformHelper::setArgs(array('choices' => array('a')));
-        $this->_distributionTester('UniformHelper::execute', array('a' => 1));
-        UniformHelper::setArgs(array('choices' => array('a', 'b')));
-        $this->_distributionTester('UniformHelper::execute', array('a' => 1, 'b' => 1));
-        UniformHelper::setArgs(array('choices' => array(1, 2, 3, 4)));
-        $this->_distributionTester('UniformHelper::execute', array(1 => 1, 2 => 1, 3 => 1, 4 => 1));
+        UniformHelper::setArgs(['choices' => ['a']]);
+        $this->_distributionTester('UniformHelper::execute', ['a' => 1]);
+        UniformHelper::setArgs(['choices' => ['a', 'b']]);
+        $this->_distributionTester('UniformHelper::execute', ['a' => 1, 'b' => 1]);
+        UniformHelper::setArgs(['choices' => [1, 2, 3, 4]]);
+        $this->_distributionTester('UniformHelper::execute', [1 => 1, 2 => 1, 3 => 1, 4 => 1]);
     }
 
     /**
@@ -179,19 +179,19 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testWeightedChoice()
     {
-        $weights = array('a' => 1);
-        WeightedHelper::setArgs(array('choices' => array('a'), 'weights' => $weights));
+        $weights = ['a' => 1];
+        WeightedHelper::setArgs(['choices' => ['a'], 'weights' => $weights]);
         $this->_distributionTester('WeightedHelper::execute', $weights);
-        $weights = array('a' => 1, 'b' => 2);
-        WeightedHelper::setArgs(array('choices' => array('a', 'b'), 'weights' => $weights));
+        $weights = ['a' => 1, 'b' => 2];
+        WeightedHelper::setArgs(['choices' => ['a', 'b'], 'weights' => $weights]);
         $this->_distributionTester('WeightedHelper::execute', $weights);
-        $weights = array('a' => 0, 'b' => 2, 'c' => 0);
-        WeightedHelper::setArgs(array('choices' => array('a', 'b', 'c'), 'weights' => $weights));
+        $weights = ['a' => 0, 'b' => 2, 'c' => 0];
+        WeightedHelper::setArgs(['choices' => ['a', 'b', 'c'], 'weights' => $weights]);
         $this->_distributionTester('WeightedHelper::execute', $weights);
 
         // test distribution with repeated choices
-        WeightedHelper::setArgs(array('choices' => array('a', 'b', 'a'), 'weights' => array(1, 2, 3)));
-        $this->_distributionTester('WeightedHelper::execute', array('a' => 2, 'b' => 1));
+        WeightedHelper::setArgs(['choices' => ['a', 'b', 'a'], 'weights' => [1, 2, 3]]);
+        $this->_distributionTester('WeightedHelper::execute', ['a' => 2, 'b' => 1]);
     }
 
     /**
@@ -199,12 +199,12 @@ class RandomOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSample()
     {
-        SampleHelper::setArgs(array('choices' => array(1, 2, 3), 'draws' => 3));
-        $this->_listDistributionTester('SampleHelper::execute', array(1 => 1, 2 => 1, 3 => 1));
-        SampleHelper::setArgs(array('choices' => array(1, 2, 3), 'draws' => 2));
-        $this->_listDistributionTester('SampleHelper::execute', array(1 => 1, 2 => 1, 3 => 1));
-        SampleHelper::setArgs(array('choices' => array('a', 'a', 'b'), 'draws' => 3));
-        $this->_listDistributionTester('SampleHelper::execute', array('a' => 2, 'b' => 1));
+        SampleHelper::setArgs(['choices' => [1, 2, 3], 'draws' => 3]);
+        $this->_listDistributionTester('SampleHelper::execute', [1 => 1, 2 => 1, 3 => 1]);
+        SampleHelper::setArgs(['choices' => [1, 2, 3], 'draws' => 2]);
+        $this->_listDistributionTester('SampleHelper::execute', [1 => 1, 2 => 1, 3 => 1]);
+        SampleHelper::setArgs(['choices' => ['a', 'a', 'b'], 'draws' => 3]);
+        $this->_listDistributionTester('SampleHelper::execute', ['a' => 2, 'b' => 1]);
     }
 }
 
@@ -227,8 +227,8 @@ class FloatHelper extends TestHelper
         $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
         $assignment = new Assignment($exp_salt);
         $assignment['x'] = new Random\RandomFloat(
-            array('min' => self::$args['min'], 'max' => self::$args['max']),
-            array('unit' => $i)
+            ['min' => self::$args['min'], 'max' => self::$args['max']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }
@@ -241,8 +241,8 @@ class IntegerHelper extends TestHelper
         $exp_salt = sprintf('%s,%s', strval(self::$args['min']), strval(self::$args['max']));
         $assignment = new Assignment($exp_salt);
         $assignment['x'] = new Random\RandomInteger(
-            array('min' => self::$args['min'], 'max' => self::$args['max']),
-            array('unit' => $i)
+            ['min' => self::$args['min'], 'max' => self::$args['max']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }
@@ -254,8 +254,8 @@ class BernoulliHelper extends TestHelper
     {
         $assignment = new Assignment(self::$args['p']);
         $assignment['x'] = new Random\BernoulliTrial(
-            array('p' => self::$args['p']),
-            array('unit' => $i)
+            ['p' => self::$args['p']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }
@@ -267,8 +267,8 @@ class UniformHelper extends TestHelper
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
         $assignment['x'] = new Random\UniformChoice(
-            array('choices' => self::$args['choices']),
-            array('unit' => $i)
+            ['choices' => self::$args['choices']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }
@@ -280,8 +280,8 @@ class WeightedHelper extends TestHelper
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
         $assignment['x'] = new Random\WeightedChoice(
-            array('choices' => self::$args['choices'], 'weights' => self::$args['weights']),
-            array('unit' => $i)
+            ['choices' => self::$args['choices'], 'weights' => self::$args['weights']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }
@@ -293,8 +293,8 @@ class SampleHelper extends TestHelper
     {
         $assignment = new Assignment(implode(',', array_map('strval', self::$args['choices'])));
         $assignment['x'] = new Random\Sample(
-            array('choices' => self::$args['choices'], 'draws' => self::$args['draws']),
-            array('unit' => $i)
+            ['choices' => self::$args['choices'], 'draws' => self::$args['draws']],
+            ['unit' => $i]
         );
         return $assignment['x'];
     }

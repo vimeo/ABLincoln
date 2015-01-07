@@ -35,7 +35,7 @@ class BernoulliFilter extends RandomOperator
         }
 
         if (empty($choices)) {
-            return array();
+            return [];
         }
         return array_filter($choices, function($item) use ($p) {
             return $this->_getUniform(0.0, 1.0, $item) <= $p;

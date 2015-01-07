@@ -38,10 +38,10 @@ abstract class SimpleNamespace extends AbstractNamespace
         $this->in_experiment = false;    // not in experiment until unit assigned
 
         // array mapping segments to experiment names
-        $this->segment_allocations = array();
+        $this->segment_allocations = [];
 
         // array mapping experiment names to experiment objects
-        $this->current_experiments = array();
+        $this->current_experiments = [];
 
         $this->experiment = null;          // memoized experiment object
         $this->default_experiment = null;  // memoized default experiment object
@@ -86,7 +86,7 @@ abstract class SimpleNamespace extends AbstractNamespace
      */
     public function setPrimaryUnit($value)
     {
-        $this->primary_unit = is_array($value) ? $value : array($value);
+        $this->primary_unit = is_array($value) ? $value : [$value];
     }
 
     /**
@@ -123,8 +123,8 @@ abstract class SimpleNamespace extends AbstractNamespace
         // randomly select the given numer of segments from all available options
         $assignment = new Assignment($this->name);
         $assignment['sampled_segments'] = new Random\Sample(
-            array('choices' => $this->available_segments, 'draws' => $num_segments),
-            array('unit' => $name)
+            ['choices' => $this->available_segments, 'draws' => $num_segments],
+            ['unit' => $name]
         );
 
         // assign each segment to the experiment name
@@ -170,8 +170,8 @@ abstract class SimpleNamespace extends AbstractNamespace
     {
         $assignment = new Assignment($this->name);
         $assignment['segment'] = new Random\RandomInteger(
-            array('min' => 0, 'max' => $this->num_segments - 1),
-            array('unit' => $this->inputs[$this->primary_unit])
+            ['min' => 0, 'max' => $this->num_segments - 1],
+            ['unit' => $this->inputs[$this->primary_unit]]
         );
         return $assignment['segment'];
     }

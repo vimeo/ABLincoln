@@ -51,6 +51,6 @@ class DefaultExperiment extends AbstractExperiment
      */
     public function getDefaultParams()
     {
-        return array();
+        return [];
     }
 }

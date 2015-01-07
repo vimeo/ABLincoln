@@ -180,16 +180,16 @@ abstract class AbstractExperiment
      * @param array $extras extra data to include in array
      * @return array experiment data
      */
-    protected function _asBlob($extras = array())
+    protected function _asBlob($extras = [])
     {
         $this->_requiresAssignment();
-        $ret = array(
+        $ret = [
             'name' => $this->name,
             'time' => time(),
             'salt' => $this->salt(),
             'inputs' => $this->inputs,
             'params' => $this->assignment->asArray()
-        );
+        ];
         return array_merge($ret, $extras);
     }
 
@@ -262,10 +262,10 @@ abstract class AbstractExperiment
     public function logEvent($eventType, $extras = null)
     {
         if (!is_null($extras)) {
-            $extraPayload = array('event' => $eventType, 'extra_data' => $extras);
+            $extraPayload = ['event' => $eventType, 'extra_data' => $extras];
         }
         else {
-            $extraPayload = array('event' => $eventType);
+            $extraPayload = ['event' => $eventType];
         }
         $this->_log($this->_asBlob($extraPayload));
     }

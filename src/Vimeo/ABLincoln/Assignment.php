@@ -11,7 +11,7 @@ use \Vimeo\ABLincoln\Operators\RandomOperator;
  */
 class Assignment implements \ArrayAccess
 {
-    private $data = array();
+    private $data = [];
     private $experiment_salt;
 
     /**

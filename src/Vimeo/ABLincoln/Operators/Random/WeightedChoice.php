@@ -47,7 +47,7 @@ class WeightedChoice extends RandomOperator
 
         // initialize array for making weighted draw
         $cum_sum = 0.0;
-        $cum_weights = array();
+        $cum_weights = [];
         for ($i = 0; $i < count($choices); $i++) {
             $cum_sum += $weights[$i];
             $cum_weights[$i] = $cum_sum;

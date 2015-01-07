@@ -18,13 +18,13 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $username2 = 'user2';
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid1, 'username' => $username1)
+            ['userid' => $userid1, 'username' => $username1]
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 2);
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid2, 'username' => $username2)
+            ['userid' => $userid2, 'username' => $username2]
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
@@ -59,7 +59,7 @@ class TestExperiment extends AbstractExperiment
     public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
-            array('choices' => array('a', 'b')),
+            ['choices' => ['a', 'b']],
             $inputs
         );
     }
@@ -77,7 +77,7 @@ class TestExperiment2 extends AbstractExperiment
     public function assign($params, $inputs)
     {
         $params['foo'] = new Random\UniformChoice(
-            array('choices' => array(1, 2, 3)),
+            ['choices' => [1, 2, 3]],
             $inputs
         );
     }

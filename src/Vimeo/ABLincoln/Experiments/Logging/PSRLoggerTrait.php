@@ -14,8 +14,8 @@ trait PSRLoggerTrait
     use LoggerAwareTrait;
 
     protected $log_level = 'info';
-    protected $ALLOWED_LOG_LEVELS = array('emergency', 'alert', 'critical', 'error',
-                                          'warning', 'notice', 'info', 'debug');
+    protected $ALLOWED_LOG_LEVELS = ['emergency', 'alert', 'critical', 'error',
+                                     'warning', 'notice', 'info', 'debug'];
 
     /**
      * Set the level at which to log, which must be one of the constants

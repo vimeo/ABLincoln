@@ -17,8 +17,8 @@ trait FileLoggerTrait
 
     // We only want to set up the logger for each experiment once, the first
     // time it's instantiated. We do this by maintaining these class variables.
-    protected static $loggers = array();
-    protected static $file_paths = array();
+    protected static $loggers = [];
+    protected static $file_paths = [];
 
     /**
      * Set up Monolog logger to write to file. _configureLogger() only gets
