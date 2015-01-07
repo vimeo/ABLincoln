@@ -5,7 +5,7 @@
 >
     <testsuites>
         <testsuite name="ABLincoln Test Suite">
-            <directory phpVersion="5.3.0">./tests/</directory>
+            <directory phpVersion="5.4.0">./tests/</directory>
         </testsuite>
     </testsuites>
 
