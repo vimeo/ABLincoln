@@ -8,6 +8,6 @@ class TestLogger extends AbstractLogger
 
     public function log($level, $message, array $context = array())
     {
-        $this->log[] = $context;
+        $this->log[] = $message;
     }
 }

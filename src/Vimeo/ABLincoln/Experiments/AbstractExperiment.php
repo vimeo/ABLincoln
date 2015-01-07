@@ -5,9 +5,9 @@ namespace Vimeo\ABLincoln\Experiments;
 use \Vimeo\ABLincoln\Assignment;
 
 /*
- * Abstract base trait used in all experiments
+ * Abstract base class used in all experiments.
  */
-trait AbstractExperimentTrait
+abstract class AbstractExperiment
 {
     protected $name;
     protected $salt = null;
@@ -27,7 +27,7 @@ trait AbstractExperimentTrait
      *
      * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
      */
-    public function initialize($inputs)
+    public function __construct($inputs)
     {
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
@@ -256,7 +256,7 @@ trait AbstractExperimentTrait
     /**
      * Log an arbitrary event
      *
-     * @param string $eventType name of event to kig]
+     * @param string $eventType name of event to log
      * @param array $extras optional extra data to include in log
      */
     public function logEvent($eventType, $extras = null)
@@ -283,7 +283,8 @@ trait AbstractExperimentTrait
     abstract protected function _log($data);
 
     /**
-     * Check if the input has already been logged
+     * Check if the input has already been logged. Gets called once in the
+     * constructor
      *
      * @return boolean true if previously logged, false otherwise
      */

@@ -1,8 +1,9 @@
 <?php
 
 use \Vimeo\ABLincoln\Namespaces\SimpleNamespace;
-use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
+use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
+use \Vimeo\ABLincoln\Experiments\Logging as Logging;
 
 /**
  * PHPUnit Namespace test class
@@ -15,23 +16,18 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $username1 = 'user1';
         $userid2 = 7;
         $username2 = 'user2';
-        $logger = new TestLogger();
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid1, 'username' => $username1),
-            $logger
+            array('userid' => $userid1, 'username' => $username1)
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 2);
-        $this->assertEquals(count($logger->log), 1);
 
         $namespace = new TestVanillaNamespace(
-            array('userid' => $userid2, 'username' => $username2),
-            $logger
+            array('userid' => $userid2, 'username' => $username2)
         );
         $foo = $namespace->get('foo');
         $this->assertEquals($foo, 'a');
-        $this->assertEquals(count($logger->log), 2);
     }
 }
 
@@ -51,8 +47,10 @@ class TestVanillaNamespace extends SimpleNamespace
     }
 }
 
-class TestExperiment extends SimpleExperiment
+class TestExperiment extends AbstractExperiment
 {
+    use Logging\PSRLoggerTrait;
+
     public function setup()
     {
         $this->name = 'test_name';
@@ -65,15 +63,12 @@ class TestExperiment extends SimpleExperiment
             $inputs
         );
     }
-
-    protected function _previouslyLogged()
-    {
-        return false;
-    }
 }
 
-class TestExperiment2 extends TestExperiment
+class TestExperiment2 extends AbstractExperiment
 {
+    use Logging\PSRLoggerTrait;
+
     public function setup()
     {
         $this->name = 'test2_name';

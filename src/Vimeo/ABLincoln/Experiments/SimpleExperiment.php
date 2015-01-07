@@ -2,25 +2,10 @@
 
 namespace Vimeo\ABLincoln\Experiments;
 
-use \Psr\Log\LoggerInterface;
-
-/**
- * Simple experiment base class that exposure logs according to PSR-3 logging
- * specifications. User experiments extending this class should pass in their
- * own compatible logger instance.
+/*
+ * Simple experiment base class which exposure logs to a file.
  */
-abstract class SimpleExperiment
+abstract class SimpleExperiment extends AbstractExperiment
 {
-    use ExperimentTrait;
-
-    /**
-     * Construct a new Simple experiment, passing in hashing inputs and logger
-     *
-     * @param array $inputs array of inputs to use for experiment hashing
-     * @param LoggerInterface $logger optional PSR-3 logging instance to use
-     */
-    public function __construct($inputs, LoggerInterface $logger = null)
-    {
-        $this->initialize($inputs, $logger);
-    }
+    use Logging\FileLoggerTrait;
 }

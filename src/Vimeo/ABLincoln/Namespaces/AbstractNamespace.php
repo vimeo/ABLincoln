@@ -3,16 +3,16 @@
 namespace Vimeo\ABLincoln\Namespaces;
 
 /*
- * Abstract base trait used to manage related experiments
+ * Abstract base class used to manage related experiments.
  */
-trait AbstractNamespaceTrait
+abstract class AbstractNamespace
 {
     /**
-     * Set up attributes needed for the namespace
+     * Set up attributes needed for experiment
      *
-     * @param array $inputs data to determine parameter assignments, e.g. userid
+     * @param mixed $inputs input value or array to determine parameter assignments, e.g. userid
      */
-    abstract public function initialize($inputs);
+    public function __construct($inputs) {}
 
     /**
      * In-experiment accessor

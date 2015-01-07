@@ -1,10 +1,10 @@
 <?php
 
-use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
+use \Vimeo\ABLincoln\Experiments\AbstractExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
-use \Psr\Log\AbstractLogger;
+use \Vimeo\ABLincoln\Experiments\Logging as Logging;
 
-require_once __DIR__ . '/TestLogger.php';
+require_once 'TestLogger.php';
 
 /**
  * PHPUnit Experiment test class
@@ -18,18 +18,18 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $logger = new TestLogger();
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid),
-            $logger
+            array('userid' => $userid)
         );
+        $experiment->setLogger($logger);
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
         $this->assertEquals(count($logger->log), 1);
 
         $experiment = new TestVanillaExperiment(
-            array('userid' => $userid, 'username' => $username),
-            $logger
+            array('userid' => $userid, 'username' => $username)
         );
+        $experiment->setLogger($logger);
         $params = $experiment->getParams();
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'a');
@@ -37,11 +37,14 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class TestVanillaExperiment extends SimpleExperiment
+class TestVanillaExperiment extends AbstractExperiment
 {
+    use Logging\PSRLoggerTrait;
+
     public function setup()
     {
         $this->name = 'test_name';
+        $this->setLogLevel('debug');
     }
 
     public function assign($params, $inputs)
@@ -50,10 +53,5 @@ class TestVanillaExperiment extends SimpleExperiment
             array('choices' => array('a', 'b')),
             $inputs
         );
-    }
-
-    protected function _previouslyLogged()
-    {
-        return false;
     }
 }
