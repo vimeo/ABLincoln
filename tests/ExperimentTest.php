@@ -49,7 +49,7 @@ class TestVanillaExperiment extends AbstractExperiment
 
     public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(
+        $params->foo = new Random\UniformChoice(
             ['choices' => ['a', 'b']],
             $inputs
         );

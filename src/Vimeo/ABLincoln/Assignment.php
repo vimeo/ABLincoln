@@ -5,17 +5,16 @@ namespace Vimeo\ABLincoln;
 use \Vimeo\ABLincoln\Operators\RandomOperator;
 
 /**
- * The Assignment class is essentially an array (and can be used like one),
- * but allows the execution of random operators using the names of variables
- * as salts.
+ * The Assignment class is essentially an array but allows the execution of
+ * random operators using the names of variables as salts.
  */
-class Assignment implements \ArrayAccess
+class Assignment
 {
     private $data = [];
     private $experiment_salt;
 
     /**
-     * Store the given experiment salt in a private data array
+     * Store the given experiment salt for future use
      *
      * @param string $experiment_salt the experiment salt to store
      */
@@ -45,70 +44,67 @@ class Assignment implements \ArrayAccess
         return $this->data;
     }
 
+
     /**
-     * Check if a given key is set in the array
+     * Check if a given key is set in the Assignment object
      *
-     * @param mixed $offset key to check for in the array
-     * @return boolean true if key exists, false otherwise
+     * @param string $name key to check for in the object
+     * @return boolean true if key set, false otherwise
      */
-    public function offsetExists($offset)
+    public function __isset($name)
     {
-        return array_key_exists($offset, $this->data);
+        if ($name === 'experiment_salt') {
+            return isset($this->experiment_salt);
+        }
+
+        return isset($this->data[$name]);
     }
 
     /**
-     * Get the value of a key in the array if it exists
+     * Get the value of a key in the Assignment object if it exists
      *
-     * @param mixed $offset key to obtain the value of
+     * @param string $name key to obtain the value of
      * @return mixed value of given key if it exists, null otherwise
      */
-    public function offsetGet($offset)
+    public function __get($name)
     {
-        if ($offset === 'experiment_salt') {
+        if ($name === 'experiment_salt') {
             return $this->experiment_salt;
         }
-        return array_key_exists($offset, $this->data) ? $this->data[$offset] : null;
+
+        return array_key_exists($name, $this->data) ? $this->data[$name] : null;
     }
 
     /**
-     * Set the value of a key in the array using the parameter name as salt
+     * Set the value of a key in the object using the parameter name as salt
      *
-     * @param mixed $offset key to set the value of
-     * @param mixed $value value to set at the given array index
+     * @param string $name key to set the value of
+     * @param mixed $value value to set at the given index
      */
-    public function offsetSet($offset, $value)
+    public function __set($name, $value)
     {
-        if (is_null($offset)) {
-             if ($value instanceof RandomOperator) {
-                if (!array_key_exists('salt', $value->args())) {
-                    $value->setArg('salt', $offset);
-                }
-                $this->data[] = $value->execute($this);
+        if ($value instanceof RandomOperator) {
+            if (!array_key_exists('salt', $value->args())) {
+                $value->setArg('salt', $name);
             }
-            else {
-                $this->data[] = $value;
-            }
+            $this->data[$name] = $value->execute($this);
         }
         else {
-            if ($value instanceof RandomOperator) {
-                if (!array_key_exists('salt', $value->args())) {
-                    $value->setArg('salt', $offset);
-                }
-                $this->data[$offset] = $value->execute($this);
-            }
-            else {
-                $this->data[$offset] = $value;
-            }
+            $this->data[$name] = $value;
         }
     }
 
     /**
      * Unset the value at a given key
      *
-     * @param mixed $offset key unset the value of
+     * @param string $name key to unset the value of
      */
-    public function offsetUnset($offset)
+    public function __unset($name)
     {
-        unset($this->data[$offset]);
+        if ($name === 'experiment_salt') {
+            unset($this->experiment_salt);
+        }
+
+        unset($this->data[$name]);
     }
 }

@@ -15,11 +15,11 @@ class AssignmentTest extends \PHPUnit_Framework_TestCase
     public function testOffsetSetUnset()
     {
         $assignment = new Assignment($this->tester_salt);
-        $this->assertFalse(isset($assignment[0]));
-        $assignment[0] = 5;
-        $this->assertTrue(isset($assignment[0]));
-        unset($assignment[0]);
-        $this->assertFalse(isset($assignment[0]));
+        $this->assertFalse(isset($assignment->foo));
+        $assignment->foo = 5;
+        $this->assertTrue(isset($assignment->foo));
+        unset($assignment->foo);
+        $this->assertFalse(isset($assignment->foo));
     }
 
     /**
@@ -28,8 +28,8 @@ class AssignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetConstant()
     {
         $assignment = new Assignment($this->tester_salt);
-        $assignment[0] = 5;
-        $this->assertEquals($assignment[0], 5);
+        $assignment->foo = 5;
+        $this->assertEquals($assignment->foo, 5);
     }
 
     /**
@@ -38,18 +38,7 @@ class AssignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetString()
     {
         $assignment = new Assignment($this->tester_salt);
-        $assignment['test'] = 'a';
-        $this->assertEquals($assignment['test'], 'a');
-    }
-
-    /**
-     * Test Assignment array setting at a null index (discouraged but works)
-     */
-    public function testSetGetNull()
-    {
-        $assignment = new Assignment($this->tester_salt);
-        $assignment[12] = 5;
-        $assignment[] = 'a';
-        $this->assertEquals($assignment[13], 'a');
+        $assignment->foo = 'bar';
+        $this->assertEquals($assignment->foo, 'bar');
     }
 }

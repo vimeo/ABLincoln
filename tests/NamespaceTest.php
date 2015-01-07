@@ -58,7 +58,7 @@ class TestExperiment extends AbstractExperiment
 
     public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(
+        $params->foo = new Random\UniformChoice(
             ['choices' => ['a', 'b']],
             $inputs
         );
@@ -76,7 +76,7 @@ class TestExperiment2 extends AbstractExperiment
 
     public function assign($params, $inputs)
     {
-        $params['foo'] = new Random\UniformChoice(
+        $params->foo = new Random\UniformChoice(
             ['choices' => [1, 2, 3]],
             $inputs
         );

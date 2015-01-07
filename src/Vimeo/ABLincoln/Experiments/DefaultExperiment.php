@@ -39,7 +39,7 @@ class DefaultExperiment extends AbstractExperiment
     public function assign($params, $inputs)
     {
         foreach ($this->getDefaultParams() as $key => $val) {
-            $params[$key] = $val;
+            $params->$key = $val;
         }
     }
 

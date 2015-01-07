@@ -217,7 +217,7 @@ abstract class AbstractExperiment
     {
         $this->_requiresAssignment();
         $this->_requiresExposureLogging();
-        return array_key_exists($name, $this->assignment->asArray()) ? $this->assignment[$name] : $default;
+        return array_key_exists($name, $this->assignment->asArray()) ? $this->assignment->$name : $default;
     }
 
     /**
