@@ -1,5 +1,9 @@
 # ABLincoln
 
+**Note: the code examples provided in this README pertain to release 0.2.0 and
+not the current master development branch. A new stable release (1.0.0) and
+revamped README should be up soon!**
+
 ABLincoln is a PHP-based toolkit for online field experimentation, ported from
 Facebook's [PlanOut][] software and released as an easily extendable
 [Composer][] package. ABLincoln makes it easy to deploy and maintain
