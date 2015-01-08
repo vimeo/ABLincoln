@@ -4,14 +4,14 @@ namespace Vimeo\ABLincoln\Operators;
 
 /**
  * Easiest way to implement simple operators. The class automatically evaluates
- * the values of all parameters passed in via execute(), and stores the mapper
- * object and evaluated parameters as instance variables.  The user can then
- * extend AbstractSimpleOperator and implement simpleExecute().
+ * the values of all parameters passed in via execute(), and stores the
+ * Assignment object and evaluated parameters as instance variables. The user
+ * can then extend AbstractSimpleOperator and implement _simpleExecute().
  */
 abstract class AbstractSimpleOperator
 {
     protected $parameters;
-    protected $mapper;
+    protected $assignment;
 
     private $args;
 
@@ -31,15 +31,15 @@ abstract class AbstractSimpleOperator
      * Evaluate all parameters and store as instance variables, then execute
      * the operator as defined in simpleExecute()
      *
-     * @param Assignment $mapper mapper object used to evaluate parameters
+     * @param Assignment $assignment object used to evaluate parameters
      * @return mixed the evaluated expression
      */
-    public function execute($mapper)
+    public function execute($assignment)
     {
-        $this->mapper = $mapper;
+        $this->assignment = $assignment;
         $this->parameters = [];  // evaluated parameters
         foreach ($this->args as $key => $val) {
-            $this->parameters[$key] = $mapper->evaluate($val);
+            $this->parameters[$key] = $assignment->evaluate($val);
         }
         return $this->_simpleExecute();
     }
