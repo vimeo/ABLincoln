@@ -1,8 +1,10 @@
-# ABLincoln ![](https://travis-ci.org/vimeo/ABLincoln.svg?branch=master)
+# ABLincoln [![Latest Stable Version][version image]][packagist link]
+[![Build Status][build image]][build link]
 
-**Note: the code examples provided in this README pertain to release 0.2.0 and
-not the current master development branch. A new stable release (1.0.0) and
-revamped README should be up soon!**
+[version image]: https://poser.pugx.org/vimeo/ablincoln/v/stable.svg
+[packagist link]: https://packagist.org/packages/vimeo/ablincoln
+[build image]: https://travis-ci.org/vimeo/ABLincoln.svg?branch=master
+[build link]: https://travis-ci.org/vimeo/ABLincoln
 
 ABLincoln is a PHP-based toolkit for online field experimentation, ported from
 Facebook's [PlanOut][] software and released as an easily extendable
@@ -23,12 +25,12 @@ class MyExperiment extends SimpleExperiment
 {
     public function assign($params, $inputs)
     {
-        $params['button_color'] = new UniformChoice(
-            array('choices' => array('a', 'b')),
+        $params->button_color = new UniformChoice(
+            ['choices' => ['a', 'b']],
             $inputs
         );
-        $params['button_text'] = new UniformChoice(
-            array('choices' => array('I voted', 'I am a voter')),
+        $params->button_text = new UniformChoice(
+            ['choices' => ['I voted', 'I am a voter']],
             $inputs
         );
     }
@@ -39,7 +41,7 @@ Then, in the application code, you query the Experiment object to find what
 values the current user should be mapped onto:
 
 ```php
-$my_exp = new MyExperiment(array('userid' => 101));
+$my_exp = new MyExperiment(['userid' => 101]);
 $my_exp->get('button_color');
 $my_exp->get('button_text');
 ```
@@ -75,7 +77,7 @@ millions of users each month.
 
 To create a basic ABLincoln experiment, you subclass the SimpleExperiment
 object and implement an assignment method. You can use ABLincoln's random
-assignment operators by setting `$params[$varname]`, where `$params` is the
+assignment operators by setting `$params->$varname`, where `$params` is the
 first argument passed to the `assign()` method and `$varname` is the name of
 the variable you are setting.
 
@@ -87,15 +89,15 @@ class FirstExperiment extends SimpleExperiment
 {
     public function assign($params, $inputs)
     {
-        $params['button_color'] = new Random\UniformChoice(
-            array('choices' => array('#ff0000', '#00ff00')),
+        $params->button_color = new Random\UniformChoice(
+            ['choices' => ['#ff0000', '#00ff00']],
             $inputs
         );
-        $params['button_text'] = new Random\WeightedChoice(
-            array(
-                'choices' => array('Join now!', 'Sign up.'),
-                'weights' => array(0.3, 0.7)
-            ),
+        $params->button_text = new Random\WeightedChoice(
+            [
+                'choices' => ['Join now!', 'Sign up.'],
+                'weights' => [0.3, 0.7]
+            ],
             $inputs
         );
     }
@@ -106,7 +108,7 @@ class FirstExperiment extends SimpleExperiment
     }
 }
 
-$my_exp = new FirstExperiment(array('userid' => 12));
+$my_exp = new FirstExperiment(['userid' => 12]);
 echo $my_exp->get('button_text') . ' ' . $my_exp->get('button_color');
 ```
 
@@ -134,7 +136,15 @@ logger instance provided (or the `_log()` method if overridden).
 ABLincoln is maintained as an independent PHP [Composer][] package hosted on
 [Packagist][]. While you can download the source code directly from this
 repository, we recommend including it as a project dependency in your
-`composer.json` file instead.
+`composer.json` file instead:
+
+```
+{
+    "require": {
+        "vimeo/ablincoln": "0.1.2"
+    }
+}
+```
 
 [Composer]: https://getcomposer.org/
 [Packagist]: https://packagist.org/
