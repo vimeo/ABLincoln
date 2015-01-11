@@ -1,4 +1,4 @@
-# ABLincoln
+# ABLincoln ![](https://travis-ci.org/vimeo/ABLincoln.svg?branch=master)
 
 **Note: the code examples provided in this README pertain to release 0.2.0 and
 not the current master development branch. A new stable release (1.0.0) and
