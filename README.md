@@ -1,5 +1,4 @@
-# ABLincoln [![Latest Stable Version][version image]][packagist link]
-[![Build Status][build image]][build link]
+# ABLincoln [![Latest Stable Version][version image]][packagist link] [![Build Status][build image]][build link]
 
 [version image]: https://poser.pugx.org/vimeo/ablincoln/v/stable.svg
 [packagist link]: https://packagist.org/packages/vimeo/ablincoln
