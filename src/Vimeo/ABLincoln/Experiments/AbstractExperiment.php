@@ -83,6 +83,25 @@ abstract class AbstractExperiment
     abstract public function assign($params, $inputs);
 
     /**
+     * Sets variables that are to remain fixed during execution. Note that
+     * setting this will overwrite inputs to the experiment
+     *
+     * @param array $overrides parameter name/value pairs to use as overrides
+     */
+    public function setOverrides($overrides)
+    {
+        $this->assignment->setOverrides($overrides);
+
+        if (is_array($this->inputs)) {
+            foreach ($overrides as $key => $val) {
+                if (array_key_exists($key, $this->inputs)) {
+                    $this->inputs[$key] = $val;
+                }
+            }
+        }
+    }
+
+    /**
      * Experiment-level salt accessor
      *
      * @return string the experiment-level salt

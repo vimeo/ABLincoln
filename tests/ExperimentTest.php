@@ -20,10 +20,13 @@ class ExperimentTest extends \PHPUnit_Framework_TestCase
         $experiment = new TestVanillaExperiment(
             ['userid' => $userid]
         );
+        $experiment->setOverrides(['bar' => 42]);
         $experiment->setLogger($logger);
         $params = $experiment->getParams();
+
         $this->assertTrue(array_key_exists('foo', $params));
         $this->assertEquals($params['foo'], 'b');
+        $this->assertEquals($params['bar'], 42);
         $this->assertEquals(count($logger->log), 1);
 
         $experiment = new TestVanillaExperiment(
