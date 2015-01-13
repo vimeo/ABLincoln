@@ -27,7 +27,7 @@ class UniformChoice extends RandomOperator
             throw new \Exception(get_class($this) . ": 'choices' must be an array.");
         }
 
-        $choices = $this->parameters['choices'];
+        $choices = array_values($this->parameters['choices']);
         $num_choices = count($choices);
         if (!$num_choices) {
             return [];
