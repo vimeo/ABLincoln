@@ -8,83 +8,24 @@
 ABLincoln is a PHP-based toolkit for online field experimentation, ported from
 Facebook's [PlanOut][] software and released as an easily extendable
 [Composer][] package. ABLincoln makes it easy to deploy and maintain
-sophisticated experiments and to quickly iterate on these experiments, while
-satisfying the constraints of large-scale Internet services with many users.
+sophisticated randomized experiments and to quickly iterate on these
+experiments, while satisfying the constraints of large-scale Internet services
+with many users using a native API that fully integrates with the standard PHP
+stack.
 
 [PlanOut]: http://facebook.github.io/planout/
-[Composer]: https://getcomposer.org/
+[Composer]: #installation
 
 Developers integrate ABLincoln by defining experiments that detail how _inputs_
-(e.g. users, cookie IDs) should get mapped onto conditions. For example, to
-set up an experiment randomizing both the color and text of a button, you would
-create a class like this:
-
-```php
-class MyExperiment extends SimpleExperiment
-{
-    public function assign($params, $inputs)
-    {
-        $params->button_color = new UniformChoice(
-            ['choices' => ['a', 'b']],
-            $inputs
-        );
-        $params->button_text = new UniformChoice(
-            ['choices' => ['I voted', 'I am a voter']],
-            $inputs
-        );
-    }
-}
-```
-
-Then, in the application code, you query the Experiment object to find what
-values the current user should be mapped onto:
-
-```php
-$my_exp = new MyExperiment(['userid' => 101]);
-$my_exp->get('button_color');
-$my_exp->get('button_text');
-```
-
-ABLincoln takes care of randomizing each `userid` into the right bucket. It
-does so by hashing the input, so each `userid` will always map onto the same
-values for that experiment.
-
-This release currently includes:
-  - An extendable PHP class for defining experiments. This toolkit comes
-  with objects that make it easy to implement randomized assignments while
-  consistently formatting and logging key data.
-  - An extendable class for managing multiple mutually exclusive experiment
-  namespaces to facilitate the deployment of iterative tests.
-  - Native support for any [PSR-3 compliant logger][PSR logger].
-  Developers can either utilize existing PSR loggers such as [Monolog][] or
-  write their own simple adapters to make existing logging stacks PSR-3
-  compliant.
-
-[PSR logger]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
-[Monolog]: https://github.com/Seldaek/monolog
-
-### Who is ABLincoln for?
-
-This software release is a PHP implementation of Facebook's PlanOut code
-designed for researchers, students, and small businesses wanting to run
-experiments. It is designed to be extensible, so that it may be adapted for use
-with large production environments. The implementation here serves as a basis
-for Vimeo's A/B Testing environment used to deploy experiments to hundreds of
-millions of users each month.
-
-### Full Example
-
-To create a basic ABLincoln experiment, you subclass the SimpleExperiment
-object and implement an assignment method. You can use ABLincoln's random
-assignment operators by setting `$params->$varname`, where `$params` is the
-first argument passed to the `assign()` method and `$varname` is the name of
-the variable you are setting.
+(e.g. users, cookie IDs) should get mapped onto conditions. To set up an
+experiment randomizing both the text and color of a button, you would create a
+class like this:
 
 ```php
 use \Vimeo\ABLincoln\Experiments\SimpleExperiment;
 use \Vimeo\ABLincoln\Operators\Random as Random;
 
-class FirstExperiment extends SimpleExperiment
+class MyExperiment extends SimpleExperiment
 {
     public function assign($params, $inputs)
     {
@@ -100,42 +41,79 @@ class FirstExperiment extends SimpleExperiment
             $inputs
         );
     }
-
-    protected function _log($data)
-    {
-        echo json_encode($data);
-    }
 }
-
-$my_exp = new FirstExperiment(['userid' => 12]);
-echo $my_exp->get('button_text') . ' ' . $my_exp->get('button_color');
 ```
 
-The `_log()` method is run every time experiment parameters are queried to
-generate an appropriate exposure log. By default, the method exposure logs
-according to the object's corresponding PSR-logger. For demonstration purposes,
-we have overriden the method here and allowed it to simply print a log string
-to the console. Running the above generates the following output, consisting
-of the JSON log and the parameter values we have determined:
+Then, in the application code, you query the Experiment object to find out what
+values the current user should be mapped onto:
 
 ```
-{"name": "FirstExperiment", "time": 1415140890, "salt": "FirstExperiment", "inputs": {"userid": 12}, "params": {"button_color": "#ff0000", "button_text": "Sign up."}, "event": "exposure"}
-
-Sign up. #ff0000
+$my_exp = new MyExperiment(['userid' => 42]);
+$my_exp->get('button_color');
+$my_exp->get('button_text');
 ```
 
-The `SimpleExperiment` class will automatically concatenate the name of the
-experiment, `FirstExperiment`, the variable name, and the input data (`userid`)
-and hash that string to perform the random assignment. Parameter assignments
-and inputs are automatically logged according to the specifications of the PSR
-logger instance provided (or the `_log()` method if overridden).
+Querying the experiment parameters automatically generates an exposure log that
+we can direct to a location of our choice:
+
+```
+{"name": "MyExperiment", "time": 1421622363, "salt": "MyExperiment", "inputs": {"userid": 42}, "params": {"button_color": "#ff0000", "button_text": "Join now!"}, "event": "exposure"}
+```
+
+The basic `SimpleExperiment` class logs to a local file by default. More
+advanced behavior, such as Vimeo's methodology [described below][logging], can
+easily be introduced to better integrate with your existing logging stack.
+
+[logging]: LINK_GOES_HERE
+
+### Comparison with Python Release
+
+ABLincoln and the original Python release of PlanOut are very similar in both
+functionality and usage. Both packages implement abstract and concrete versions
+of the Experiment and Namespace classes, parameter overrides to facilitate
+testing, exposure logging systems, and various random assignment operators
+tested and confirmed to produce identical outputs.
+
+Notable differences between the two releases currently include:
+  - ABLincoln features native support for logging either to local files or
+  to any PSR-compliant stack through the use of included PHP logging traits
+  - ABLincoln does not currently include an interpreter for the
+  [PlanOut language][].
+
+[PlanOut language]: http://facebook.github.io/planout/docs/planout-language.html
+
+### Usage in Production Environments
+
+ABLincoln was ported and designed with scalability in mind. Here are a few ways
+that Vimeo has chosen to extend it to meet the needs of our testing process:
+
+#### URL Overrides
+
+ABLincoln already supports [parameter overrides][] for quickly examining the
+effects of difficult-to-test experiments. A simple way to integrate this
+behavior with a live site is to pass overrides into your endpoint as a query
+parameter:
+
+```
+http://my.site/home.php?overrides=button_color:green,button_text:hello
+```
+
+Then it's a relatively simple task to read the overrides from the query and
+pass them into the PHP Experiment API override methods after instantiation.
+
+[parameter overrides]: http://facebook.github.io/planout/docs/testing.html
+
+#### Traffic Segmentation
+
+#### Application to an Existing Logging Stack
+
+#### Serialized Experiments
 
 ### Installation
 
 ABLincoln is maintained as an independent PHP [Composer][] package hosted on
-[Packagist][]. While you can download the source code directly from this
-repository, we recommend including it as a project dependency in your
-`composer.json` file instead:
+[Packagist][]. Include it in in your `composer.json` file for nice autoloading
+and dependency management:
 
 ```
 {
@@ -146,7 +124,7 @@ repository, we recommend including it as a project dependency in your
 ```
 
 [Composer]: https://getcomposer.org/
-[Packagist]: https://packagist.org/
+[Packagist]: https://packagist.org/packages/vimeo/ablincoln
 
 ### Thanks
 
