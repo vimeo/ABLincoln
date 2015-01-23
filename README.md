@@ -7,14 +7,13 @@
 
 ABLincoln is a PHP-based toolkit for online field experimentation, ported from
 Facebook's [PlanOut][] software and released as an easily extendable
-[Composer][] package. ABLincoln makes it easy to deploy and maintain
-sophisticated randomized experiments and to quickly iterate on these
+[Composer][installation] package. ABLincoln makes it easy to deploy and
+maintain sophisticated randomized experiments and to quickly iterate on these
 experiments, while satisfying the constraints of large-scale Internet services
-with many users using a native API that fully integrates with the standard PHP
-stack.
+with many users.
 
 [PlanOut]: http://facebook.github.io/planout/
-[Composer]: #installation
+[installation]: #installation
 
 Developers integrate ABLincoln by defining experiments that detail how _inputs_
 (e.g. users, cookie IDs) should get mapped onto conditions. To set up an
@@ -47,7 +46,7 @@ class MyExperiment extends SimpleExperiment
 Then, in the application code, you query the Experiment object to find out what
 values the current user should be mapped onto:
 
-```
+```php
 $my_exp = new MyExperiment(['userid' => 42]);
 $my_exp->get('button_color');
 $my_exp->get('button_text');
@@ -64,7 +63,7 @@ The basic `SimpleExperiment` class logs to a local file by default. More
 advanced behavior, such as Vimeo's methodology [described below][logging], can
 easily be introduced to better integrate with your existing logging stack.
 
-[logging]: LINK_GOES_HERE
+[logging]: #application-to-an-existing-logging-stack
 
 ### Comparison with Python Release
 
@@ -87,7 +86,43 @@ Notable differences between the two releases currently include:
 ABLincoln was ported and designed with scalability in mind. Here are a few ways
 that Vimeo has chosen to extend it to meet the needs of our testing process:
 
-#### URL Overrides
+##### Serialized Experiments
+
+From the beginning, Vimeo's goal was to develop a software package that would
+simplify the process of creating and running experiments for everyone, even
+those who seldom find themselves writing code. We store all data relating to
+currently running tests - experiment/namespace names, publish/stop dates,
+bucket proportions, parameter names and values, and random operator weighting,
+to name a few - in a SQL database populated by a simple yet comprehensive
+mod panel that allows even the programming illiterate to quickly design
+experiments to launch on the site. Another class handles the process of loading
+experiment information from the database and recreating the test before
+parameter querying.
+
+The consequence of this is that a simple
+`ABLincoln::load('namespace')->get('parameter')` within our stack is all that
+is needed to recreate a given experiment set and query a parameter value from
+the test.
+
+We hope to make experiment serialization even more accessible than it
+currently is with a future implementation of an interpreter for the
+[PlanOut language][].
+
+##### Application to an Existing Logging Stack
+
+TODO
+
+##### Traffic Segmentation
+
+What if you want to deploy a test comparing users from a specific location or
+demographic to the overall population? Vimeo refers to this process as traffic
+"segmentation", and found it easy to implement on top of existing PlanOut code.
+We simply extend the Experiment class and overwrote its `get()` method - if a
+user is bucketed to the experiment but does not belong to the isolated
+demographic, he or she receives a default parameter value instead of the
+test value.
+
+##### URL Overrides
 
 ABLincoln already supports [parameter overrides][] for quickly examining the
 effects of difficult-to-test experiments. A simple way to integrate this
@@ -98,16 +133,10 @@ parameter:
 http://my.site/home.php?overrides=button_color:green,button_text:hello
 ```
 
-Then it's a relatively simple task to read the overrides from the query and
+Then it's a relatively simple task to parse the overrides from the query and
 pass them into the PHP Experiment API override methods after instantiation.
 
 [parameter overrides]: http://facebook.github.io/planout/docs/testing.html
-
-#### Traffic Segmentation
-
-#### Application to an Existing Logging Stack
-
-#### Serialized Experiments
 
 ### Installation
 
