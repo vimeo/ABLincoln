@@ -65,6 +65,23 @@ easily be introduced to better integrate with your existing logging stack.
 
 [logging]: #application-to-an-existing-logging-stack
 
+### Installation
+
+ABLincoln is maintained as an independent PHP [Composer][] package hosted on
+[Packagist][]. Include it in in your `composer.json` file for nice autoloading
+and dependency management:
+
+```
+{
+    "require": {
+        "vimeo/ablincoln": "0.1.2"
+    }
+}
+```
+
+[Composer]: https://getcomposer.org/
+[Packagist]: https://packagist.org/packages/vimeo/ablincoln
+
 ### Comparison with Python Release
 
 ABLincoln and the original Python release of PlanOut are very similar in both
@@ -137,23 +154,6 @@ Then it's a relatively simple task to parse the overrides from the query and
 pass them into the PHP Experiment API override methods after instantiation.
 
 [parameter overrides]: http://facebook.github.io/planout/docs/testing.html
-
-### Installation
-
-ABLincoln is maintained as an independent PHP [Composer][] package hosted on
-[Packagist][]. Include it in in your `composer.json` file for nice autoloading
-and dependency management:
-
-```
-{
-    "require": {
-        "vimeo/ablincoln": "0.1.2"
-    }
-}
-```
-
-[Composer]: https://getcomposer.org/
-[Packagist]: https://packagist.org/packages/vimeo/ablincoln
 
 ### Thanks
 
