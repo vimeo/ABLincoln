@@ -32,9 +32,7 @@ abstract class AbstractExperiment
         $this->inputs = $inputs;         // input data
         $this->name = get_class($this);  // use class name as default name
         $this->setup();                  // manually set name, salt, etc.
-        $this->salt = $this->salt();     // salt defaults to experiment name
-
-        $this->assignment = $this->_getAssignment();
+        $this->assignment = new Assignment($this->salt());;
     }
 
     /*
@@ -62,16 +60,6 @@ abstract class AbstractExperiment
         $this->in_experiment = array_key_exists('in_experiment', $this->assignment->asArray()) ? $this->assignment['in_experiment'] : $this->in_experiment;
         $this->logged = $this->_previouslyLogged();
         $this->assigned = true;
-    }
-
-    /**
-     * Get a new assignment belonging to the current experiment
-     *
-     * @return Assignment the current experiment's assignment
-     */
-    private function _getAssignment()
-    {
-        return new Assignment($this->salt());
     }
 
     /**
@@ -119,7 +107,7 @@ abstract class AbstractExperiment
     public function setSalt($value)
     {
         $this->salt = $value;
-        $this->assignment = $this->_getAssignment();
+        $this->assignment->experiment_salt = $value;
     }
 
     /**
@@ -140,7 +128,6 @@ abstract class AbstractExperiment
     public function setName($value)
     {
         $this->name = preg_replace('/\s+/', '-', $value);
-        $this->assignment = $this->_getAssignment();
     }
 
     /**
