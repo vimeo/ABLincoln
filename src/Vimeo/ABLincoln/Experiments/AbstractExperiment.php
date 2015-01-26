@@ -128,6 +128,7 @@ abstract class AbstractExperiment
     public function setName($value)
     {
         $this->name = preg_replace('/\s+/', '-', $value);
+        $this->assignment->experiment_salt = $this->salt();
     }
 
     /**
