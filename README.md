@@ -127,7 +127,19 @@ currently is with a future implementation of an interpreter for the
 
 ##### Application to an Existing Logging Stack
 
-TODO
+The Experiment [logging traits][] provided with this port make it easy to log
+exposure data in the most convenient way possible for your existing stack. A
+quick implementation of the plug-and-play [FileLoggerTrait][] and a simple
+`tail -f` of the log file is all you need to monitor parameter exposures in
+real-time. Alternatively, the [PSRLoggerTrait][] allows more customizable
+integration with existing PSR-compliant logging code. Here at Vimeo, we use
+a basic [Monolog Handler][] to enforce PSR-3 compliance and allow PlanOut to
+talk nicely to our existing logging infrastructure.
+
+[logging traits]: https://github.com/vimeo/ABLincoln/tree/master/src/Vimeo/ABLincoln/Experiments/Logging
+[FileLoggerTrait]: src/Vimeo/ABLincoln/Experiments/Logging/FileLoggerTrait.php
+[PSRLoggerTrait]: src/Vimeo/ABLincoln/Experiments/Logging/PSRLoggerTrait.php
+[Monolog Handler]: https://github.com/Seldaek/monolog
 
 ##### Traffic Segmentation
 
