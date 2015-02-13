@@ -1,0 +1,28 @@
+{
+    "name": "vimeo/ablincoln",
+    "description": "PHP library for designing online experiments",
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Alex Kalicki",
+            "email": "alexander.kalicki@gmail.com"
+        },
+        {
+            "name": "Jacob Oliver",
+            "email": "jake@vimeo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "psr/log": "~1.0",
+        "monolog/monolog": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Vimeo\\ABLincoln\\": "src/"
+        }
+    }
+}
