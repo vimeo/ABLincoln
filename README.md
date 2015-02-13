@@ -138,7 +138,7 @@ pass them into the PHP Experiment API override methods after instantiation.
 
 [PlanOut][], the software from which ABLincoln was ported, was originally
 developed by Eytan Bakshy, Dean Eckles, and Michael S. Bernstein, and is
-currently maintained by [Eytan Bakshy][@eytan] at Facebook. Learn more
+currently maintained by [Eytan Bakshy](@eytan) at Facebook. Learn more
 about good practice in large-scale testing by reading their paper,
 [Designing and Deploying Online Field Experiments][PlanOut Paper].
 
