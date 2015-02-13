@@ -72,7 +72,7 @@ and dependency management:
 ```
 {
     "require": {
-        "vimeo/ablincoln": "0.1.2"
+        "vimeo/ablincoln": "~1.0"
     }
 }
 ```
